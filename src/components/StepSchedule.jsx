@@ -34,23 +34,49 @@ export default function StepSchedule({
     }
   };
 
-  // Bulk actions
-  const selectAll = () => {
-    sounds.playSuccess();
-    const all = WEEKENDS.flatMap(we => we.days.map(d => d.id));
-    setSelectedSlots(all);
+  // Bulk toggle actions
+  const allSats = React.useMemo(() => 
+    WEEKENDS.flatMap(we => we.days.filter(d => d.dayName === 'Samstag').map(d => d.id)), []);
+  const allFris = React.useMemo(() => 
+    WEEKENDS.flatMap(we => we.days.filter(d => d.dayName === 'Freitag').map(d => d.id)), []);
+  const allDays = React.useMemo(() => 
+    WEEKENDS.flatMap(we => we.days.map(d => d.id)), []);
+
+  const areAllSatsSelected = allSats.length > 0 && allSats.every(id => selectedSlots.includes(id));
+  const areAllFrisSelected = allFris.length > 0 && allFris.every(id => selectedSlots.includes(id));
+  const areAllDaysSelected = allDays.length > 0 && allDays.every(id => selectedSlots.includes(id));
+
+  const toggleAllSaturdays = () => {
+    setError('');
+    if (areAllSatsSelected) {
+      sounds.playToggle(false);
+      setSelectedSlots(selectedSlots.filter(id => !allSats.includes(id)));
+    } else {
+      sounds.playPop();
+      setSelectedSlots(Array.from(new Set([...selectedSlots, ...allSats])));
+    }
   };
 
-  const selectAllSaturdays = () => {
-    sounds.playPop();
-    const sats = WEEKENDS.flatMap(we => we.days.filter(d => d.dayName === 'Samstag').map(d => d.id));
-    setSelectedSlots(Array.from(new Set([...selectedSlots, ...sats])));
+  const toggleAllFridays = () => {
+    setError('');
+    if (areAllFrisSelected) {
+      sounds.playToggle(false);
+      setSelectedSlots(selectedSlots.filter(id => !allFris.includes(id)));
+    } else {
+      sounds.playPop();
+      setSelectedSlots(Array.from(new Set([...selectedSlots, ...allFris])));
+    }
   };
 
-  const selectAllFridays = () => {
-    sounds.playPop();
-    const fris = WEEKENDS.flatMap(we => we.days.filter(d => d.dayName === 'Freitag').map(d => d.id));
-    setSelectedSlots(Array.from(new Set([...selectedSlots, ...fris])));
+  const toggleAll = () => {
+    setError('');
+    if (areAllDaysSelected) {
+      sounds.playToggle(false);
+      setSelectedSlots([]);
+    } else {
+      sounds.playSuccess();
+      setSelectedSlots(allDays);
+    }
   };
 
   const clearAll = () => {
@@ -88,24 +114,36 @@ export default function StepSchedule({
         <div className="flex items-center gap-1.5">
           <button
             type="button"
-            onClick={selectAllSaturdays}
-            className="px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-sm text-[11px]"
+            onClick={toggleAllSaturdays}
+            className={`px-2.5 py-1 rounded-lg text-[11px] transition-all cursor-pointer shadow-sm ${
+              areAllSatsSelected
+                ? 'bg-fuchsia-600/25 border border-fuchsia-500 text-white font-medium'
+                : 'gradient-btn-subtle text-slate-300 hover:text-white'
+            }`}
           >
-            Alle Samstage
+            Alle Samstage {areAllSatsSelected && '✓'}
           </button>
           <button
             type="button"
-            onClick={selectAllFridays}
-            className="px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-sm text-[11px]"
+            onClick={toggleAllFridays}
+            className={`px-2.5 py-1 rounded-lg text-[11px] transition-all cursor-pointer shadow-sm ${
+              areAllFrisSelected
+                ? 'bg-fuchsia-600/25 border border-fuchsia-500 text-white font-medium'
+                : 'gradient-btn-subtle text-slate-300 hover:text-white'
+            }`}
           >
-            Alle Freitage
+            Alle Freitage {areAllFrisSelected && '✓'}
           </button>
           <button
             type="button"
-            onClick={selectAll}
-            className="px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-sm text-[11px]"
+            onClick={toggleAll}
+            className={`px-2.5 py-1 rounded-lg text-[11px] transition-all cursor-pointer shadow-sm ${
+              areAllDaysSelected
+                ? 'bg-fuchsia-600/25 border border-fuchsia-500 text-white font-medium'
+                : 'gradient-btn-subtle text-slate-300 hover:text-white'
+            }`}
           >
-            Ich kann immer
+            Ich kann immer {areAllDaysSelected && '✓'}
           </button>
         </div>
 
