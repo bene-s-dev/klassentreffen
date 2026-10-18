@@ -7,6 +7,7 @@ import StepMessage from './components/StepMessage';
 import StepResults from './components/StepResults';
 import PseudoLoaderModal from './components/PseudoLoaderModal';
 import BackgroundEffects from './components/BackgroundEffects';
+import HeroTitle from './components/HeroTitle';
 import { 
   fetchAllVotes, 
   submitVote, 
@@ -164,14 +165,9 @@ export default function App() {
           {/* Step 1 Hero Header */}
           {currentStep === 1 && (
             <div className="text-center mb-6 animate-slide-in relative">
-              <h1 className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight animate-title-glow py-1">
-                Klassentreffen 2.0
-              </h1>
-              <p className="text-xs text-slate-400 font-medium tracking-wide mt-1">
-                Orga-Tool • Termine & Locations
-              </p>
-              <div className="mt-1.5">
-                <span className="inline-block text-[10px] text-fuchsia-400 font-mono tracking-wider uppercase font-semibold px-2 py-0.5 rounded-md bg-fuchsia-500/10 border border-fuchsia-500/20 animate-pulse">
+              <HeroTitle />
+              <div className="mt-2.5">
+                <span className="inline-block text-[10px] text-white font-mono tracking-wider uppercase font-medium px-2.5 py-0.5 rounded-md bg-slate-900 border border-slate-800">
                   powered by Bene
                 </span>
               </div>

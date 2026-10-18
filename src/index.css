@@ -247,6 +247,78 @@
   animation: titleGlowShift 4.5s ease-in-out infinite;
 }
 
+@keyframes dropThud {
+  0% {
+    opacity: 0;
+    transform: translateY(-90px) scale(1.3);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0px) scale(1.15, 0.85);
+  }
+  78% {
+    transform: translateY(-6px) scale(0.95, 1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1, 1);
+  }
+}
+
+@keyframes dustLeft {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) translate(0, 0);
+  }
+  40% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) translate(-14px, -3px);
+  }
+}
+
+@keyframes dustRight {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) translate(0, 0);
+  }
+  40% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) translate(14px, -3px);
+  }
+}
+
+@keyframes dustRing {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.2) scaleY(0.1);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(2.2) scaleY(0.7);
+  }
+}
+
+.animate-dust-left {
+  animation: dustLeft 0.55s ease-out forwards;
+}
+
+.animate-dust-right {
+  animation: dustRight 0.55s ease-out forwards;
+}
+
+.animate-dust-ring {
+  animation: dustRing 0.55s ease-out forwards;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
