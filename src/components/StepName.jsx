@@ -66,7 +66,7 @@ export default function StepName({ name, setName, onNext }) {
           <div className="pt-1">
             <button
               type="submit"
-              className="w-full py-2.5 px-4 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm"
+              className="w-full py-2.5 px-4 rounded-xl gradient-btn-primary text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               <span>Weiter zu den Terminen</span>
               <ArrowRight className="w-4 h-4" />

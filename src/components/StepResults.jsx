@@ -124,7 +124,7 @@ export default function StepResults({
                 sounds.playPop();
                 onEditVote();
               }}
-              className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors border border-slate-700"
+              className="px-3 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>Bearbeiten</span>
@@ -138,7 +138,7 @@ export default function StepResults({
                   onDeleteVote();
                 }
               }}
-              className="px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+              className="px-3 py-2 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
               title="Löscht deine Stimme und bringt dich zur Startseite"
             >
               <Trash2 className="w-3.5 h-3.5" />

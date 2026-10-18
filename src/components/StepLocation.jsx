@@ -123,7 +123,7 @@ export default function StepLocation({
               sounds.playPop();
               onBack();
             }}
-            className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="px-3 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Zurück</span>
@@ -138,7 +138,7 @@ export default function StepLocation({
           <button
             type="button"
             onClick={handleNext}
-            className="px-4 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-colors shadow-md"
+            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md"
           >
             <span>Weiter zur Nachricht</span>
             <ArrowRight className="w-3.5 h-3.5" />

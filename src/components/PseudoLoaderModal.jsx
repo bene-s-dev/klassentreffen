@@ -174,7 +174,7 @@ export default function PseudoLoaderModal({
                 <button
                   type="button"
                   onClick={handleContinue}
-                  className="w-full py-2.5 px-4 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md"
+                  className="w-full py-2.5 px-4 rounded-xl gradient-btn-primary text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
                 >
                   <span>Weiter</span>
                   <ArrowRight className="w-4 h-4" />

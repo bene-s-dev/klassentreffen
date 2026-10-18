@@ -76,7 +76,7 @@ export default function StepMessage({
                 key={quote}
                 type="button"
                 onClick={() => addQuote(quote)}
-                className="text-xs px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
+                className="text-xs px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-xs"
               >
                 {quote}
               </button>
@@ -112,7 +112,7 @@ export default function StepMessage({
               sounds.playPop();
               onBack();
             }}
-            className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="px-3 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Zurück</span>
@@ -123,7 +123,7 @@ export default function StepMessage({
               type="button"
               disabled={isSubmitting}
               onClick={() => handleFinish(true)}
-              className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-400 hover:text-slate-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+              className="px-3.5 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
             >
               <FastForward className="w-3.5 h-3.5" />
               <span>Überspringen</span>
@@ -133,7 +133,7 @@ export default function StepMessage({
               type="button"
               disabled={isSubmitting}
               onClick={() => handleFinish(false)}
-              className="px-4 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-colors shadow-md disabled:opacity-50"
+              className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>

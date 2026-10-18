@@ -89,21 +89,21 @@ export default function StepSchedule({
           <button
             type="button"
             onClick={selectAllSaturdays}
-            className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
+            className="px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-sm text-[11px]"
           >
             Alle Samstage
           </button>
           <button
             type="button"
             onClick={selectAllFridays}
-            className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
+            className="px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-sm text-[11px]"
           >
             Alle Freitage
           </button>
           <button
             type="button"
             onClick={selectAll}
-            className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
+            className="px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-sm text-[11px]"
           >
             Ich kann immer
           </button>
@@ -199,7 +199,7 @@ export default function StepSchedule({
               sounds.playPop();
               onBack();
             }}
-            className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="px-3 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Zurück</span>
@@ -212,7 +212,7 @@ export default function StepSchedule({
           <button
             type="button"
             onClick={handleNext}
-            className="px-4 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-colors shadow-md"
+            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md"
           >
             <span>Weiter zu Locations</span>
             <ArrowRight className="w-3.5 h-3.5" />
