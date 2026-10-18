@@ -129,6 +129,13 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
           </div>
         </div>
       )}
+
+      {/* Badge under Side Scroller */}
+      <div className="text-center mt-5 mb-2">
+        <span className="inline-block text-[10px] text-white font-mono tracking-wider font-medium px-2.5 py-0.5 rounded-md bg-slate-900 border border-slate-800">
+          Orga-Tool by Bene
+        </span>
+      </div>
     </div>
   );
 }

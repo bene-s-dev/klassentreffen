@@ -166,11 +166,6 @@ export default function App() {
           {currentStep === 1 && (
             <div className="text-center mb-6 animate-slide-in relative">
               <HeroTitle />
-              <div className="mt-2.5">
-                <span className="inline-block text-[10px] text-white font-mono tracking-wider uppercase font-medium px-2.5 py-0.5 rounded-md bg-slate-900 border border-slate-800">
-                  powered by Bene
-                </span>
-              </div>
             </div>
           )}
 
