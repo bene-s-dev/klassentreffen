@@ -82,13 +82,13 @@ export default function StepResults({
 
       {/* WINNER BANNER with White Glass Shimmer Reflection */}
       {dayStats.topDay && dayStats.topDay.votes > 0 && (
-        <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-amber-500/30 p-4 sm:p-5 mb-6 shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-amber-500/30 p-4 sm:p-5 mb-6 shadow-sm text-center">
           {/* Animated White Glass Sheen moving across */}
           <div 
             className="pointer-events-none absolute inset-0 -top-12 -bottom-12 w-1/2 bg-gradient-to-r from-transparent via-white/12 to-transparent animate-glass-shimmer"
           />
 
-          <div className="relative z-10">
+          <div className="relative z-10 text-center">
             <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider block mb-0.5">
               Aktuell beliebtester Termin
             </span>
