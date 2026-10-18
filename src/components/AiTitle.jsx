@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
-export default function AiTitle({ text, className = '', as = 'h2' }) {
+export default function AiTitle({ text, className = '', as = 'h2', speed = 200 }) {
   const [visibleCount, setVisibleCount] = useState(0);
   const words = useMemo(() => text.split(' ').filter(Boolean), [text]);
 
@@ -13,10 +13,10 @@ export default function AiTitle({ text, className = '', as = 'h2' }) {
       if (i >= words.length) {
         clearInterval(interval);
       }
-    }, 70);
+    }, speed);
 
     return () => clearInterval(interval);
-  }, [words]);
+  }, [words, speed]);
 
   const Tag = as;
 
@@ -25,10 +25,10 @@ export default function AiTitle({ text, className = '', as = 'h2' }) {
       {words.map((word, idx) => (
         <span
           key={`${word}-${idx}`}
-          className={`inline-block mr-1.5 transition-all duration-200 ${
+          className={`inline-block mr-1.5 transition-all duration-350 ease-out ${
             idx < visibleCount
               ? 'opacity-100 translate-y-0 filter-none'
-              : 'opacity-0 translate-y-1.5 blur-[2px]'
+              : 'opacity-0 translate-y-2 blur-[3px]'
           }`}
         >
           {word}
