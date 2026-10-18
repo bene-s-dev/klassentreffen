@@ -19,9 +19,9 @@ const LOADING_CONFIG = {
     icon: '💐'
   },
   'final-submit': {
-    sentence: 'Zettelchen wird heimlich unter der Schulbank nach hinten durchgereicht...',
-    badge: 'Klassen-Geheimpost',
-    icon: '📝'
+    sentence: 'Tippgeschwindigkeit wird mit dem 10-Finger-Schreibkurs bei Frau Blessing abgeglichen...',
+    badge: 'Frau Blessing & 10-Finger-System',
+    icon: '⌨️'
   }
 };
 
@@ -62,7 +62,7 @@ export default function PseudoLoaderModal({
         return `Starke Location! Hoffentlich sind die Blumen vor Ort besser gebunden als damals im Unterricht – und geh vorher nicht zu lang ins Solarium!`;
       
       case 'final-submit':
-        return `Erfolgreich nach hinten durchgereicht, ohne dass der Lehrer es gemerkt hat! Deine Stimme ist verewigt. Ab zu den Ergebnissen!`;
+        return `Frau Blessing wäre stolz: Sauber im 10-Finger-System ohne auf die Tastatur zu schauen abgetippt! Deine Stimme ist verewigt. Ab zu den Ergebnissen!`;
       
       default:
         return `Eingabe geprüft! Klassenbuch-Eintrag erfolgreich aktualisiert.`;
