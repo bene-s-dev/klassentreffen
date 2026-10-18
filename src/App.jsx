@@ -192,12 +192,13 @@ export default function App() {
   // Delete answer and return to start page
   const handleDeleteVote = async () => {
     sounds.playPop();
-    const currentName = name || myVote?.name;
-    const currentId = myVote?.id;
+    const saved = getStoredVote();
+    const currentName = name || myVote?.name || saved?.name;
+    const currentId = myVote?.id || saved?.id;
 
-    await deleteVote(currentId, currentName);
-
-    // Reset local state
+    // 1. Immediately clear storage and reset state for instant navigation
+    localStorage.removeItem('klassentreffen_my_vote');
+    localStorage.removeItem('klassentreffen_local_votes');
     setName('');
     setSelectedSlots([]);
     setSelectedLocations([]);
@@ -207,9 +208,15 @@ export default function App() {
     setHasVoted(false);
     setShowMessageModal(false);
     setCurrentStep(1);
-
-    await loadVotes();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 2. Delete remotely in Supabase
+    if (currentId || currentName) {
+      await deleteVote(currentId, currentName);
+    }
+
+    // 3. Refresh all votes
+    await loadVotes();
   };
 
   if (!isAuthorized) {

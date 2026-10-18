@@ -11,6 +11,7 @@ export default function StepResults({
   onDeleteVote,
   onRefresh
 }) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Calculate day stats
   const dayStats = useMemo(() => {
@@ -111,20 +112,42 @@ export default function StepResults({
             </h3>
           </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              sounds.playToggle(false);
-              if (window.confirm('Möchtest Du Deine Antwort wirklich löschen?')) {
-                onDeleteVote();
-              }
-            }}
-            className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm self-start sm:self-auto"
-            title="Löscht Deine Stimme und bringt Dich zur Startseite"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Meine Antwort löschen</span>
-          </button>
+          {!confirmDelete ? (
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playPop();
+                setConfirmDelete(true);
+              }}
+              className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm self-start sm:self-auto transition-all"
+              title="Löscht Deine Stimme und bringt Dich zur Startseite"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Meine Antwort löschen</span>
+            </button>
+          ) : (
+            <div className="flex items-center gap-1.5 animate-fadeIn self-start sm:self-auto bg-slate-950/90 border border-rose-500/40 p-1 rounded-xl">
+              <span className="text-[11px] text-rose-300 font-medium pl-1.5">Wirklich löschen?</span>
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playToggle(false);
+                  setConfirmDelete(false);
+                  onDeleteVote();
+                }}
+                className="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer shadow-sm transition-colors"
+              >
+                Ja
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(false)}
+                className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer transition-colors"
+              >
+                Abbrechen
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="overflow-x-auto">
