@@ -1,23 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 
 const LOADING_CONFIG = {
   '1-to-2': {
-    sentence: 'Name wird durch die Heißmangel gezogen und im Kochunterricht-Buch gesucht...',
-    badge: 'Heißmangel & Kochunterricht'
+    sentence: 'Name wird mit dem alten Klassenbuch verglichen...',
+    badge: 'Klassenbuch-Abgleich',
+    icon: '📖'
   },
   '2-to-3': {
-    sentence: 'Termine werden mit dem Solarium-Plan und Nähmaschinen-Kurs synchronisiert...',
-    badge: 'Solarium & Nähmaschine'
+    sentence: 'Termine werden mit Fehlzeiten an der Heißmangel abgeglichen...',
+    badge: 'Heißmangel & Termine',
+    icon: '🧺'
   },
   '3-to-4': {
-    sentence: 'Locations werden auf Blumen-Binden und Heißmangel-Sicherheit geprüft...',
-    badge: 'Floristik & Gastro-Check'
+    sentence: 'Location wird auf Ambiente und Floristik geprüft...',
+    badge: 'Floristik & Solarium',
+    icon: '💐'
   },
   'final-submit': {
-    sentence: 'Stimme wird floristisch gebunden, gemangelt und mit Zickzackstich versiegelt...',
-    badge: 'Hauswirtschafts-Abschluss'
+    sentence: 'Antwort wird mit der Nähmaschine versiegelt und gespeichert...',
+    badge: 'Nähmaschinen-Check',
+    icon: '🪡'
   }
 };
 
@@ -36,35 +40,39 @@ export default function PseudoLoaderModal({
 
   const cleanName = voterName.trim() || 'Schüler/in';
   const config = LOADING_CONFIG[transitionType] || {
-    sentence: 'Wäsche wird gemangelt und Daten werden verarbeitet...',
-    badge: 'Hauswirtschafts-Check'
+    sentence: 'Daten werden mit dem Klassenbuch abgeglichen...',
+    badge: 'Klassenbuch-Check',
+    icon: '📖'
   };
 
-  // Build the witty retro Hauswirtschaft / Solarium AI message
+  // Humor tailored directly to each step
   const getAiMessage = () => {
     switch (transitionType) {
       case '1-to-2':
-        return `"${cleanName}" ist freigegeben! Damals im Kochunterricht zwar die Mehlschwitze angebrannt und im Solarium mit Schutzbrille eingepennt – aber fürs Treffen absolut tauglich.`;
+        return `"${cleanName}" steht tatsächlich im Klassenbuch! Der alte Tadel wegen vergessener Schürze im Kochunterricht ist zum Glück verjährt.`;
       
       case '2-to-3': {
         const tagWord = selectedSlotsCount === 1 ? 'Tag' : 'Tage';
-        return `Termine glattgemangelt! ${selectedSlotsCount} ${tagWord} eingeloggt. Der Unterfaden der Nähmaschine sitzt, Wäsche ist durch die Walze – keine Überschneidung mit der Solarium-Flatrate.`;
+        if (selectedSlotsCount === 1) {
+          return `Nur 1 Tag ausgewählt? So oft hast du damals mindestens pro Woche das Wäsche-Mangeln geschwänzt!`;
+        }
+        return `${selectedSlotsCount} ${tagWord} ausgewählt – so oft hast du damals nicht mal das Wäsche-Mangeln geschwänzt!`;
       }
       
       case '3-to-4':
-        return `Location-Wahl genehmigt! Blumen binden und Kochtopf-Schrubben fallen offiziell aus. Freiburg wird unsicher gemacht – Solarium-Bräune sitzt schon!`;
+        return `Starke Location! Hoffentlich sind die Blumen vor Ort besser gebunden als damals im Unterricht – und geh vorher nicht zu lang ins Solarium!`;
       
       case 'final-submit':
-        return `Klassenbuch-Eintrag versiegelt! Floristisch perfekt gebunden, mit der Nähmaschine doppelt versteppt und faltenfrei wie frisch gemangelte Bettwäsche. Ab zu den Ergebnissen!`;
+        return `Sitzt perfekt! Sauberer eingefädelt als jede Naht an der alten Schul-Nähmaschine. Deine Stimme ist verewigt!`;
       
       default:
-        return `Alles glatt wie frisch gemangelte Wäsche! Unterfaden sitzt, weiter geht's.`;
+        return `Eingabe geprüft! Klassenbuch-Eintrag erfolgreich aktualisiert.`;
     }
   };
 
   const aiMessage = getAiMessage();
 
-  // Phase 1: Loader runs ~2.4 seconds (comfortable reading time + progress)
+  // Phase 1: Loader runs ~2.4 seconds
   useEffect(() => {
     sounds.playPop();
     const startTime = Date.now();
@@ -132,9 +140,9 @@ export default function PseudoLoaderModal({
         
         {phase === 'loading' ? (
           <div className="animate-fadeIn">
-            {/* Animated Loading Icon */}
+            {/* Animated Loading Icon tailored to step */}
             <div className="w-12 h-12 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 mx-auto mb-4 flex items-center justify-center text-xl animate-pulse">
-              🧺
+              {config.icon}
             </div>
 
             {/* Exactly ONE clear status sentence */}
@@ -162,21 +170,21 @@ export default function PseudoLoaderModal({
             {/* AI Header */}
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-400 flex items-center justify-center text-sm">
-                  🪡
+                <div className="w-7 h-7 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center text-sm">
+                  {config.icon}
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <span>Hauswirtschafts-KI</span>
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-pink-400 animate-ping" />
+                    <span>Klassenbuch-KI</span>
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                   </h4>
-                  <p className="text-[10px] text-slate-400">Heißmangel & Solarium Check</p>
+                  <p className="text-[10px] text-slate-400">{config.badge}</p>
                 </div>
               </div>
 
               <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1">
                 <CheckCircle2 className="w-2.5 h-2.5" />
-                <span>Bestanden</span>
+                <span>Geprüft</span>
               </span>
             </div>
 
