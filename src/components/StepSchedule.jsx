@@ -285,7 +285,7 @@ export default function StepSchedule({
       )}
 
       {/* Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 pointer-events-none">
+      <div className="fixed bottom-8 sm:bottom-7 left-0 right-0 z-40 p-3 pointer-events-none">
         <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
           
           <button

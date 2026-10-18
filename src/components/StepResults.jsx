@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Calendar, MapPin, Trash2, RefreshCw, Code2 } from 'lucide-react';
+import { Calendar, MapPin, Trash2, RefreshCw } from 'lucide-react';
 import { ALL_DAYS, FIXED_TIME, PRESET_LOCATIONS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
 import AiTitle from './AiTitle';
@@ -355,14 +355,6 @@ export default function StepResults({
             </span>
           ))}
         </div>
-      </div>
-
-      {/* Clean Footer */}
-      <div className="text-center pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-        <span>Klassentreffen 2.0 • Lowkey Pflichttermin!</span>
-        <span className="flex items-center gap-1">
-          <Code2 className="w-3.5 h-3.5 text-fuchsia-400" /> Tool engineered by Bene
-        </span>
       </div>
 
     </div>
