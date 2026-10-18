@@ -37,9 +37,9 @@ export default function StepSchedule({
 
   // Bulk toggle actions
   const allSats = React.useMemo(() => 
-    WEEKENDS.flatMap(we => we.days.filter(d => d.dayName === 'Samstag').map(d => d.id)), []);
+    WEEKENDS.flatMap(we => we.days.filter(d => d.dayName === 'Samstag' || d.dayName === 'Karsamstag').map(d => d.id)), []);
   const allFris = React.useMemo(() => 
-    WEEKENDS.flatMap(we => we.days.filter(d => d.dayName === 'Freitag').map(d => d.id)), []);
+    WEEKENDS.flatMap(we => we.days.filter(d => d.dayName === 'Freitag' || d.dayName === 'Karfreitag').map(d => d.id)), []);
   const allDays = React.useMemo(() => 
     WEEKENDS.flatMap(we => we.days.map(d => d.id)), []);
 
@@ -80,19 +80,13 @@ export default function StepSchedule({
     } else {
       const daysToSelect = we.days.map((d) => d.id);
 
-      // Stagger activation: Day 1 immediately, Day 2 at 100ms, Day 3 at 200ms
-      sounds.playPop();
-      setSelectedSlots((prev) => Array.from(new Set([...prev, daysToSelect[0]])));
-
-      setTimeout(() => {
-        sounds.playPop();
-        setSelectedSlots((prev) => Array.from(new Set([...prev, daysToSelect[1]])));
-      }, 100);
-
-      setTimeout(() => {
-        sounds.playPop();
-        setSelectedSlots((prev) => Array.from(new Set([...prev, daysToSelect[2]])));
-      }, 200);
+      // Stagger activation dynamically for all days (3 or 4 days)
+      daysToSelect.forEach((dayId, index) => {
+        setTimeout(() => {
+          sounds.playPop();
+          setSelectedSlots((prev) => Array.from(new Set([...prev, dayId])));
+        }, index * 90);
+      });
     }
   };
 
@@ -225,7 +219,7 @@ export default function StepSchedule({
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div className={`grid grid-cols-1 ${we.days.length === 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'} gap-2`}>
               {we.days.map((day) => {
                 const isSelected = selectedSlots.includes(day.id);
                 const votes = dayVoteCounts[day.id] || 0;
@@ -248,10 +242,15 @@ export default function StepSchedule({
                       }`}
                     />
 
-                    <div className="relative z-10">
-                      <div className={`font-semibold text-xs transition-colors duration-200 ${isSelected ? 'text-white font-bold' : 'text-slate-300'}`}>
+                    <div className="relative z-10 min-w-0 pr-1">
+                      <div className={`font-semibold text-xs transition-colors duration-200 truncate ${isSelected ? 'text-white font-bold' : 'text-slate-300'}`}>
                         {day.fullDate}
                       </div>
+                      {day.badge && (
+                        <span className={`inline-block text-[10px] font-semibold tracking-tight ${isSelected ? 'text-amber-200' : 'text-amber-400'}`}>
+                          {day.badge}
+                        </span>
+                      )}
                       <div className={`text-[10px] font-mono transition-colors duration-200 ${isSelected ? 'text-fuchsia-200' : 'text-slate-500'}`}>
                         {FIXED_TIME}
                       </div>

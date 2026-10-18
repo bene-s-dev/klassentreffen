@@ -5,61 +5,62 @@ export const WEEKENDS = [
   {
     id: 'we-1',
     label: 'Wochenende 1',
-    range: '20. – 22. März',
+    range: '19. – 21. März',
     days: [
-      { id: 'we-1-fri', dayName: 'Freitag', date: '20. Mär', fullDate: 'Fr, 20. März' },
-      { id: 'we-1-sat', dayName: 'Samstag', date: '21. Mär', fullDate: 'Sa, 21. März' },
-      { id: 'we-1-sun', dayName: 'Sonntag', date: '22. Mär', fullDate: 'So, 22. März' }
+      { id: 'we-1-fri', dayName: 'Freitag', date: '19. Mär', fullDate: 'Fr, 19. März' },
+      { id: 'we-1-sat', dayName: 'Samstag', date: '20. Mär', fullDate: 'Sa, 20. März' },
+      { id: 'we-1-sun', dayName: 'Sonntag', date: '21. Mär', fullDate: 'So, 21. März' }
     ]
   },
   {
     id: 'we-2',
-    label: 'Wochenende 2',
-    range: '27. – 29. März',
+    label: 'Wochenende 2 (Ostern 🐣)',
+    range: '26. – 29. März (Ostern 🐣)',
     days: [
-      { id: 'we-2-fri', dayName: 'Freitag', date: '27. Mär', fullDate: 'Fr, 27. März' },
-      { id: 'we-2-sat', dayName: 'Samstag', date: '28. Mär', fullDate: 'Sa, 28. März' },
-      { id: 'we-2-sun', dayName: 'Sonntag', date: '29. Mär', fullDate: 'So, 29. März' }
+      { id: 'we-2-fri', dayName: 'Karfreitag', date: '26. Mär', fullDate: 'Karfreitag, 26. März', badge: 'Feiertag 🐣' },
+      { id: 'we-2-sat', dayName: 'Karsamstag', date: '27. Mär', fullDate: 'Karsamstag, 27. März', badge: 'Ostern' },
+      { id: 'we-2-sun', dayName: 'Ostersonntag', date: '28. Mär', fullDate: 'Ostersonntag, 28. März', badge: 'Ostern' },
+      { id: 'we-2-mon', dayName: 'Ostermontag', date: '29. Mär', fullDate: 'Ostermontag, 29. März', badge: 'Feiertag 🐣' }
     ]
   },
   {
     id: 'we-3',
     label: 'Wochenende 3',
-    range: '03. – 05. April',
+    range: '02. – 04. April',
     days: [
-      { id: 'we-3-fri', dayName: 'Freitag', date: '03. Apr', fullDate: 'Fr, 03. April' },
-      { id: 'we-3-sat', dayName: 'Samstag', date: '04. Apr', fullDate: 'Sa, 04. April' },
-      { id: 'we-3-sun', dayName: 'Sonntag', date: '05. Apr', fullDate: 'So, 05. April' }
+      { id: 'we-3-fri', dayName: 'Freitag', date: '02. Apr', fullDate: 'Fr, 02. April' },
+      { id: 'we-3-sat', dayName: 'Samstag', date: '03. Apr', fullDate: 'Sa, 03. April' },
+      { id: 'we-3-sun', dayName: 'Sonntag', date: '04. Apr', fullDate: 'So, 04. April' }
     ]
   },
   {
     id: 'we-4',
     label: 'Wochenende 4',
-    range: '10. – 12. April',
+    range: '09. – 11. April',
     days: [
-      { id: 'we-4-fri', dayName: 'Freitag', date: '10. Apr', fullDate: 'Fr, 10. April' },
-      { id: 'we-4-sat', dayName: 'Samstag', date: '11. Apr', fullDate: 'Sa, 11. April' },
-      { id: 'we-4-sun', dayName: 'Sonntag', date: '12. Apr', fullDate: 'So, 12. April' }
+      { id: 'we-4-fri', dayName: 'Freitag', date: '09. Apr', fullDate: 'Fr, 09. April' },
+      { id: 'we-4-sat', dayName: 'Samstag', date: '10. Apr', fullDate: 'Sa, 10. April' },
+      { id: 'we-4-sun', dayName: 'Sonntag', date: '11. Apr', fullDate: 'So, 11. April' }
     ]
   },
   {
     id: 'we-5',
     label: 'Wochenende 5',
-    range: '17. – 19. April',
+    range: '16. – 18. April',
     days: [
-      { id: 'we-5-fri', dayName: 'Freitag', date: '17. Apr', fullDate: 'Fr, 17. April' },
-      { id: 'we-5-sat', dayName: 'Samstag', date: '18. Apr', fullDate: 'Sa, 18. April' },
-      { id: 'we-5-sun', dayName: 'Sonntag', date: '19. Apr', fullDate: 'So, 19. April' }
+      { id: 'we-5-fri', dayName: 'Freitag', date: '16. Apr', fullDate: 'Fr, 16. April' },
+      { id: 'we-5-sat', dayName: 'Samstag', date: '17. Apr', fullDate: 'Sa, 17. April' },
+      { id: 'we-5-sun', dayName: 'Sonntag', date: '18. Apr', fullDate: 'So, 18. April' }
     ]
   },
   {
     id: 'we-6',
     label: 'Wochenende 6',
-    range: '24. – 26. April',
+    range: '23. – 25. April',
     days: [
-      { id: 'we-6-fri', dayName: 'Freitag', date: '24. Apr', fullDate: 'Fr, 24. April' },
-      { id: 'we-6-sat', dayName: 'Samstag', date: '25. Apr', fullDate: 'Sa, 25. April' },
-      { id: 'we-6-sun', dayName: 'Sonntag', date: '26. Apr', fullDate: 'So, 26. April' }
+      { id: 'we-6-fri', dayName: 'Freitag', date: '23. Apr', fullDate: 'Fr, 23. April' },
+      { id: 'we-6-sat', dayName: 'Samstag', date: '24. Apr', fullDate: 'Sa, 24. April' },
+      { id: 'we-6-sun', dayName: 'Sonntag', date: '25. Apr', fullDate: 'So, 25. April' }
     ]
   }
 ];

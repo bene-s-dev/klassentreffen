@@ -155,8 +155,15 @@ export default function StepResults({
                     }`}
                   >
                     <td className="py-2 px-3">
-                      <div className="font-semibold text-white text-xs whitespace-nowrap">
-                        {day.fullDate}
+                      <div className="flex items-center gap-1.5 whitespace-nowrap">
+                        <span className="font-semibold text-white text-xs">
+                          {day.fullDate}
+                        </span>
+                        {day.badge && (
+                          <span className="text-[9px] text-amber-300 font-medium px-1 rounded bg-amber-500/10 border border-amber-500/20">
+                            {day.badge}
+                          </span>
+                        )}
                       </div>
                     </td>
 
