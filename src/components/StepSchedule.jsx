@@ -69,6 +69,19 @@ export default function StepSchedule({
     }
   };
 
+  const toggleWeekend = (we) => {
+    setError('');
+    const weekendDayIds = we.days.map(d => d.id);
+    const isAllSelected = weekendDayIds.every(id => selectedSlots.includes(id));
+    if (isAllSelected) {
+      sounds.playToggle(false);
+      setSelectedSlots(selectedSlots.filter(id => !weekendDayIds.includes(id)));
+    } else {
+      sounds.playPop();
+      setSelectedSlots(Array.from(new Set([...selectedSlots, ...weekendDayIds])));
+    }
+  };
+
   const toggleAll = () => {
     setError('');
     if (areAllDaysSelected) {
@@ -161,18 +174,44 @@ export default function StepSchedule({
         )}
       </div>
 
-      {/* Clean 5 Weekends with 3 Days Each */}
+      {/* Weekends with 3 Days Each */}
       <div className="space-y-4">
-        {WEEKENDS.map((we) => (
-          <div key={we.id} className="rounded-xl bg-slate-900/70 border border-slate-800 p-3 sm:p-4">
-            
-            <div className="mb-2.5 px-1">
-              <span className="font-semibold text-xs text-white">
-                {we.range}
-              </span>
-            </div>
+        {WEEKENDS.map((we) => {
+          const weekendDayIds = we.days.map((d) => d.id);
+          const isWholeWeekendSelected = weekendDayIds.every((id) => selectedSlots.includes(id));
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          return (
+            <div key={we.id} className="rounded-xl bg-slate-900/70 border border-slate-800 p-3 sm:p-4">
+              
+              <div className="flex items-center justify-between mb-2.5 px-1">
+                <span className="font-semibold text-xs text-white">
+                  {we.range}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => toggleWeekend(we)}
+                  className="flex items-center gap-2 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer select-none group"
+                  title="Ganzes Wochenende an- oder abwählen"
+                >
+                  <span className={`text-[11px] transition-colors ${
+                    isWholeWeekendSelected ? 'text-fuchsia-300 font-medium' : 'text-slate-400 group-hover:text-slate-300'
+                  }`}>
+                    Ganzes Wochenende
+                  </span>
+                  <div 
+                    className={`w-7 h-4 rounded-full transition-colors duration-200 ease-in-out p-0.5 flex items-center ${
+                      isWholeWeekendSelected ? 'bg-fuchsia-600 justify-end' : 'bg-slate-800 justify-start group-hover:bg-slate-750'
+                    }`}
+                  >
+                    <div className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                      isWholeWeekendSelected ? 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.7)]' : 'bg-slate-500'
+                    }`} />
+                  </div>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {we.days.map((day) => {
                 const isSelected = selectedSlots.includes(day.id);
                 const votes = dayVoteCounts[day.id] || 0;
@@ -219,7 +258,8 @@ export default function StepSchedule({
             </div>
 
           </div>
-        ))}
+        );
+      })}
       </div>
 
       {error && (
