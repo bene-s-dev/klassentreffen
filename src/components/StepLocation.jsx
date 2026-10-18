@@ -33,7 +33,7 @@ export default function StepLocation({
       setError('Bitte wähl mindestens eine Location aus oder schlag einen eigenen Spot vor!');
       return;
     }
-    sounds.playSuccess();
+    sounds.playPop();
     onNext();
   };
 

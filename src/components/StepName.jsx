@@ -29,7 +29,7 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
       return;
     }
     setError('');
-    sounds.playSuccess();
+    sounds.playPop();
     onNext();
   };
 

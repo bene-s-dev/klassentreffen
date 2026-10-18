@@ -82,20 +82,20 @@ export default function StepResults({
 
       {/* WINNER BANNER with White Glass Shimmer Reflection */}
       {dayStats.topDay && dayStats.topDay.votes > 0 && (
-        <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-amber-500/30 p-4 sm:p-5 mb-6 shadow-sm text-center">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/20 via-slate-800/95 to-amber-600/15 border-2 border-amber-400/50 p-4 sm:p-5 mb-6 shadow-[0_4px_25px_-5px_rgba(245,158,11,0.2)] text-center">
           {/* Animated White Glass Sheen moving across */}
           <div 
             className="pointer-events-none absolute inset-0 -top-12 -bottom-12 w-1/2 bg-gradient-to-r from-transparent via-white/12 to-transparent animate-glass-shimmer"
           />
 
           <div className="relative z-10 text-center">
-            <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider block mb-0.5">
+            <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider block mb-0.5">
               Aktuell beliebtester Termin
             </span>
             <h3 className="font-display font-bold text-lg sm:text-xl text-white">
               {dayStats.topDay.resultDate || dayStats.topDay.fullDate} • {FIXED_TIME}
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-300 mt-0.5">
               {dayStats.topDay.votes} von {dayStats.totalVoters} Stimmen ({Math.round((dayStats.topDay.votes / Math.max(1, dayStats.totalVoters)) * 100)}%)
             </p>
           </div>

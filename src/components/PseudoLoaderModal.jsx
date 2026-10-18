@@ -70,7 +70,6 @@ export default function PseudoLoaderModal({
 
   // Phase 1: Loader runs ~2.4s (first loader 2/3 time = 1.6s)
   useEffect(() => {
-    sounds.playPop();
     const startTime = Date.now();
     const duration = transitionType === '1-to-2' ? 1600 : 2400;
 
@@ -103,7 +102,6 @@ export default function PseudoLoaderModal({
     const streamNextWord = () => {
       if (index >= words.length) {
         setIsTypingDone(true);
-        sounds.playPop();
         return;
       }
 
@@ -113,7 +111,6 @@ export default function PseudoLoaderModal({
 
       if (index >= words.length) {
         setIsTypingDone(true);
-        sounds.playPop();
         return;
       }
 

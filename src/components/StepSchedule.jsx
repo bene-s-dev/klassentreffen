@@ -113,7 +113,7 @@ export default function StepSchedule({
       setError('Bitte wähl mindestens einen Tag aus!');
       return;
     }
-    sounds.playSuccess();
+    sounds.playPop();
     onNext();
   };
 
