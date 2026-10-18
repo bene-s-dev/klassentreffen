@@ -89,6 +89,25 @@ export default function App() {
     }
   }, [hasVoted, currentStep]);
 
+  // Page Visibility API: Frecher Tab-Titel beim Verlassen des Browser-Tabs
+  useEffect(() => {
+    const originalTitle = document.title || 'Klassentreffen 2.0 – Lowkey Pflichttermin!';
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        document.title = '👀 Nicht schwänzen! Komm zurück…';
+      } else {
+        document.title = originalTitle;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.title = originalTitle;
+    };
+  }, []);
+
   // Load initial data and existing vote
   const loadVotes = useCallback(async () => {
     if (!isAuthorized) return;

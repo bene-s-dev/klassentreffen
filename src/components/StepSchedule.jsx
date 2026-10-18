@@ -189,13 +189,22 @@ export default function StepSchedule({
         {WEEKENDS.map((we, weIndex) => {
           const weekendDayIds = we.days.map((d) => d.id);
           const isWholeWeekendSelected = weekendDayIds.every((id) => selectedSlots.includes(id));
+          const currentMonth = we.range.includes('März') ? 'März' : 'April';
+          const isFirstOfMonth = weIndex === 0 || (currentMonth === 'April' && WEEKENDS[weIndex - 1].range.includes('März'));
 
           return (
-            <div 
-              key={we.id} 
-              style={{ animationDelay: `${weIndex * 60}ms` }}
-              className="rounded-xl bg-slate-900/70 border border-slate-800 p-3 sm:p-4 animate-cascade"
-            >
+            <React.Fragment key={we.id}>
+              {isFirstOfMonth && (
+                <div className={`text-left px-1 ${weIndex > 0 ? 'pt-4 sm:pt-6' : 'pt-1'} pb-0.5`}>
+                  <h3 className="font-display font-bold text-base sm:text-lg text-white tracking-tight">
+                    {currentMonth}
+                  </h3>
+                </div>
+              )}
+              <div 
+                style={{ animationDelay: `${weIndex * 60}ms` }}
+                className="rounded-xl bg-slate-900/70 border border-slate-800 p-3 sm:p-4 animate-cascade"
+              >
               
               <div className="flex items-center justify-between mb-2.5 px-1">
                 <span className="font-semibold text-xs text-white">
@@ -279,8 +288,9 @@ export default function StepSchedule({
             </div>
 
           </div>
-        );
-      })}
+            </React.Fragment>
+          );
+        })}
       </div>
 
       {error && (
