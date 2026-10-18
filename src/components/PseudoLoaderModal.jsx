@@ -19,9 +19,9 @@ const LOADING_CONFIG = {
     icon: '💐'
   },
   'final-submit': {
-    sentence: 'Antwort wird mit der Nähmaschine versiegelt und gespeichert...',
-    badge: 'Nähmaschinen-Check',
-    icon: '🪡'
+    sentence: 'Zettelchen wird heimlich unter der Schulbank nach hinten durchgereicht...',
+    badge: 'Klassen-Geheimpost',
+    icon: '📝'
   }
 };
 
@@ -63,7 +63,7 @@ export default function PseudoLoaderModal({
         return `Starke Location! Hoffentlich sind die Blumen vor Ort besser gebunden als damals im Unterricht – und geh vorher nicht zu lang ins Solarium!`;
       
       case 'final-submit':
-        return `Sitzt perfekt! Sauberer eingefädelt als jede Naht an der alten Schul-Nähmaschine. Deine Stimme ist verewigt!`;
+        return `Erfolgreich nach hinten durchgereicht, ohne dass der Lehrer es gemerkt hat! Deine Stimme ist verewigt. Ab zu den Ergebnissen!`;
       
       default:
         return `Eingabe geprüft! Klassenbuch-Eintrag erfolgreich aktualisiert.`;
