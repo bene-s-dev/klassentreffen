@@ -78,38 +78,9 @@ export default function StepResults({
   return (
     <div className="w-full max-w-3xl mx-auto px-4 pb-20 animate-slide-in">
       
-      {/* WINNER BANNER with Subtle Moving Gradient */}
-      {dayStats.topDays && dayStats.topDays.length > 0 && (
-        <div className="relative overflow-hidden rounded-2xl winner-card-animated border border-amber-500/35 p-4 sm:p-5 mb-6 shadow-sm text-center">
-          {/* Animated White Glass Sheen moving across */}
-          <div 
-            className="pointer-events-none absolute inset-0 -top-12 -bottom-12 w-1/2 bg-gradient-to-r from-transparent via-white/12 to-transparent animate-glass-shimmer"
-          />
-
-          <div className="relative z-10 text-center py-1">
-            <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-wider block mb-2 sm:mb-2.5">
-              {dayStats.topDays.length > 1 ? 'Aktuell beliebteste Termine (Gleichstand)' : 'Aktuell beliebtester Termin'}
-            </span>
-            {dayStats.topDays.length > 1 ? (
-              <div className="space-y-1.5">
-                {dayStats.topDays.map((d) => (
-                  <h3 key={d.id} className="font-display font-bold text-base sm:text-xl text-white tracking-tight">
-                    {d.resultDate || d.fullDate} • {FIXED_TIME}
-                  </h3>
-                ))}
-              </div>
-            ) : (
-              <h3 className="font-display font-bold text-lg sm:text-2xl text-white tracking-tight">
-                {dayStats.topDays[0].resultDate || dayStats.topDays[0].fullDate} • {FIXED_TIME}
-              </h3>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Personalized user status bar if user has already voted */}
       {myVote?.name ? (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 mb-4 rounded-2xl bg-slate-900/90 border border-fuchsia-500/25 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 mb-5 rounded-2xl bg-slate-900/90 border border-fuchsia-500/25 shadow-sm">
           <div className="flex items-center gap-2.5">
             <span className="text-xl select-none">👋</span>
             <div>
@@ -122,7 +93,7 @@ export default function StepResults({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 self-end sm:self-center">
+          <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
             {!confirmDelete ? (
               <button
                 type="button"
@@ -133,8 +104,8 @@ export default function StepResults({
                 className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
                 title="Löscht Deine Stimme und bringt Dich zur Startseite"
               >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Löschen</span>
+                <Trash2 className="w-3.5 h-3.5 shrink-0" />
+                <span>Meine Antwort löschen und neu beginnen</span>
               </button>
             ) : (
               <div className="flex items-center gap-1.5 animate-fadeIn bg-slate-950/90 border border-rose-500/40 p-1 rounded-xl shadow-md">
@@ -163,7 +134,7 @@ export default function StepResults({
         </div>
       ) : (
         /* Delete Vote Button placed top-right above the Tage-Übersicht */
-        <div className="flex justify-end mb-2.5">
+        <div className="flex justify-end mb-3">
           {!confirmDelete ? (
             <button
               type="button"
@@ -174,8 +145,8 @@ export default function StepResults({
               className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
               title="Löscht Deine Stimme und bringt Dich zur Startseite"
             >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>Meine Antwort löschen</span>
+              <Trash2 className="w-3.5 h-3.5 shrink-0" />
+              <span>Meine Antwort löschen und neu beginnen</span>
             </button>
           ) : (
             <div className="flex items-center gap-1.5 animate-fadeIn bg-slate-950/90 border border-rose-500/40 p-1 rounded-xl shadow-md">
@@ -200,6 +171,35 @@ export default function StepResults({
               </button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* WINNER BANNER with Subtle Moving Gradient */}
+      {dayStats.topDays && dayStats.topDays.length > 0 && (
+        <div className="relative overflow-hidden rounded-2xl winner-card-animated border border-amber-500/35 p-4 sm:p-5 mb-6 shadow-sm text-center">
+          {/* Animated White Glass Sheen moving across */}
+          <div 
+            className="pointer-events-none absolute inset-0 -top-12 -bottom-12 w-1/2 bg-gradient-to-r from-transparent via-white/12 to-transparent animate-glass-shimmer"
+          />
+
+          <div className="relative z-10 text-center py-1">
+            <span className="text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-wider block mb-2 sm:mb-2.5">
+              {dayStats.topDays.length > 1 ? 'Aktuell beliebteste Termine (Gleichstand)' : 'Aktuell beliebtester Termin'}
+            </span>
+            {dayStats.topDays.length > 1 ? (
+              <div className="space-y-1.5">
+                {dayStats.topDays.map((d) => (
+                  <h3 key={d.id} className="font-display font-bold text-base sm:text-xl text-white tracking-tight">
+                    {d.resultDate || d.fullDate} • {FIXED_TIME}
+                  </h3>
+                ))}
+              </div>
+            ) : (
+              <h3 className="font-display font-bold text-lg sm:text-2xl text-white tracking-tight">
+                {dayStats.topDays[0].resultDate || dayStats.topDays[0].fullDate} • {FIXED_TIME}
+              </h3>
+            )}
+          </div>
         </div>
       )}
 
