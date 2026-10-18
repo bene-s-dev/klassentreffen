@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bot, Sparkles, X, RotateCcw } from 'lucide-react';
+import { Bot, X } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 
 export default function NarratorBubble({ currentStep, name, selectedSlotsCount, selectedLocationsCount }) {
@@ -9,43 +9,42 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
   const [isThinking, setIsThinking] = useState(true);
   const abortControllerRef = useRef(0);
 
-  // Target message depending on state
+  // Messages with school, Klassenbuch & Hauswirtschaft jokes
   const message = React.useMemo(() => {
     switch (currentStep) {
       case 1:
         if (!name.trim()) {
-          return 'Yo! Willkommen im Klassentreffen 2.0 Headquarter. Hier kannst du erstmal deinen Namen angeben... Mach kein Auge mit Fake-Namen, wir wissen eh wer du bist! 🕶️';
+          return 'Moin! Trag kurz deinen Namen ein. Kein Fake-Name – das Klassenbuch von damals lügt nicht! 🕶️';
         } else {
-          return `Ok. "${name}" ist ja mal mega wild... lowkey Legende! Klick unten auf Abfahrt, wenn du ready bist 🔥`;
+          return `Ok. "${name}" ist eingeloggt... lowkey Legende! Klick unten auf Weiter 🔥`;
         }
       case 2:
         if (selectedSlotsCount === 0) {
-          return 'Jetzt wirds ernst: Wann kannst du? Wähl so viele Slots wie möglich an den Wochenenden. Wer nicht kann ist lowkey lost! 💀';
+          return 'Wann kannst du? Kreuz an was geht. Wer schwänzt, kriegt nachträglich einen Klassenbucheintrag! 💀';
         } else if (selectedSlotsCount >= 8) {
-          return `Mashallah, schon ${selectedSlotsCount} Termine?! Du bist ja flexibler als eine parabolische Hyperbelfunktion! Ehrenmann! 🚀`;
+          return `Stark, schon ${selectedSlotsCount} Termine! So motiviert warst du damals nicht mal im Hauswirtschaftsunterricht beim Wäsche mangeln! 🧺`;
         } else if (selectedSlotsCount >= 4) {
-          return `Nice, ${selectedSlotsCount} Termine am Start! Das System berechnet im Hintergrund schon die maximale Schnittmenge.`;
+          return `Nice, ${selectedSlotsCount} Termine am Start! Wir finden garantiert den perfekten Tag.`;
         } else {
-          return 'Gönn dir ruhig noch ein paar mehr Termine, damit wir alle an einem Tag zusammenkriegen! 🙌';
+          return 'Wähl gern noch ein paar Termine mehr an, damit wir alle an einen Tisch kriegen! 🙌';
         }
       case 3:
         if (selectedLocationsCount === 0) {
-          return 'Wo soll der Abriss stattfinden? Die Kneipe ist ein stabiler Klassiker, aber schlag ruhig was Eigenes vor!';
+          return 'Wo soll es hingehen? Hauswirtschafts-Küche oder lieber gemütliche Kneipe? Schlag auch gern was Eigenes vor!';
         } else {
-          return 'Stabile Auswahl! Hoffentlich reicht der Vorrat an Kaltgetränken für diese Location... 🍻';
+          return 'Gute Wahl! Hauptsache wir müssen hinterher nicht den Tafeldienst machen... 🍻';
         }
       case 4:
-        return 'Fast geschafft! Jetzt noch einmal einen Gruß oder Anekdote hinterlassen. Die ganze Bande liest mit! 💬';
+        return 'Fast geschafft! Lass einen Gruß oder eine alte Schul-Anekdote da. Die ganze Klasse liest mit! 💬';
       case 5:
-        return 'Boom! Deine Stimme ist eingeloggt. Die Matrix wird live ausgewertet. Teil den Link in der WhatsApp-Gruppe! 👑';
+        return 'Eingetragen! Die Stimmen sind ausgewertet. Schick den Link direkt in die WhatsApp-Gruppe! 👑';
       default:
-        return 'Das Orga-Tool regelt das für euch!';
+        return 'Klassentreffen 2.0 Orga läuft!';
     }
   }, [currentStep, name, selectedSlotsCount, selectedLocationsCount]);
 
   // AI-Style Live Word-by-Word Streaming with realistic token pauses
   useEffect(() => {
-    // Increment run id to cancel previous stream
     abortControllerRef.current += 1;
     const currentRunId = abortControllerRef.current;
 
@@ -53,12 +52,9 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
     setIsTyping(true);
     setDisplayedWords([]);
 
-    // Split into tokens / words with spacing
     const words = message.split(' ');
-
     let timeoutId;
 
-    // Phase 1: Brief thinking delay (simulates AI latency)
     timeoutId = setTimeout(() => {
       if (abortControllerRef.current !== currentRunId) return;
       setIsThinking(false);
@@ -74,18 +70,15 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
           currentStream.push(nextWord);
           setDisplayedWords([...currentStream]);
 
-          // Subtle audio pop for some words
-          if (wordIdx % 4 === 0) {
+          if (wordIdx % 5 === 0) {
             sounds.playPop();
           }
 
-          // Natural variable delay based on punctuation
-          let delay = 50 + Math.random() * 40; // baseline 50-90ms
-
+          let delay = 50 + Math.random() * 35;
           if (nextWord.endsWith('.') || nextWord.endsWith('!') || nextWord.endsWith('?')) {
-            delay += 240; // natural sentence pause
+            delay += 200;
           } else if (nextWord.endsWith(',') || nextWord.includes('...')) {
-            delay += 140; // comma pause
+            delay += 120;
           }
 
           wordIdx += 1;
@@ -96,7 +89,7 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
       };
 
       streamNextWord();
-    }, 280);
+    }, 200);
 
     return () => {
       clearTimeout(timeoutId);
@@ -110,82 +103,42 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
           sounds.playPop();
           setIsDismissed(false);
         }}
-        className="fixed bottom-24 right-4 z-40 p-2.5 rounded-full bg-gradient-to-tr from-fuchsia-600 to-indigo-600 text-white shadow-xl hover:scale-110 transition-transform cursor-pointer border border-white/20"
-        title="Orga-Bot öffnen"
+        className="fixed bottom-20 right-4 z-40 p-2 rounded-full bg-slate-900 border border-slate-700 text-slate-300 shadow-lg hover:text-white transition-all cursor-pointer"
+        title="Tipp einblenden"
       >
-        <Bot className="w-5 h-5 animate-pulse" />
+        <Bot className="w-4 h-4" />
       </button>
     );
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 mb-6 animate-slide-in">
-      <div className="p-3.5 sm:p-4 rounded-2xl glass-panel-highlight border border-fuchsia-500/30 shadow-xl relative overflow-hidden flex items-start gap-3">
+    <div className="w-full max-w-xl mx-auto px-4 mb-6">
+      <div className="py-2.5 px-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between gap-3 text-xs text-slate-300">
         
-        {/* Animated Bot Avatar */}
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-fuchsia-600 via-pink-600 to-indigo-600 flex items-center justify-center text-white shrink-0 shadow-md shadow-fuchsia-500/30 relative">
-          <Bot className="w-5 h-5" />
-          {isTyping && (
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-slate-950 animate-ping" />
-          )}
-        </div>
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+          <span className="text-sm select-none shrink-0">🤖</span>
 
-        {/* Text Area */}
-        <div className="flex-1 min-w-0 pr-4">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="font-display font-bold text-xs text-fuchsia-300">
-              Orga-Bot
-            </span>
-            <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold border flex items-center gap-1 transition-all ${
-              isTyping
-                ? 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/40 animate-pulse'
-                : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-            }`}>
-              {isThinking ? (
-                <>Denkt nach...</>
-              ) : isTyping ? (
-                <>AI Live Stream ⚡</>
-              ) : (
-                <>Bereit • Tech by Bene</>
-              )}
-            </span>
-          </div>
-
-          <p className="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed min-h-[2.5rem]">
-            {isThinking && (
-              <span className="text-slate-400 italic flex items-center gap-1.5 py-1">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-fuchsia-400 animate-ping" />
-                Analysiere Eingabe...
-              </span>
-            )}
-
-            {!isThinking && (
+          <div className="min-w-0 flex-1 leading-normal">
+            {isThinking ? (
+              <span className="text-slate-500 italic">Schreibt...</span>
+            ) : (
               <>
-                {displayedWords.map((word, i) => (
-                  <span 
-                    key={i} 
-                    className="inline-block mr-1 animate-fadeIn"
-                    style={{ animationDuration: '0.15s' }}
-                  >
-                    {word}
-                  </span>
-                ))}
+                {displayedWords.join(' ')}
                 {isTyping && (
-                  <span className="inline-block w-2 h-4 ml-0.5 bg-fuchsia-400 animate-pulse align-middle rounded-sm shadow-sm shadow-fuchsia-400" />
+                  <span className="inline-block w-1.5 h-3 ml-1 bg-fuchsia-400 animate-pulse align-middle" />
                 )}
               </>
             )}
-          </p>
+          </div>
         </div>
 
-        {/* Dismiss button */}
         <button
           onClick={() => {
             sounds.playPop();
             setIsDismissed(true);
           }}
-          className="text-slate-500 hover:text-slate-300 p-1 cursor-pointer transition-colors"
-          title="Minimieren"
+          className="text-slate-500 hover:text-slate-300 p-0.5 shrink-0 cursor-pointer"
+          title="Schließen"
         >
           <X className="w-3.5 h-3.5" />
         </button>

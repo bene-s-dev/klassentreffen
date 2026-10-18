@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Calendar, Check, ArrowRight, ArrowLeft, Sparkles, CheckCheck, 
-  RotateCcw, Zap, Users, Flame 
-} from 'lucide-react';
+import React, { useState } from 'react';
+import { Check, ArrowRight, ArrowLeft, CheckCheck, RotateCcw, Users } from 'lucide-react';
 import { WEEKENDS, TIME_SLOTS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
 
@@ -13,10 +10,10 @@ export default function StepSchedule({
   onNext, 
   onBack 
 }) {
-  const [activeWeekendId, setActiveWeekendId] = useState('we-1');
+  const [activeWeekendId, setActiveWeekendId] = useState('all');
   const [error, setError] = useState('');
 
-  // Calculate vote counts for each slot from existing voters
+  // Pre-calculate vote counts for each slot
   const slotVoteCounts = React.useMemo(() => {
     const counts = {};
     allVotes.forEach(vote => {
@@ -60,8 +57,7 @@ export default function StepSchedule({
         sats.push(`${we.id}-sat-${s.id}`);
       });
     });
-    const combined = Array.from(new Set([...selectedSlots, ...sats]));
-    setSelectedSlots(combined);
+    setSelectedSlots(Array.from(new Set([...selectedSlots, ...sats])));
   };
 
   const selectWeekendAll = (weId) => {
@@ -88,122 +84,114 @@ export default function StepSchedule({
     setSelectedSlots([]);
   };
 
-  const scrollToWeekend = (weId) => {
-    sounds.playPop();
-    setActiveWeekendId(weId);
-    const el = document.getElementById(`section-${weId}`);
-    if (el) {
-      const yOffset = -140; // account for sticky headers
-      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
-
   const handleNext = () => {
     if (selectedSlots.length === 0) {
       sounds.playToggle(false);
-      setError('Bruder, du musst mindestens einen Termin ankreuzen! Lost wer nie kann 💀');
+      setError('Bitte wähl mindestens einen passenden Termin aus!');
       return;
     }
     sounds.playSuccess();
     onNext();
   };
 
+  // Filter displayed weekends
+  const displayedWeekends = activeWeekendId === 'all' 
+    ? WEEKENDS 
+    : WEEKENDS.filter(w => w.id === activeWeekendId);
+
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 pb-28 animate-slide-in">
+    <div className="w-full max-w-3xl mx-auto px-4 pb-24 animate-slide-in">
       
-      {/* Intro Header */}
+      {/* Title */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-indigo-300 border border-indigo-500/30 mb-3">
-          <Calendar className="w-3.5 h-3.5 text-indigo-400" />
-          Schritt 2 von 4 • Doodle-Style Voting
-        </div>
-        <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
-          Wann hast du lowkey Zeit? 🗓️
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
+          Wann hast du Zeit?
         </h2>
-        <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
-          Klick alle Tage & Uhrzeiten an, an denen du am Start wärst. <br className="hidden sm:inline" />
-          <span className="text-fuchsia-400 font-semibold">Mehrfachauswahl erwünscht</span> – je flexibler du bist, desto eher finden wir den Boss-Termin!
+        <p className="text-slate-400 text-xs sm:text-sm">
+          Kreuz alle passenden Termine an – Mehrfachauswahl erwünscht.
         </p>
       </div>
 
-      {/* Quick Bulk Shortcuts Bar */}
-      <div className="glass-panel rounded-2xl p-3 sm:p-4 mb-6 flex flex-wrap items-center justify-between gap-2 border border-white/10 shadow-lg">
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-            Shortcuts:
-          </span>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
+      {/* Clean Shortcuts & Filter Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800">
+        
+        {/* Weekend Switcher Pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
           <button
             type="button"
-            onClick={selectAll}
-            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-fuchsia-600/30 to-pink-600/30 border border-fuchsia-500/40 text-fuchsia-200 hover:bg-fuchsia-600/50 text-xs font-semibold flex items-center gap-1.5 transition-all hover:scale-105"
+            onClick={() => {
+              sounds.playPop();
+              setActiveWeekendId('all');
+            }}
+            className={`px-2.5 py-1 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+              activeWeekendId === 'all'
+                ? 'bg-fuchsia-600 text-white'
+                : 'bg-slate-900 text-slate-400 hover:text-white'
+            }`}
           >
-            <CheckCheck className="w-3.5 h-3.5" />
-            <span>Ich kann immer (Ehrenmann) 🔥</span>
+            Alle anzeigen
           </button>
-
-          <button
-            type="button"
-            onClick={selectAllSaturdays}
-            className="px-3 py-1.5 rounded-xl bg-indigo-500/20 border border-indigo-500/30 text-indigo-200 hover:bg-indigo-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all hover:scale-105"
-          >
-            <Zap className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Alle Samstage</span>
-          </button>
-
-          {selectedSlots.length > 0 && (
-            <button
-              type="button"
-              onClick={clearAll}
-              className="px-2.5 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-400 hover:text-rose-400 hover:border-rose-500/30 text-xs font-medium flex items-center gap-1 transition-all"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span>Reset</span>
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* STICKY WEEKEND NAVIGATOR */}
-      <div className="sticky top-16 z-30 -mx-4 px-4 py-2.5 backdrop-blur-xl bg-slate-950/85 border-y border-white/10 mb-8 shadow-xl">
-        <div className="max-w-4xl mx-auto flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1 hidden sm:inline">
-            Wochenenden:
-          </span>
-          {WEEKENDS.map((we, idx) => {
-            const isCurrentWe = activeWeekendId === we.id;
-            // check how many slots selected in this weekend
-            const selectedInWe = selectedSlots.filter(s => s.startsWith(we.id)).length;
-
+          {WEEKENDS.map((we, i) => {
+            const count = selectedSlots.filter(s => s.startsWith(we.id)).length;
+            const isActive = activeWeekendId === we.id;
             return (
               <button
                 key={we.id}
                 type="button"
-                onClick={() => scrollToWeekend(we.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
-                  isCurrentWe
-                    ? 'bg-gradient-to-r from-fuchsia-600 to-indigo-600 text-white shadow-lg shadow-fuchsia-500/30 scale-105 ring-1 ring-white/50'
-                    : 'bg-slate-900/80 border border-white/10 text-slate-300 hover:bg-slate-800 hover:border-white/20'
+                onClick={() => {
+                  sounds.playPop();
+                  setActiveWeekendId(we.id);
+                }}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium cursor-pointer transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+                  isActive
+                    ? 'bg-fuchsia-600 text-white'
+                    : 'bg-slate-900 text-slate-400 hover:text-white'
                 }`}
               >
-                <span>{we.range}</span>
-                {selectedInWe > 0 && (
-                  <span className="w-4 h-4 rounded-full bg-emerald-500 text-slate-950 font-extrabold text-[10px] flex items-center justify-center">
-                    {selectedInWe}
+                <span>WE {i + 1} ({we.days[0].date.split(' ')[0]}–{we.days[2].date.split(' ')[0]})</span>
+                {count > 0 && (
+                  <span className="w-4 h-4 rounded-full bg-slate-800 text-white text-[10px] flex items-center justify-center font-bold">
+                    {count}
                   </span>
                 )}
               </button>
             );
           })}
         </div>
+
+        {/* Action Shortcuts */}
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={selectAllSaturdays}
+            className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium transition-colors cursor-pointer"
+          >
+            Samstage
+          </button>
+          <button
+            type="button"
+            onClick={selectAll}
+            className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium transition-colors cursor-pointer"
+          >
+            Alle wählen
+          </button>
+          {selectedSlots.length > 0 && (
+            <button
+              type="button"
+              onClick={clearAll}
+              className="p-1 rounded-lg text-slate-500 hover:text-rose-400 cursor-pointer transition-colors"
+              title="Auswahl zurücksetzen"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
       </div>
 
-      {/* WEEKEND MATRICES */}
-      <div className="space-y-8">
-        {WEEKENDS.map((weekend) => {
+      {/* Clean Weekend Matrices */}
+      <div className="space-y-6">
+        {displayedWeekends.map((weekend) => {
           const weekendSlots = [];
           weekend.days.forEach(d => {
             TIME_SLOTS.forEach(s => weekendSlots.push(`${weekend.id}-${d.id}-${s.id}`));
@@ -213,145 +201,90 @@ export default function StepSchedule({
           return (
             <div 
               key={weekend.id}
-              id={`section-${weekend.id}`}
-              className="glass-panel-subtle rounded-3xl p-4 sm:p-6 border border-white/10 shadow-2xl relative overflow-hidden transition-all duration-300 hover:border-white/20"
+              className="rounded-2xl bg-slate-900/70 border border-slate-800 p-4 sm:p-5 shadow-sm"
             >
-              {/* Card top banner with weekend info and toggle all */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-white/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-indigo-600 flex items-center justify-center text-lg font-display font-bold text-white shadow-md">
-                    📅
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-display font-bold text-xl text-white">
-                        {weekend.range}
-                      </h3>
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-fuchsia-300 border border-white/10">
-                        {weekend.badge}
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-400">
-                      Freitag bis Sonntag • Wähl deine passenden Slots
-                    </p>
-                  </div>
+              {/* Header */}
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-display font-bold text-base text-white">
+                    {weekend.range}
+                  </h3>
+                  <span className="text-[11px] text-slate-400">
+                    Freitag bis Sonntag
+                  </span>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => selectWeekendAll(weekend.id)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all self-start sm:self-auto cursor-pointer ${
-                    allWeekendChecked
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30'
-                      : 'bg-slate-800/80 text-slate-300 border border-white/10 hover:border-fuchsia-500/50 hover:text-white'
-                  }`}
+                  className="text-xs font-medium text-slate-400 hover:text-fuchsia-400 cursor-pointer transition-colors"
                 >
-                  <CheckCheck className="w-3.5 h-3.5" />
-                  <span>{allWeekendChecked ? 'Ganzes WE gewählt ✓' : 'Ganzes WE ankreuzen'}</span>
+                  {allWeekendChecked ? '✓ Alles abwählen' : '+ Ganzes WE'}
                 </button>
               </div>
 
-              {/* Doodle Grid: Days columns */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {weekend.days.map((day) => {
-                  return (
-                    <div 
-                      key={day.id} 
-                      className={`rounded-2xl p-3.5 bg-slate-900/60 border transition-all ${
-                        day.isPopular 
-                          ? 'border-fuchsia-500/30 shadow-lg shadow-fuchsia-950/20' 
-                          : 'border-white/5'
-                      }`}
-                    >
-                      {/* Day Header */}
-                      <div className="flex items-center justify-between mb-3 px-1">
-                        <div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-display font-bold text-base text-white">
-                              {day.name}
-                            </span>
-                            {day.isPopular && (
-                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30">
-                                Primetime 🔥
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-xs text-slate-400">{day.date}</span>
-                        </div>
-                      </div>
-
-                      {/* Time Slots */}
-                      <div className="space-y-2.5">
-                        {TIME_SLOTS.map((slot) => {
-                          const slotKey = `${weekend.id}-${day.id}-${slot.id}`;
-                          const isSelected = selectedSlots.includes(slotKey);
-                          const votesCount = slotVoteCounts[slotKey] || 0;
-
-                          return (
-                            <button
-                              key={slot.id}
-                              type="button"
-                              onClick={() => toggleSlot(slotKey)}
-                              className={`w-full text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden group ${
-                                isSelected
-                                  ? 'bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-emerald-600/25 border-emerald-400 text-white shadow-lg shadow-emerald-950/40 scale-[1.02] ring-1 ring-emerald-400/50'
-                                  : 'bg-slate-950/50 border-white/10 hover:border-white/30 text-slate-300 hover:bg-slate-800/40'
-                              }`}
-                            >
-                              <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-2.5">
-                                  <span className="text-lg select-none">
-                                    {slot.icon}
-                                  </span>
-                                  <div>
-                                    <div className="flex items-center gap-1.5">
-                                      <span className="text-xs font-bold text-white leading-tight">
-                                        {slot.title}
-                                      </span>
-                                      <span className="text-[11px] text-slate-400 font-mono">
-                                        {slot.label}
-                                      </span>
-                                    </div>
-                                    <p className="text-[10px] text-slate-400">
-                                      {slot.subtitle}
-                                    </p>
-                                  </div>
-                                </div>
-
-                                {/* Checkbox Indicator */}
-                                <div 
-                                  className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${
-                                    isSelected
-                                      ? 'bg-emerald-400 text-slate-950 font-bold scale-110 shadow-md shadow-emerald-400/40'
-                                      : 'border border-white/20 group-hover:border-white/40 bg-slate-900/60'
-                                  }`}
-                                >
-                                  {isSelected && <Check className="w-4 h-4 stroke-[3]" />}
-                                </div>
-                              </div>
-
-                              {/* Voted badge if other people voted for this slot */}
-                              {votesCount > 0 && (
-                                <div className="mt-2 pt-1.5 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400">
-                                  <span className="flex items-center gap-1 text-slate-400">
-                                    <Users className="w-3 h-3 text-slate-400" />
-                                    <span>{votesCount} {votesCount === 1 ? 'Person kann' : 'Leute können'}</span>
-                                  </span>
-                                  {votesCount >= 3 && (
-                                    <span className="text-amber-400 font-semibold flex items-center gap-0.5">
-                                      <Flame className="w-3 h-3" /> Hot
-                                    </span>
-                                  )}
-                                </div>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-
+              {/* Compact 3-Column Days Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {weekend.days.map((day) => (
+                  <div key={day.id} className="rounded-xl bg-slate-950/50 p-2.5 border border-slate-800/60">
+                    <div className="flex items-center justify-between mb-2 px-1">
+                      <span className="font-semibold text-xs text-white">
+                        {day.name}
+                      </span>
+                      <span className="text-[11px] text-slate-500">
+                        {day.date}
+                      </span>
                     </div>
-                  );
-                })}
+
+                    <div className="space-y-1.5">
+                      {TIME_SLOTS.map((slot) => {
+                        const slotKey = `${weekend.id}-${day.id}-${slot.id}`;
+                        const isSelected = selectedSlots.includes(slotKey);
+                        const votesCount = slotVoteCounts[slotKey] || 0;
+
+                        return (
+                          <button
+                            key={slot.id}
+                            type="button"
+                            onClick={() => toggleSlot(slotKey)}
+                            className={`w-full text-left p-2 rounded-lg border transition-all cursor-pointer flex items-center justify-between ${
+                              isSelected
+                                ? 'bg-fuchsia-600/15 border-fuchsia-500 text-white'
+                                : 'bg-slate-900 border-slate-800/80 text-slate-300 hover:border-slate-700 hover:text-white'
+                            }`}
+                          >
+                            <div className="min-w-0 pr-1">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-xs select-none">{slot.icon}</span>
+                                <span className="text-xs font-semibold truncate">
+                                  {slot.title}
+                                </span>
+                              </div>
+                              <span className="text-[10px] text-slate-500 font-mono block">
+                                {slot.label}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0">
+                              {votesCount > 0 && (
+                                <span className="text-[10px] text-slate-400 font-mono" title={`${votesCount} Stimmen`}>
+                                  {votesCount}✓
+                                </span>
+                              )}
+                              <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${
+                                isSelected 
+                                  ? 'bg-fuchsia-600 text-white font-bold' 
+                                  : 'border border-slate-700 bg-slate-950'
+                              }`}>
+                                {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
 
             </div>
@@ -360,14 +293,14 @@ export default function StepSchedule({
       </div>
 
       {error && (
-        <div className="mt-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm font-semibold text-center animate-bounce">
+        <div className="mt-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs text-center font-medium">
           {error}
         </div>
       )}
 
-      {/* STICKY BOTTOM ACTION BAR */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 sm:p-4 backdrop-blur-2xl bg-slate-950/85 border-t border-white/15 shadow-2xl">
-        <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
+      {/* Clean Sticky Bottom Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur-md bg-slate-950/80 border-t border-slate-800">
+        <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
           
           <button
             type="button"
@@ -375,28 +308,23 @@ export default function StepSchedule({
               sounds.playPop();
               onBack();
             }}
-            className="px-4 py-3 rounded-2xl bg-slate-900/90 border border-white/10 text-slate-300 hover:text-white hover:bg-slate-800 text-sm font-semibold flex items-center gap-2 cursor-pointer transition-all"
+            className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Zurück</span>
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Zurück</span>
           </button>
 
-          {/* Slots counter pill */}
-          <div className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-2xl bg-slate-900/90 border border-white/10 text-xs sm:text-sm">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-bold text-white">{selectedSlots.length}</span>
-            <span className="text-slate-400 hidden xs:inline">
-              {selectedSlots.length === 1 ? 'Slot gewählt' : 'Slots am Start'}
-            </span>
-          </div>
+          <span className="text-xs text-slate-400 font-medium">
+            <strong className="text-white">{selectedSlots.length}</strong> {selectedSlots.length === 1 ? 'Termin gewählt' : 'Termine gewählt'}
+          </span>
 
           <button
             type="button"
             onClick={handleNext}
-            className="px-5 py-3 rounded-2xl glass-button-primary text-white font-display font-bold text-sm sm:text-base flex items-center gap-2.5 cursor-pointer shadow-lg hover:scale-105 transition-all"
+            className="px-4 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-colors shadow-md"
           >
             <span>Weiter zu Locations</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
 
         </div>
