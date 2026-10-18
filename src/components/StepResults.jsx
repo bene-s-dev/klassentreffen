@@ -161,12 +161,9 @@ export default function StepResults({
                     }`}
                   >
                     <td className="py-2 px-3">
-                      <div className="font-semibold text-white text-xs">
+                      <div className="font-semibold text-white text-xs whitespace-nowrap">
                         {day.fullDate}
                       </div>
-                      <span className="text-[10px] text-slate-500">
-                        {day.weekendLabel}
-                      </span>
                     </td>
 
                     <td className="py-2 px-2 text-center">
