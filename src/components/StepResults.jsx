@@ -1,18 +1,16 @@
 import React, { useState, useMemo } from 'react';
-import { Trophy, Users, Calendar, MapPin, Share2, Edit3, RefreshCw, Code2 } from 'lucide-react';
+import { Trophy, Users, Calendar, MapPin, Share2, Edit3, RefreshCw, Code2, Clock } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { WEEKENDS, TIME_SLOTS, PRESET_LOCATIONS } from '../lib/constants';
+import { ALL_DAYS, FIXED_TIME, PRESET_LOCATIONS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
 
 export default function StepResults({ 
   allVotes, 
   myVote, 
   onEditVote, 
-  onRefresh, 
-  isSupabaseConnected 
+  onRefresh 
 }) {
   const [copied, setCopied] = useState(false);
-  const [filterTopOnly, setFilterTopOnly] = useState(false);
   const [reactions, setReactions] = useState({});
 
   React.useEffect(() => {
@@ -25,40 +23,32 @@ export default function StepResults({
     } catch {}
   }, []);
 
-  // Stats calculation
-  const slotStats = useMemo(() => {
+  // Calculate day stats
+  const dayStats = useMemo(() => {
     const counts = {};
     const totalVoters = allVotes.length;
 
-    WEEKENDS.forEach(we => {
-      we.days.forEach(d => {
-        TIME_SLOTS.forEach(s => {
-          const key = `${we.id}-${d.id}-${s.id}`;
-          counts[key] = {
-            key,
-            weekend: we,
-            day: d,
-            slot: s,
-            votes: 0,
-            voters: []
-          };
-        });
-      });
+    ALL_DAYS.forEach(day => {
+      counts[day.id] = {
+        ...day,
+        votes: 0,
+        voters: []
+      };
     });
 
     allVotes.forEach(vote => {
-      (vote.selected_slots || []).forEach(slotKey => {
-        if (counts[slotKey]) {
-          counts[slotKey].votes += 1;
-          counts[slotKey].voters.push(vote);
+      (vote.selected_slots || []).forEach(dayId => {
+        if (counts[dayId]) {
+          counts[dayId].votes += 1;
+          counts[dayId].voters.push(vote);
         }
       });
     });
 
     const sorted = Object.values(counts).sort((a, b) => b.votes - a.votes);
-    const topSlot = sorted[0] || null;
+    const topDay = sorted[0] || null;
 
-    return { counts, sorted, topSlot, totalVoters };
+    return { counts, sorted, topDay, totalVoters };
   }, [allVotes]);
 
   // Location stats
@@ -109,32 +99,32 @@ export default function StepResults({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 pb-20 animate-slide-in">
+    <div className="w-full max-w-3xl mx-auto px-4 pb-20 animate-slide-in">
       
       {/* Title */}
       <div className="text-center mb-6">
-        <h2 className="font-display text-2xl sm:text-4xl font-bold text-white tracking-tight mb-1">
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
           Wer kann wann? Die Ergebnisse 🏆
         </h2>
         <p className="text-slate-400 text-xs sm:text-sm">
-          Live-Übersicht aller Stimmen aus der Klasse.
+          Startzeit ist immer fest <strong>{FIXED_TIME}</strong>.
         </p>
       </div>
 
-      {/* WINNER BANNER (Clean & Crisp) */}
-      {slotStats.topSlot && slotStats.topSlot.votes > 0 && (
+      {/* WINNER BANNER */}
+      {dayStats.topDay && dayStats.topDay.votes > 0 && (
         <div className="rounded-2xl bg-gradient-to-r from-slate-900 to-slate-900/90 border border-amber-500/30 p-4 sm:p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3.5 text-center sm:text-left">
             <span className="text-3xl select-none">👑</span>
             <div>
               <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider block">
-                Aktueller Favorit-Termin
+                Aktueller Favorit-Tag
               </span>
               <h3 className="font-display font-bold text-lg sm:text-xl text-white">
-                {slotStats.topSlot.day.fullDate} • {slotStats.topSlot.slot.title} ({slotStats.topSlot.slot.label})
+                {dayStats.topDay.fullDate} • {FIXED_TIME}
               </h3>
               <p className="text-xs text-slate-400 mt-0.5">
-                {slotStats.topSlot.votes} von {slotStats.totalVoters} Stimmen ({Math.round((slotStats.topSlot.votes / Math.max(1, slotStats.totalVoters)) * 100)}%)
+                {dayStats.topDay.votes} von {dayStats.totalVoters} Stimmen ({Math.round((dayStats.topDay.votes / Math.max(1, dayStats.totalVoters)) * 100)}%)
               </p>
             </div>
           </div>
@@ -165,7 +155,7 @@ export default function StepResults({
 
       {/* PARTICIPANTS LIST */}
       <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-3.5 mb-6">
-        <div className="flex items-center justify-between mb-2.5">
+        <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5 text-emerald-400" />
             {allVotes.length} abgegebene Stimmen
@@ -191,39 +181,28 @@ export default function StepResults({
             >
               <span>{v.avatar || '😎'}</span>
               <strong className="text-white font-medium">{v.name}</strong>
-              <span className="text-[10px] text-slate-500 font-mono">({v.selected_slots?.length || 0})</span>
+              <span className="text-[10px] text-slate-500 font-mono">({v.selected_slots?.length || 0} Tage)</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* DOODLE MATRIX HEATMAP (Clean & Scannable) */}
+      {/* DOODLE MATRIX (Days only, Clean & Scannable) */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4 sm:p-5 mb-6 overflow-hidden">
         <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-fuchsia-400" />
             <h3 className="font-display font-bold text-sm sm:text-base text-white">
-              Doodle-Matrix der Termine
+              Tage-Übersicht (jeweils {FIXED_TIME})
             </h3>
           </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              sounds.playPop();
-              setFilterTopOnly(!filterTopOnly);
-            }}
-            className="text-xs text-slate-400 hover:text-fuchsia-400 cursor-pointer transition-colors font-medium"
-          >
-            {filterTopOnly ? '✓ Nur Top-Termine' : 'Alle Termine'}
-          </button>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[500px]">
+          <table className="w-full text-left border-collapse min-w-[450px]">
             <thead>
               <tr className="border-b border-slate-800 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                <th className="py-2.5 px-3">Termin</th>
+                <th className="py-2.5 px-3">Tag</th>
                 <th className="py-2.5 px-2 text-center w-20">Stimmen</th>
                 {allVotes.map((v) => (
                   <th key={v.id || v.name} className="py-2.5 px-2 text-center" title={v.name}>
@@ -236,70 +215,62 @@ export default function StepResults({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 text-xs">
-              {slotStats.sorted
-                .filter(item => (filterTopOnly ? item.votes > 1 : true))
-                .slice(0, filterTopOnly ? 15 : 30)
-                .map((item, idx) => {
-                  const percentage = Math.round((item.votes / Math.max(1, slotStats.totalVoters)) * 100);
-                  const isTop = idx === 0 && item.votes > 0;
+              {dayStats.sorted.map((day, idx) => {
+                const percentage = Math.round((day.votes / Math.max(1, dayStats.totalVoters)) * 100);
+                const isTop = idx === 0 && day.votes > 0;
 
-                  return (
-                    <tr 
-                      key={item.key} 
-                      className={`transition-colors ${
-                        isTop ? 'bg-amber-500/5' : 'hover:bg-slate-850'
-                      }`}
-                    >
-                      <td className="py-2 px-3">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm select-none">{item.slot.icon}</span>
-                          <div>
-                            <div className="font-semibold text-white text-xs">
-                              {item.day.fullDate}
-                            </div>
-                            <span className="text-[10px] text-slate-400 font-mono">
-                              {item.slot.title} ({item.slot.label})
-                            </span>
-                          </div>
-                        </div>
-                      </td>
+                return (
+                  <tr 
+                    key={day.id} 
+                    className={`transition-colors ${
+                      isTop ? 'bg-amber-500/5' : 'hover:bg-slate-850'
+                    }`}
+                  >
+                    <td className="py-2 px-3">
+                      <div className="font-semibold text-white text-xs">
+                        {day.fullDate}
+                      </div>
+                      <span className="text-[10px] text-slate-500">
+                        {day.weekendLabel}
+                      </span>
+                    </td>
 
-                      <td className="py-2 px-2 text-center">
-                        <span className={`font-bold text-xs ${isTop ? 'text-amber-400' : 'text-slate-300'}`}>
-                          {item.votes}
-                        </span>
-                        <div className="w-12 bg-slate-800 rounded-full h-1 mx-auto mt-1 overflow-hidden">
-                          <div 
-                            className={`h-full rounded-full ${isTop ? 'bg-amber-400' : 'bg-fuchsia-500'}`}
-                            style={{ width: `${percentage}%` }}
-                          />
-                        </div>
-                      </td>
+                    <td className="py-2 px-2 text-center">
+                      <span className={`font-bold text-xs ${isTop ? 'text-amber-400' : 'text-slate-300'}`}>
+                        {day.votes}
+                      </span>
+                      <div className="w-12 bg-slate-800 rounded-full h-1 mx-auto mt-1 overflow-hidden">
+                        <div 
+                          className={`h-full rounded-full ${isTop ? 'bg-amber-400' : 'bg-fuchsia-500'}`}
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                    </td>
 
-                      {allVotes.map((v) => {
-                        const canAttend = (v.selected_slots || []).includes(item.key);
-                        return (
-                          <td key={v.id || v.name} className="py-2 px-2 text-center">
-                            {canAttend ? (
-                              <span className="text-emerald-400 font-bold text-xs">✓</span>
-                            ) : (
-                              <span className="text-slate-700 text-xs">–</span>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
+                    {allVotes.map((v) => {
+                      const canAttend = (v.selected_slots || []).includes(day.id);
+                      return (
+                        <td key={v.id || v.name} className="py-2 px-2 text-center">
+                          {canAttend ? (
+                            <span className="text-emerald-400 font-bold text-xs">✓</span>
+                          ) : (
+                            <span className="text-slate-700 text-xs">–</span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* LOCATION STATS & GUESTBOOK (Clean 2-Column Grid) */}
+      {/* LOCATION STATS & GUESTBOOK */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
         
-        {/* Locations Poll */}
+        {/* Locations */}
         <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4 sm:p-5">
           <div className="flex items-center gap-2 pb-3 mb-3 border-b border-slate-800">
             <MapPin className="w-4 h-4 text-pink-400" />
@@ -310,7 +281,7 @@ export default function StepResults({
 
           <div className="space-y-3">
             {locationStats.sortedLocs.map((loc) => {
-              const percentage = Math.round((loc.count / Math.max(1, slotStats.totalVoters)) * 100);
+              const percentage = Math.round((loc.count / Math.max(1, dayStats.totalVoters)) * 100);
               return (
                 <div key={loc.id} className="text-xs">
                   <div className="flex items-center justify-between mb-1">

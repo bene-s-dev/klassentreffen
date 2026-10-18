@@ -9,7 +9,7 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
   const [isThinking, setIsThinking] = useState(true);
   const abortControllerRef = useRef(0);
 
-  // Messages with school, Klassenbuch & Hauswirtschaft jokes
+  // Messages with fixed 19:00 Uhr time
   const message = React.useMemo(() => {
     switch (currentStep) {
       case 1:
@@ -20,13 +20,13 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
         }
       case 2:
         if (selectedSlotsCount === 0) {
-          return 'Wann kannst du? Kreuz an was geht. Wer schwänzt, kriegt nachträglich einen Klassenbucheintrag! 💀';
-        } else if (selectedSlotsCount >= 8) {
-          return `Stark, schon ${selectedSlotsCount} Termine! So motiviert warst du damals nicht mal im Hauswirtschaftsunterricht beim Wäsche mangeln! 🧺`;
-        } else if (selectedSlotsCount >= 4) {
-          return `Nice, ${selectedSlotsCount} Termine am Start! Wir finden garantiert den perfekten Tag.`;
+          return 'Uhrzeit ist immer ab 19:00 Uhr! Kreuz alle Tage an, an denen du kannst. Wer schwänzt, kriegt Klassenbucheintrag! 💀';
+        } else if (selectedSlotsCount >= 6) {
+          return `Stark, schon ${selectedSlotsCount} Tage markiert! So motiviert warst du damals nicht mal im Hauswirtschaftsunterricht beim Wäsche mangeln! 🧺`;
+        } else if (selectedSlotsCount >= 3) {
+          return `Nice, ${selectedSlotsCount} Tage am Start! Das steigert die Chancen auf einen Volltreffer.`;
         } else {
-          return 'Wähl gern noch ein paar Termine mehr an, damit wir alle an einen Tisch kriegen! 🙌';
+          return 'Wähl gern noch ein paar Tage mehr an, damit wir alle an einen Tisch kriegen! 🙌';
         }
       case 3:
         if (selectedLocationsCount === 0) {
@@ -35,7 +35,7 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
           return 'Gute Wahl! Hauptsache wir müssen hinterher nicht den Tafeldienst machen... 🍻';
         }
       case 4:
-        return 'Fast geschafft! Lass einen Gruß oder eine alte Schul-Anekdote da. Die ganze Klasse liest mit! 💬';
+        return 'Fast geschafft! Lass einen Gruß oder eine alte Schul-Anekdote da. (Kannst du auch überspringen) 💬';
       case 5:
         return 'Eingetragen! Die Stimmen sind ausgewertet. Schick den Link direkt in die WhatsApp-Gruppe! 👑';
       default:
@@ -43,7 +43,7 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
     }
   }, [currentStep, name, selectedSlotsCount, selectedLocationsCount]);
 
-  // AI-Style Live Word-by-Word Streaming with realistic token pauses
+  // AI-Style Live Word-by-Word Streaming
   useEffect(() => {
     abortControllerRef.current += 1;
     const currentRunId = abortControllerRef.current;
