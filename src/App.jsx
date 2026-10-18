@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Navbar from './components/Navbar';
 import StepProgress from './components/StepProgress';
 import StepName from './components/StepName';
 import StepSchedule from './components/StepSchedule';
@@ -8,7 +7,6 @@ import StepMessage from './components/StepMessage';
 import StepResults from './components/StepResults';
 import NarratorBubble from './components/NarratorBubble';
 import PseudoLoaderModal from './components/PseudoLoaderModal';
-import SupabaseModal from './components/SupabaseModal';
 import BackgroundEffects from './components/BackgroundEffects';
 import { 
   fetchAllVotes, 
@@ -16,11 +14,9 @@ import {
   getSupabaseCredentials, 
   getSupabaseClient 
 } from './lib/supabase';
-import { sounds } from './lib/sounds';
 
 export default function App() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [maxUnlockedStep, setMaxUnlockedStep] = useState(1);
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('😎');
   const [selectedSlots, setSelectedSlots] = useState([]);
@@ -32,17 +28,10 @@ export default function App() {
   const [myVote, setMyVote] = useState(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [isSupabaseModalOpen, setIsSupabaseModalOpen] = useState(false);
-  const [isSupabaseConnected, setIsSupabaseConnected] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
   const [pseudoLoaderType, setPseudoLoaderType] = useState(null);
 
   // Load initial data and existing vote
   const loadVotes = useCallback(async () => {
-    const creds = getSupabaseCredentials();
-    setIsSupabaseConnected(creds.isConfigured);
-
     const votes = await fetchAllVotes();
     setAllVotes(votes);
 
@@ -60,7 +49,8 @@ export default function App() {
           setSelectedLocations(parsed.selected_locations || []);
           setCustomLocation(parsed.custom_location || '');
           setMessage(parsed.message || '');
-          setMaxUnlockedStep(5);
+          // If already voted, land on results
+          setCurrentStep(5);
         } catch {}
       }
     }
@@ -87,27 +77,25 @@ export default function App() {
         client.removeChannel(channel);
       };
     } catch {}
-  }, [loadVotes, isSupabaseConnected]);
+  }, [loadVotes]);
 
-  // Handle step transitions with funny pseudo loading screens
-  const triggerTransition = (type, nextStep) => {
+  // Handle step transitions with funny school pseudo loading screens
+  const triggerTransition = (type) => {
     setPseudoLoaderType(type);
-    // On loader finish, nextStep is set
   };
 
   const handleLoaderFinish = () => {
     if (pseudoLoaderType === '1-to-2') {
       setCurrentStep(2);
-      setMaxUnlockedStep(prev => Math.max(prev, 2));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (pseudoLoaderType === '2-to-3') {
       setCurrentStep(3);
-      setMaxUnlockedStep(prev => Math.max(prev, 3));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (pseudoLoaderType === '3-to-4') {
       setCurrentStep(4);
-      setMaxUnlockedStep(prev => Math.max(prev, 4));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (pseudoLoaderType === 'final-submit') {
       setCurrentStep(5);
-      setMaxUnlockedStep(5);
       setHasVoted(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -115,7 +103,7 @@ export default function App() {
   };
 
   // Submit vote to Supabase/localStorage
-  const handleFinalSubmit = async () => {
+  const handleFinalSubmit = async (customMsg) => {
     setIsSubmitting(true);
     const voteData = {
       name: name.trim(),
@@ -123,7 +111,7 @@ export default function App() {
       selected_slots: selectedSlots,
       selected_locations: selectedLocations,
       custom_location: customLocation.trim(),
-      message: message.trim()
+      message: (typeof customMsg === 'string' ? customMsg : message).trim()
     };
 
     const res = await submitVote(voteData);
@@ -131,40 +119,25 @@ export default function App() {
     await loadVotes();
     setIsSubmitting(false);
 
-    // Launch celebratory submission pseudo loader
-    triggerTransition('final-submit', 5);
+    // Launch submission pseudo loader
+    triggerTransition('final-submit');
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between selection:bg-fuchsia-500 selection:text-white">
+    <div className="relative min-h-screen flex flex-col justify-between selection:bg-fuchsia-500 selection:text-white bg-slate-950">
       {/* Background visual effects */}
       <BackgroundEffects />
 
-      {/* Main Container */}
-      <div className="relative z-10 flex-1 flex flex-col">
-        {/* Sticky Header Navbar */}
-        <Navbar
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
-          votesCount={allVotes.length}
-          isSupabaseConnected={isSupabaseConnected}
-          onOpenSupabaseModal={() => setIsSupabaseModalOpen(true)}
-          soundEnabled={soundEnabled}
-          setSoundEnabled={setSoundEnabled}
-          hasVoted={hasVoted}
-        />
-
+      {/* Main Container - No Navbar, No Header */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center py-6 sm:py-10">
+        
         {/* Content Wrapper */}
-        <main className="flex-1 max-w-6xl w-full mx-auto px-4 pt-6 sm:pt-8 pb-12">
+        <main className="max-w-4xl w-full mx-auto px-4">
           
-          {/* Animated Stepper Progress */}
-          <StepProgress
-            currentStep={currentStep}
-            setCurrentStep={setCurrentStep}
-            maxUnlockedStep={maxUnlockedStep}
-          />
+          {/* Minimal Non-Clickable Stepper */}
+          <StepProgress currentStep={currentStep} />
 
-          {/* Interactive Narrator / Bot Speech Bubble */}
+          {/* Interactive Narrator Companion */}
           <NarratorBubble
             currentStep={currentStep}
             name={name}
@@ -172,41 +145,41 @@ export default function App() {
             selectedLocationsCount={selectedLocations.length + (customLocation ? 1 : 0)}
           />
 
-          {/* Step 1: Name & Avatar */}
+          {/* Step 1: Name & Avatar (Mandatory) */}
           {currentStep === 1 && (
             <StepName
               name={name}
               setName={setName}
               avatar={avatar}
               setAvatar={setAvatar}
-              onNext={() => triggerTransition('1-to-2', 2)}
+              onNext={() => triggerTransition('1-to-2')}
             />
           )}
 
-          {/* Step 2: Doodle Schedule Grid */}
+          {/* Step 2: Doodle Schedule Grid (Mandatory >=1 Slot) */}
           {currentStep === 2 && (
             <StepSchedule
               selectedSlots={selectedSlots}
               setSelectedSlots={setSelectedSlots}
               allVotes={allVotes}
-              onNext={() => triggerTransition('2-to-3', 3)}
+              onNext={() => triggerTransition('2-to-3')}
               onBack={() => setCurrentStep(1)}
             />
           )}
 
-          {/* Step 3: Locations Selection */}
+          {/* Step 3: Locations Selection (Mandatory >=1 Location or custom) */}
           {currentStep === 3 && (
             <StepLocation
               selectedLocations={selectedLocations}
               setSelectedLocations={setSelectedLocations}
               customLocation={customLocation}
               setCustomLocation={setCustomLocation}
-              onNext={() => triggerTransition('3-to-4', 4)}
+              onNext={() => triggerTransition('3-to-4')}
               onBack={() => setCurrentStep(2)}
             />
           )}
 
-          {/* Step 4: Message & Guestbook */}
+          {/* Step 4: Message & Guestbook (Only step that CAN be skipped) */}
           {currentStep === 4 && (
             <StepMessage
               message={message}
@@ -229,27 +202,19 @@ export default function App() {
               myVote={myVote}
               onEditVote={() => setCurrentStep(1)}
               onRefresh={loadVotes}
-              isSupabaseConnected={isSupabaseConnected}
             />
           )}
 
         </main>
       </div>
 
-      {/* Pseudo Loader Modal with funny math/tech logs */}
+      {/* Pseudo Loader Modal with school jokes - Unskippable */}
       {pseudoLoaderType && (
         <PseudoLoaderModal
           transitionType={pseudoLoaderType}
           onFinish={handleLoaderFinish}
         />
       )}
-
-      {/* Supabase Connection & SQL Modal */}
-      <SupabaseModal
-        isOpen={isSupabaseModalOpen}
-        onClose={() => setIsSupabaseModalOpen(false)}
-        onConfigSaved={loadVotes}
-      />
     </div>
   );
 }

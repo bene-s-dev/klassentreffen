@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Send, Loader2 } from 'lucide-react';
+import { ArrowLeft, Send, FastForward, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { SLANG_QUOTES } from '../lib/constants';
 import { sounds } from '../lib/sounds';
@@ -25,10 +25,13 @@ export default function StepMessage({
     }
   };
 
-  const handleSubmit = async (e) => {
-    e?.preventDefault();
+  const handleFinish = async (skipMessage = false) => {
     sounds.playSuccess();
     
+    if (skipMessage) {
+      setMessage('');
+    }
+
     try {
       confetti({
         particleCount: 80,
@@ -37,7 +40,7 @@ export default function StepMessage({
       });
     } catch {}
 
-    await onSubmit();
+    await onSubmit(skipMessage ? '' : message);
   };
 
   return (
@@ -49,7 +52,7 @@ export default function StepMessage({
           Gruß an die Klasse 💬
         </h2>
         <p className="text-slate-400 text-xs sm:text-sm">
-          Lass eine Nachricht, alte Anekdote oder einen Spruch da.
+          Optional: Lass eine Nachricht oder Anekdote da. Du kannst diesen Schritt auch überspringen.
         </p>
       </div>
 
@@ -69,10 +72,10 @@ export default function StepMessage({
         {/* Quick Quote Pills */}
         <div className="mb-4">
           <label className="block text-xs font-semibold text-slate-400 mb-2">
-            Schnelle Vorlagen (Klick zum Einfügen)
+            Schnelle Vorlagen
           </label>
           <div className="flex flex-wrap gap-1.5">
-            {SLANG_QUOTES.slice(0, 6).map((quote) => (
+            {SLANG_QUOTES.slice(0, 5).map((quote) => (
               <button
                 key={quote}
                 type="button"
@@ -91,7 +94,7 @@ export default function StepMessage({
             rows={3}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Deine Nachricht an alle..."
+            placeholder="Deine Nachricht an alle (kannst du auch leer lassen)..."
             maxLength={300}
             className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-xs sm:text-sm focus:outline-none focus:border-fuchsia-500 transition-colors resize-none"
           />
@@ -102,7 +105,7 @@ export default function StepMessage({
 
       </div>
 
-      {/* Sticky Bottom Bar */}
+      {/* Sticky Bottom Bar with Skip Message and Submit */}
       <div className="fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur-md bg-slate-950/80 border-t border-slate-800">
         <div className="max-w-xl mx-auto flex items-center justify-between gap-3">
           
@@ -119,24 +122,38 @@ export default function StepMessage({
             <span>Zurück</span>
           </button>
 
-          <button
-            type="button"
-            disabled={isSubmitting}
-            onClick={handleSubmit}
-            className="px-5 py-2.5 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-colors shadow-md disabled:opacity-50"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Speichern...</span>
-              </>
-            ) : (
-              <>
-                <span>Stimme abschicken</span>
-                <Send className="w-3.5 h-3.5" />
-              </>
-            )}
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Skip message button (the ONLY allowed skip) */}
+            <button
+              type="button"
+              disabled={isSubmitting}
+              onClick={() => handleFinish(true)}
+              className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-400 hover:text-slate-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+            >
+              <FastForward className="w-3.5 h-3.5" />
+              <span>Überspringen</span>
+            </button>
+
+            {/* Submit with or without message */}
+            <button
+              type="button"
+              disabled={isSubmitting}
+              onClick={() => handleFinish(false)}
+              className="px-4 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-colors shadow-md disabled:opacity-50"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Speichern...</span>
+                </>
+              ) : (
+                <>
+                  <span>Fertigstellen</span>
+                  <Send className="w-3.5 h-3.5" />
+                </>
+              )}
+            </button>
+          </div>
 
         </div>
       </div>

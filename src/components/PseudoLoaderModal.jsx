@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, FastForward } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 
 const TRANSITION_STEPS_LOGS = {
@@ -19,7 +18,7 @@ const TRANSITION_STEPS_LOGS = {
     { text: 'Hauswirtschaftsküche: Brandmelder beim Kochen ignoriert...', sub: 'Mittagessen gerettet' },
     { text: 'Geschirrhandtücher nach Vorschrift zusammengelegt...', sub: 'Ordnungsdienst' },
     { text: 'Hausmeister schließt den Raum auf und meckert kurz...', sub: 'Schlüsselbund rasselt' },
-    { text: 'Locations eingeloggt! Jetzt noch einen Gruß hinterlassen! 💬', sub: 'Bereit' }
+    { text: 'Locations eingeloggt! Jetzt noch ein kurzer Gruß... 💬', sub: 'Bereit' }
   ],
   'final-submit': [
     { text: 'Tischdecken ordentlich gemangelt und glattgezogen...', sub: 'Wäsche & Tischkultur' },
@@ -32,7 +31,7 @@ const TRANSITION_STEPS_LOGS = {
 export default function PseudoLoaderModal({ transitionType, onFinish }) {
   const logs = TRANSITION_STEPS_LOGS[transitionType] || TRANSITION_STEPS_LOGS['1-to-2'];
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
-  const [progress, setProgress] = useState(20);
+  const [progress, setProgress] = useState(25);
 
   useEffect(() => {
     sounds.playPop();
@@ -48,11 +47,11 @@ export default function PseudoLoaderModal({ transitionType, onFinish }) {
           clearInterval(interval);
           setTimeout(() => {
             onFinish();
-          }, 300);
+          }, 250);
           return prev;
         }
       });
-    }, 450);
+    }, 420);
 
     return () => clearInterval(interval);
   }, [logs, onFinish]);
@@ -60,7 +59,7 @@ export default function PseudoLoaderModal({ transitionType, onFinish }) {
   const currentLog = logs[currentStepIdx] || logs[logs.length - 1];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xl bg-slate-950/70 animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xl bg-slate-950/75 animate-fadeIn">
       <div className="w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative text-center">
         
         {/* Animated Icon */}
@@ -79,31 +78,16 @@ export default function PseudoLoaderModal({ transitionType, onFinish }) {
         </div>
 
         {/* Minimal Progress Bar */}
-        <div className="w-full bg-slate-800 rounded-full h-1.5 mb-3 overflow-hidden">
+        <div className="w-full bg-slate-800 rounded-full h-1.5 mb-2.5 overflow-hidden">
           <div 
             className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
+        <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
           <span>Klassenbuch-Sync</span>
           <span className="font-semibold text-slate-300">{progress}%</span>
-        </div>
-
-        {/* Skip button */}
-        <div className="mt-4 pt-3 border-t border-slate-800">
-          <button
-            type="button"
-            onClick={() => {
-              sounds.playPop();
-              onFinish();
-            }}
-            className="text-xs text-slate-400 hover:text-white flex items-center gap-1 mx-auto cursor-pointer transition-colors"
-          >
-            <FastForward className="w-3.5 h-3.5" />
-            <span>Überspringen</span>
-          </button>
         </div>
 
       </div>
