@@ -102,52 +102,53 @@ export default function StepResults({
         </div>
       )}
 
-      {/* DOODLE MATRIX */}
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4 sm:p-5 mb-6 overflow-hidden">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-fuchsia-400" />
-            <h3 className="font-display font-bold text-sm sm:text-base text-white">
-              Tage-Übersicht (jeweils {FIXED_TIME})
-            </h3>
-          </div>
-
-          {!confirmDelete ? (
+      {/* Delete Vote Button placed top-right above the Tage-Übersicht */}
+      <div className="flex justify-end mb-2.5">
+        {!confirmDelete ? (
+          <button
+            type="button"
+            onClick={() => {
+              sounds.playPop();
+              setConfirmDelete(true);
+            }}
+            className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
+            title="Löscht Deine Stimme und bringt Dich zur Startseite"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Meine Antwort löschen</span>
+          </button>
+        ) : (
+          <div className="flex items-center gap-1.5 animate-fadeIn bg-slate-950/90 border border-rose-500/40 p-1 rounded-xl shadow-md">
+            <span className="text-[11px] text-rose-300 font-medium pl-1.5">Wirklich löschen?</span>
             <button
               type="button"
               onClick={() => {
-                sounds.playPop();
-                setConfirmDelete(true);
+                sounds.playToggle(false);
+                setConfirmDelete(false);
+                onDeleteVote();
               }}
-              className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm self-start sm:self-auto transition-all"
-              title="Löscht Deine Stimme und bringt Dich zur Startseite"
+              className="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer shadow-sm transition-colors"
             >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>Meine Antwort löschen</span>
+              Ja
             </button>
-          ) : (
-            <div className="flex items-center gap-1.5 animate-fadeIn self-start sm:self-auto bg-slate-950/90 border border-rose-500/40 p-1 rounded-xl">
-              <span className="text-[11px] text-rose-300 font-medium pl-1.5">Wirklich löschen?</span>
-              <button
-                type="button"
-                onClick={() => {
-                  sounds.playToggle(false);
-                  setConfirmDelete(false);
-                  onDeleteVote();
-                }}
-                className="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer shadow-sm transition-colors"
-              >
-                Ja
-              </button>
-              <button
-                type="button"
-                onClick={() => setConfirmDelete(false)}
-                className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer transition-colors"
-              >
-                Abbrechen
-              </button>
-            </div>
-          )}
+            <button
+              type="button"
+              onClick={() => setConfirmDelete(false)}
+              className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer transition-colors"
+            >
+              Abbrechen
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* DOODLE MATRIX */}
+      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4 sm:p-5 mb-6 overflow-hidden">
+        <div className="flex items-center gap-2 mb-3">
+          <Calendar className="w-4 h-4 text-fuchsia-400" />
+          <h3 className="font-display font-bold text-sm sm:text-base text-white">
+            Tage-Übersicht (jeweils {FIXED_TIME})
+          </h3>
         </div>
 
         <div className="overflow-x-auto">
