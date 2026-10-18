@@ -45,7 +45,7 @@ export default function StepName({ name, setName, onNext }) {
                 setName(e.target.value);
                 if (error) setError('');
               }}
-              placeholder="z.B. Dennis"
+              placeholder="z.B. Renate B."
               maxLength={45}
               autoFocus
               className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-white placeholder-slate-600 text-sm font-medium transition-colors focus:outline-none ${
