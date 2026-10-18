@@ -5,20 +5,19 @@ import StepSchedule from './components/StepSchedule';
 import StepLocation from './components/StepLocation';
 import StepMessage from './components/StepMessage';
 import StepResults from './components/StepResults';
-import NarratorBubble from './components/NarratorBubble';
 import PseudoLoaderModal from './components/PseudoLoaderModal';
 import BackgroundEffects from './components/BackgroundEffects';
 import { 
   fetchAllVotes, 
   submitVote, 
-  getSupabaseCredentials, 
+  deleteVote,
   getSupabaseClient 
 } from './lib/supabase';
+import { sounds } from './lib/sounds';
 
 export default function App() {
   const [currentStep, setCurrentStep] = useState(1);
   const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState('😎');
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [customLocation, setCustomLocation] = useState('');
@@ -35,7 +34,6 @@ export default function App() {
     const votes = await fetchAllVotes();
     setAllVotes(votes);
 
-    // Check if user already voted in this browser
     if (typeof window !== 'undefined') {
       const savedMyVote = localStorage.getItem('klassentreffen_my_vote');
       if (savedMyVote) {
@@ -44,12 +42,10 @@ export default function App() {
           setMyVote(parsed);
           setHasVoted(true);
           setName(parsed.name || '');
-          setAvatar(parsed.avatar || '😎');
           setSelectedSlots(parsed.selected_slots || []);
           setSelectedLocations(parsed.selected_locations || []);
           setCustomLocation(parsed.custom_location || '');
           setMessage(parsed.message || '');
-          // If already voted, land on results
           setCurrentStep(5);
         } catch {}
       }
@@ -67,8 +63,8 @@ export default function App() {
 
     try {
       const channel = client
-        .channel('public:votes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'votes' }, () => {
+        .channel('public:klassentreffen_votes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'klassentreffen_votes' }, () => {
           loadVotes();
         })
         .subscribe();
@@ -79,7 +75,6 @@ export default function App() {
     } catch {}
   }, [loadVotes]);
 
-  // Handle step transitions with funny school pseudo loading screens
   const triggerTransition = (type) => {
     setPseudoLoaderType(type);
   };
@@ -107,7 +102,7 @@ export default function App() {
     setIsSubmitting(true);
     const voteData = {
       name: name.trim(),
-      avatar,
+      avatar: '😎',
       selected_slots: selectedSlots,
       selected_locations: selectedLocations,
       custom_location: customLocation.trim(),
@@ -119,44 +114,76 @@ export default function App() {
     await loadVotes();
     setIsSubmitting(false);
 
-    // Launch submission pseudo loader
     triggerTransition('final-submit');
+  };
+
+  // Delete answer and return to start page
+  const handleDeleteVote = async () => {
+    sounds.playPop();
+    const currentName = name || myVote?.name;
+    const currentId = myVote?.id;
+
+    await deleteVote(currentId, currentName);
+
+    // Reset local state
+    setName('');
+    setSelectedSlots([]);
+    setSelectedLocations([]);
+    setCustomLocation('');
+    setMessage('');
+    setMyVote(null);
+    setHasVoted(false);
+    setCurrentStep(1);
+
+    await loadVotes();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Exactly ONE fitting sentence per step
+  const getNarratorSentence = () => {
+    switch (currentStep) {
+      case 1:
+        return name.trim()
+          ? `"${name}" ist eingetragen – klick auf Weiter!`
+          : 'Trag deinen Namen ein – das Klassenbuch von damals lügt nicht.';
+      case 2:
+        return selectedSlots.length > 0
+          ? `${selectedSlots.length} ${selectedSlots.length === 1 ? 'Tag' : 'Tage'} markiert – je mehr, desto besser!`
+          : 'Wann kannst du ab 19:00 Uhr? Kreuz alle Tage an, die bei dir gehen.';
+      case 3:
+        return 'Wo soll es hingehen? Wähl deine Favoriten oder schlag einen eigenen Spot vor.';
+      case 4:
+        return 'Lass noch einen Gruß oder eine alte Schul-Anekdote da (oder einfach überspringen).';
+      case 5:
+        return 'Alle Stimmen sind ausgewertet – das ist der aktuelle Stand der Klasse.';
+      default:
+        return '';
+    }
   };
 
   return (
     <div className="relative min-h-screen flex flex-col justify-between selection:bg-fuchsia-500 selection:text-white bg-slate-950">
-      {/* Background visual effects */}
       <BackgroundEffects />
 
       {/* Main Container - No Navbar, No Header */}
       <div className="relative z-10 flex-1 flex flex-col justify-center py-6 sm:py-10">
         
-        {/* Content Wrapper */}
         <main className="max-w-4xl w-full mx-auto px-4">
           
-          {/* Minimal Non-Clickable Stepper */}
+          {/* Minimal Stepper */}
           <StepProgress currentStep={currentStep} />
 
-          {/* Interactive Narrator Companion */}
-          <NarratorBubble
-            currentStep={currentStep}
-            name={name}
-            selectedSlotsCount={selectedSlots.length}
-            selectedLocationsCount={selectedLocations.length + (customLocation ? 1 : 0)}
-          />
-
-          {/* Step 1: Name & Avatar (Mandatory) */}
+          {/* Step 1: Name (Mandatory, No Emojis, Narrator inside) */}
           {currentStep === 1 && (
             <StepName
               name={name}
               setName={setName}
-              avatar={avatar}
-              setAvatar={setAvatar}
               onNext={() => triggerTransition('1-to-2')}
+              narratorText={getNarratorSentence()}
             />
           )}
 
-          {/* Step 2: Doodle Schedule Grid (Mandatory >=1 Slot) */}
+          {/* Step 2: Schedule (Mandatory >=1 Day, Narrator inside) */}
           {currentStep === 2 && (
             <StepSchedule
               selectedSlots={selectedSlots}
@@ -164,10 +191,11 @@ export default function App() {
               allVotes={allVotes}
               onNext={() => triggerTransition('2-to-3')}
               onBack={() => setCurrentStep(1)}
+              narratorText={getNarratorSentence()}
             />
           )}
 
-          {/* Step 3: Locations Selection (Mandatory >=1 Location or custom) */}
+          {/* Step 3: Locations (Mandatory >=1 Location, Narrator inside) */}
           {currentStep === 3 && (
             <StepLocation
               selectedLocations={selectedLocations}
@@ -176,39 +204,42 @@ export default function App() {
               setCustomLocation={setCustomLocation}
               onNext={() => triggerTransition('3-to-4')}
               onBack={() => setCurrentStep(2)}
+              narratorText={getNarratorSentence()}
             />
           )}
 
-          {/* Step 4: Message & Guestbook (Only step that CAN be skipped) */}
+          {/* Step 4: Message (Can be skipped, Narrator inside) */}
           {currentStep === 4 && (
             <StepMessage
               message={message}
               setMessage={setMessage}
               name={name}
-              avatar={avatar}
               selectedSlots={selectedSlots}
               selectedLocations={selectedLocations}
               customLocation={customLocation}
               onSubmit={handleFinalSubmit}
               onBack={() => setCurrentStep(3)}
               isSubmitting={isSubmitting}
+              narratorText={getNarratorSentence()}
             />
           )}
 
-          {/* Step 5: Live Results & Heatmap */}
+          {/* Step 5: Live Results (Delete vote button, No share button, Narrator inside) */}
           {currentStep === 5 && (
             <StepResults
               allVotes={allVotes}
               myVote={myVote}
               onEditVote={() => setCurrentStep(1)}
+              onDeleteVote={handleDeleteVote}
               onRefresh={loadVotes}
+              narratorText={getNarratorSentence()}
             />
           )}
 
         </main>
       </div>
 
-      {/* Pseudo Loader Modal with school jokes - Unskippable */}
+      {/* Pseudo Loader Modal with exactly one clear sentence */}
       {pseudoLoaderType && (
         <PseudoLoaderModal
           transitionType={pseudoLoaderType}

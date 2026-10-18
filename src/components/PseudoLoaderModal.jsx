@@ -1,62 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { sounds } from '../lib/sounds';
 
-const TRANSITION_STEPS_LOGS = {
-  '1-to-2': [
-    { text: 'Prüfe Klassenbuch von damals auf Fehlstunden...', sub: 'Klassenbuch 2016' },
-    { text: 'Entschuldigungszettel auf Mamas Handschrift gescannt...', sub: 'Unterschrift verifiziert' },
-    { text: 'Kaugummis unterm Schultisch virtuell abgekratzt...', sub: 'Klassenzimmer aufgeräumt' },
-    { text: 'Klassenbuch unterschrieben. Kalender freigegeben! 🔔', sub: 'Bereit' }
-  ],
-  '2-to-3': [
-    { text: 'Overheadprojektor angeworfen, Folie lag spiegelverkehrt...', sub: 'OHP fokussiert' },
-    { text: 'Hauswirtschaft: Heißmangel auf Stufe 3 vorgeheizt...', sub: 'Wäschepflege' },
-    { text: 'Trockenblumen-Gesteck für die Tischdeko gebunden...', sub: 'Floristik-Note: 1' },
-    { text: 'Termine stehen! Jetzt ab zur Location-Wahl! 🍽️', sub: 'Bereit' }
-  ],
-  '3-to-4': [
-    { text: 'Hauswirtschaftsküche: Brandmelder beim Kochen ignoriert...', sub: 'Mittagessen gerettet' },
-    { text: 'Geschirrhandtücher nach Vorschrift zusammengelegt...', sub: 'Ordnungsdienst' },
-    { text: 'Hausmeister schließt den Raum auf und meckert kurz...', sub: 'Schlüsselbund rasselt' },
-    { text: 'Locations eingeloggt! Jetzt noch ein kurzer Gruß... 💬', sub: 'Bereit' }
-  ],
-  'final-submit': [
-    { text: 'Tischdecken ordentlich gemangelt und glattgezogen...', sub: 'Wäsche & Tischkultur' },
-    { text: 'Klassenliste aktualisiert, niemand schwänzt unbemerkt...', sub: 'Anwesenheitskontrolle' },
-    { text: 'Erinnerungsfotos und Jahrbuch werden geladen...', sub: 'Nostalgie-Modus' },
-    { text: 'GONG ZUR GROSSEN PAUSE! DU BIST EINGETRAGEN! 🔔', sub: 'Vollendet' }
-  ]
+const SINGLE_STEP_LOGS = {
+  '1-to-2': 'Name wird mit Klassenbuch verglichen...',
+  '2-to-3': 'Termine werden per pq-Formel verglichen...',
+  '3-to-4': 'Locations werden auf Lärmpegel und Zapfhahn-Durchfluss geprüft...',
+  'final-submit': 'Nachricht wird auf Stilmittel analysiert...'
 };
 
 export default function PseudoLoaderModal({ transitionType, onFinish }) {
-  const logs = TRANSITION_STEPS_LOGS[transitionType] || TRANSITION_STEPS_LOGS['1-to-2'];
-  const [currentStepIdx, setCurrentStepIdx] = useState(0);
-  const [progress, setProgress] = useState(25);
+  const sentence = SINGLE_STEP_LOGS[transitionType] || 'Daten werden verarbeitet...';
+  const [progress, setProgress] = useState(10);
 
   useEffect(() => {
     sounds.playPop();
 
-    const interval = setInterval(() => {
-      setCurrentStepIdx(prev => {
-        const next = prev + 1;
-        if (next < logs.length) {
-          sounds.playPop();
-          setProgress(Math.round(((next + 1) / logs.length) * 100));
-          return next;
-        } else {
-          clearInterval(interval);
-          setTimeout(() => {
-            onFinish();
-          }, 250);
-          return prev;
-        }
-      });
-    }, 420);
+    // Smooth single-sentence progress
+    const startTime = Date.now();
+    const duration = 1300; // 1.3 seconds - comfortable reading time
 
-    return () => clearInterval(interval);
-  }, [logs, onFinish]);
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(100, Math.round((elapsed / duration) * 100));
+      setProgress(pct);
 
-  const currentLog = logs[currentStepIdx] || logs[logs.length - 1];
+      if (elapsed >= duration) {
+        clearInterval(timer);
+        sounds.playPop();
+        setTimeout(() => {
+          onFinish();
+        }, 200);
+      }
+    }, 40);
+
+    return () => clearInterval(timer);
+  }, [onFinish]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xl bg-slate-950/75 animate-fadeIn">
@@ -67,26 +45,23 @@ export default function PseudoLoaderModal({ transitionType, onFinish }) {
           🔔
         </div>
 
-        {/* Dynamic Status Message */}
-        <div className="min-h-[3.5rem] flex flex-col items-center justify-center mb-5 px-2">
-          <p className="text-sm font-semibold text-white transition-all duration-200">
-            {currentLog.text}
-          </p>
-          <p className="text-xs text-slate-400 mt-1">
-            {currentLog.sub}
+        {/* Dynamic Status Message - Exactly ONE single, readable sentence */}
+        <div className="min-h-[2.5rem] flex items-center justify-center mb-5 px-2">
+          <p className="text-sm font-semibold text-white">
+            {sentence}
           </p>
         </div>
 
         {/* Minimal Progress Bar */}
-        <div className="w-full bg-slate-800 rounded-full h-1.5 mb-2.5 overflow-hidden">
+        <div className="w-full bg-slate-800 rounded-full h-1.5 mb-2 overflow-hidden">
           <div 
-            className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 transition-all duration-300"
+            className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 transition-all duration-75"
             style={{ width: `${progress}%` }}
           />
         </div>
 
         <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
-          <span>Klassenbuch-Sync</span>
+          <span>Klassenbuch-Check</span>
           <span className="font-semibold text-slate-300">{progress}%</span>
         </div>
 

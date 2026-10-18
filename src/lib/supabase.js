@@ -173,3 +173,25 @@ export function saveCustomSupabaseConfig(url, key) {
   }
   return true;
 }
+
+export async function deleteVote(voteId, voterName) {
+  const client = getSupabaseClient();
+  if (client && voterName) {
+    try {
+      await client
+        .from(TABLE_NAME)
+        .delete()
+        .eq('name', voterName);
+    } catch {}
+  }
+
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('klassentreffen_my_vote');
+    const current = await fetchAllVotes();
+    const updated = current.filter(v => v.name.toLowerCase() !== (voterName || '').toLowerCase());
+    localStorage.setItem('klassentreffen_local_votes', JSON.stringify(updated));
+  }
+
+  return true;
+}
+

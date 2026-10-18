@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Check, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Check, ArrowRight, ArrowLeft } from 'lucide-react';
 import { PRESET_LOCATIONS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
 
@@ -9,7 +9,8 @@ export default function StepLocation({
   customLocation, 
   setCustomLocation, 
   onNext, 
-  onBack 
+  onBack,
+  narratorText 
 }) {
   const [error, setError] = useState('');
 
@@ -35,10 +36,10 @@ export default function StepLocation({
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 pb-24 animate-slide-in">
+    <div className="w-full max-w-2xl mx-auto px-4 pb-24 animate-slide-in">
       
       {/* Title */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-4">
         <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
           Wo soll es hingehen?
         </h2>
@@ -47,7 +48,15 @@ export default function StepLocation({
         </p>
       </div>
 
-      {/* Clean 2-Column or 3-Column Grid */}
+      {/* Inline Narrator sentence */}
+      {narratorText && (
+        <div className="mb-5 py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 text-center flex items-center justify-center gap-1.5 min-h-[2.25rem]">
+          <span>🤖</span>
+          <span>{narratorText}</span>
+        </div>
+      )}
+
+      {/* Clean Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
         {PRESET_LOCATIONS.map((loc) => {
           const isSelected = selectedLocations.includes(loc.id);
@@ -59,16 +68,16 @@ export default function StepLocation({
               className={`rounded-xl p-3.5 border transition-all cursor-pointer flex items-start justify-between gap-3 ${
                 isSelected
                   ? 'bg-fuchsia-600/15 border-fuchsia-500 shadow-sm'
-                  : 'bg-slate-900 border-slate-800 hover:border-slate-700 hover:bg-slate-850'
+                  : 'bg-slate-900 border-slate-800 hover:border-slate-700'
               }`}
             >
-              <div className="flex items-start gap-3 min-w-0">
-                <span className="text-2xl select-none pt-0.5">{loc.icon}</span>
+              <div className="flex items-start gap-2.5 min-w-0">
+                <span className="text-xl select-none pt-0.5">{loc.icon}</span>
                 <div className="min-w-0">
-                  <h3 className="font-display font-semibold text-sm text-white truncate">
+                  <h3 className="font-display font-semibold text-xs sm:text-sm text-white truncate">
                     {loc.title}
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">
+                  <p className="text-[11px] text-slate-400 mt-0.5 line-clamp-2">
                     {loc.desc}
                   </p>
                 </div>
@@ -88,7 +97,7 @@ export default function StepLocation({
         })}
       </div>
 
-      {/* Minimal Custom Location Box */}
+      {/* Custom Location Box */}
       <div className="rounded-xl bg-slate-900/70 border border-slate-800 p-4">
         <label htmlFor="custom-spot" className="block text-xs font-semibold text-slate-300 mb-1.5">
           Eigener Vorschlag? (Optional)
@@ -115,7 +124,7 @@ export default function StepLocation({
 
       {/* Sticky Bottom Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur-md bg-slate-950/80 border-t border-slate-800">
-        <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
+        <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
           
           <button
             type="button"

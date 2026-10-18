@@ -8,13 +8,13 @@ export default function StepMessage({
   message, 
   setMessage, 
   name, 
-  avatar, 
   selectedSlots, 
   selectedLocations, 
   customLocation, 
   onSubmit, 
   onBack, 
-  isSubmitting 
+  isSubmitting,
+  narratorText 
 }) {
   const addQuote = (quote) => {
     sounds.playPop();
@@ -47,25 +47,30 @@ export default function StepMessage({
     <div className="w-full max-w-xl mx-auto px-4 pb-24 animate-slide-in">
       
       {/* Title */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-4">
         <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
           Gruß an die Klasse 💬
         </h2>
         <p className="text-slate-400 text-xs sm:text-sm">
-          Optional: Lass eine Nachricht oder Anekdote da. Du kannst diesen Schritt auch überspringen.
+          Optional: Lass eine Nachricht da oder überspringe diesen Schritt.
         </p>
       </div>
+
+      {/* Inline Narrator sentence */}
+      {narratorText && (
+        <div className="mb-5 py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 text-center flex items-center justify-center gap-1.5 min-h-[2.25rem]">
+          <span>🤖</span>
+          <span>{narratorText}</span>
+        </div>
+      )}
 
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6 shadow-xl mb-6">
         
         {/* Quick summary badge */}
         <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-xl select-none">{avatar}</span>
-            <span className="font-semibold text-white">{name}</span>
-          </div>
+          <span className="font-semibold text-white">{name}</span>
           <span className="text-slate-400">
-            {selectedSlots.length} Termine • {selectedLocations.length + (customLocation ? 1 : 0)} Spots
+            {selectedSlots.length} Tage • {selectedLocations.length + (customLocation ? 1 : 0)} Locations
           </span>
         </div>
 
@@ -105,7 +110,7 @@ export default function StepMessage({
 
       </div>
 
-      {/* Sticky Bottom Bar with Skip Message and Submit */}
+      {/* Sticky Bottom Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur-md bg-slate-950/80 border-t border-slate-800">
         <div className="max-w-xl mx-auto flex items-center justify-between gap-3">
           
@@ -123,7 +128,6 @@ export default function StepMessage({
           </button>
 
           <div className="flex items-center gap-2">
-            {/* Skip message button (the ONLY allowed skip) */}
             <button
               type="button"
               disabled={isSubmitting}
@@ -134,7 +138,6 @@ export default function StepMessage({
               <span>Überspringen</span>
             </button>
 
-            {/* Submit with or without message */}
             <button
               type="button"
               disabled={isSubmitting}

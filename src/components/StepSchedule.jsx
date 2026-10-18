@@ -8,7 +8,8 @@ export default function StepSchedule({
   setSelectedSlots, 
   allVotes, 
   onNext, 
-  onBack 
+  onBack,
+  narratorText 
 }) {
   const [error, setError] = useState('');
 
@@ -72,15 +73,23 @@ export default function StepSchedule({
     <div className="w-full max-w-2xl mx-auto px-4 pb-24 animate-slide-in">
       
       {/* Title */}
-      <div className="text-center mb-5">
+      <div className="text-center mb-4">
         <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
           An welchen Tagen kannst du?
         </h2>
         <p className="text-slate-400 text-xs sm:text-sm flex items-center justify-center gap-1.5">
           <Clock className="w-3.5 h-3.5 text-fuchsia-400" />
-          <span>Start ist immer fest <strong>{FIXED_TIME}</strong> • Wähl deine Tage</span>
+          <span>Feste Uhrzeit: <strong>{FIXED_TIME}</strong></span>
         </p>
       </div>
+
+      {/* Inline Narrator sentence right between title and options */}
+      {narratorText && (
+        <div className="mb-5 py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 text-center flex items-center justify-center gap-1.5 min-h-[2.25rem]">
+          <span>🤖</span>
+          <span>{narratorText}</span>
+        </div>
+      )}
 
       {/* Quick shortcuts */}
       <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800 text-xs">
