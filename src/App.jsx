@@ -263,6 +263,7 @@ export default function App() {
           {/* Step 2: Schedule (Mandatory >=1 Day) */}
           {currentStep === 2 && (
             <StepSchedule
+              name={name}
               selectedSlots={selectedSlots}
               setSelectedSlots={setSelectedSlots}
               allVotes={allVotes}
@@ -274,6 +275,7 @@ export default function App() {
           {/* Step 3: Locations (Mandatory >=1 Location) */}
           {currentStep === 3 && (
             <StepLocation
+              name={name}
               selectedLocations={selectedLocations}
               setSelectedLocations={setSelectedLocations}
               customLocation={customLocation}

@@ -5,6 +5,7 @@ import { sounds } from '../lib/sounds';
 import AiTitle from './AiTitle';
 
 export default function StepSchedule({ 
+  name = '',
   selectedSlots, 
   setSelectedSlots, 
   allVotes, 
@@ -123,8 +124,8 @@ export default function StepSchedule({
       {/* Title */}
       <div className="text-center mb-4">
         <AiTitle 
-          text="An welchen Tagen kannst Du?" 
-          className="font-display text-lg min-[360px]:text-xl min-[410px]:text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1 whitespace-nowrap" 
+          text={name?.trim() ? `${name.trim()}, an welchen Tagen kannst Du?` : 'An welchen Tagen kannst Du?'} 
+          className="font-display text-lg min-[360px]:text-xl min-[410px]:text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
         />
         <p className="text-slate-400 text-xs sm:text-sm flex items-center justify-center gap-1.5 font-medium">
           <Clock className="w-3.5 h-3.5 text-fuchsia-400" />

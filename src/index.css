@@ -51,9 +51,10 @@
   box-sizing: border-box;
 }
 
-/* Verhindert automatisches iOS-Zooming bei Input-Feldern */
+/* Verhindert automatisches iOS-Zooming bei Input-Feldern und setzt neutral-weißen Cursor */
 input, textarea, select {
   font-size: 16px !important;
+  caret-color: #ffffff !important;
 }
 
 .font-display {

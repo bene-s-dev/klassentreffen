@@ -124,9 +124,6 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
             ) : (
               <>
                 {displayedWords.join(' ')}
-                {isTyping && (
-                  <span className="inline-block w-1.5 h-3 ml-1 bg-fuchsia-400 animate-pulse align-middle" />
-                )}
               </>
             )}
           </div>

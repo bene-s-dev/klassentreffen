@@ -108,45 +108,112 @@ export default function StepResults({
         </div>
       )}
 
-      {/* Delete Vote Button placed top-right above the Tage-Übersicht */}
-      <div className="flex justify-end mb-2.5">
-        {!confirmDelete ? (
-          <button
-            type="button"
-            onClick={() => {
-              sounds.playPop();
-              setConfirmDelete(true);
-            }}
-            className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
-            title="Löscht Deine Stimme und bringt Dich zur Startseite"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Meine Antwort löschen</span>
-          </button>
-        ) : (
-          <div className="flex items-center gap-1.5 animate-fadeIn bg-slate-950/90 border border-rose-500/40 p-1 rounded-xl shadow-md">
-            <span className="text-[11px] text-rose-300 font-medium pl-1.5">Wirklich löschen?</span>
+      {/* Personalized user status bar if user has already voted */}
+      {myVote?.name ? (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 mb-4 rounded-2xl bg-slate-900/90 border border-fuchsia-500/25 shadow-sm">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl select-none">👋</span>
+            <div>
+              <p className="text-xs sm:text-sm font-semibold text-white">
+                Hey {myVote.name}, Deine Stimme ist erfasst!
+              </p>
+              <p className="text-[11px] text-slate-400">
+                Hier siehst Du alle Stimmen & Locations im Live-Vergleich.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-end sm:self-center">
             <button
               type="button"
               onClick={() => {
-                sounds.playToggle(false);
-                setConfirmDelete(false);
-                onDeleteVote();
+                sounds.playPop();
+                onEditVote();
               }}
-              className="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer shadow-sm transition-colors"
+              className="px-2.5 py-1.5 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium cursor-pointer shadow-sm transition-all"
             >
-              Ja
+              Bearbeiten
             </button>
+
+            {!confirmDelete ? (
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playPop();
+                  setConfirmDelete(true);
+                }}
+                className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
+                title="Löscht Deine Stimme und bringt Dich zur Startseite"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Löschen</span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-1.5 animate-fadeIn bg-slate-950/90 border border-rose-500/40 p-1 rounded-xl shadow-md">
+                <span className="text-[11px] text-rose-300 font-medium pl-1.5">Wirklich löschen?</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sounds.playToggle(false);
+                    setConfirmDelete(false);
+                    onDeleteVote();
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer shadow-sm transition-colors"
+                >
+                  Ja
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(false)}
+                  className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer transition-colors"
+                >
+                  Abbrechen
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        /* Delete Vote Button placed top-right above the Tage-Übersicht */
+        <div className="flex justify-end mb-2.5">
+          {!confirmDelete ? (
             <button
               type="button"
-              onClick={() => setConfirmDelete(false)}
-              className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer transition-colors"
+              onClick={() => {
+                sounds.playPop();
+                setConfirmDelete(true);
+              }}
+              className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
+              title="Löscht Deine Stimme und bringt Dich zur Startseite"
             >
-              Abbrechen
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Meine Antwort löschen</span>
             </button>
-          </div>
-        )}
-      </div>
+          ) : (
+            <div className="flex items-center gap-1.5 animate-fadeIn bg-slate-950/90 border border-rose-500/40 p-1 rounded-xl shadow-md">
+              <span className="text-[11px] text-rose-300 font-medium pl-1.5">Wirklich löschen?</span>
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playToggle(false);
+                  setConfirmDelete(false);
+                  onDeleteVote();
+                }}
+                className="px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer shadow-sm transition-colors"
+              >
+                Ja
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(false)}
+                className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer transition-colors"
+              >
+                Abbrechen
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* DOODLE MATRIX */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4 sm:p-5 mb-6 overflow-hidden">
@@ -175,17 +242,21 @@ export default function StepResults({
                     </span>
                   </div>
                 </th>
-                {allVotes.map((v) => (
-                  <th 
-                    key={v.id || v.name} 
-                    className="py-2.5 px-3 sm:px-4 text-center min-w-[72px] whitespace-nowrap bg-slate-900/95 backdrop-blur-md" 
-                    title={v.name}
-                  >
-                    <span className="text-[11px] text-fuchsia-300 block font-semibold mx-auto whitespace-nowrap">
-                      {v.name}
-                    </span>
-                  </th>
-                ))}
+                {allVotes.map((v) => {
+                  const isMe = myVote && (v.id === myVote.id || (v.name && myVote.name && v.name.toLowerCase() === myVote.name.toLowerCase()));
+                  return (
+                    <th 
+                      key={v.id || v.name} 
+                      className={`py-2.5 px-3 sm:px-4 text-center min-w-[72px] whitespace-nowrap bg-slate-900/95 backdrop-blur-md ${isMe ? 'bg-fuchsia-950/40 border-x border-fuchsia-500/30' : ''}`} 
+                      title={v.name}
+                    >
+                      <span className={`text-[11px] block font-semibold mx-auto whitespace-nowrap ${isMe ? 'text-fuchsia-400 font-bold' : 'text-fuchsia-300'}`}>
+                        {v.name}
+                        {isMe && <span className="text-[9px] text-fuchsia-300/80 font-normal block">(Du)</span>}
+                      </span>
+                    </th>
+                  );
+                })}
                 {allVotes.length < 3 && <th className="p-0 bg-slate-900/95 backdrop-blur-md"></th>}
               </tr>
             </thead>
@@ -224,14 +295,15 @@ export default function StepResults({
                     </td>
 
                     {allVotes.map((v) => {
+                      const isMe = myVote && (v.id === myVote.id || (v.name && myVote.name && v.name.toLowerCase() === myVote.name.toLowerCase()));
                       const canAttend = (v.selected_slots || []).includes(day.id);
                       return (
                         <td 
                           key={v.id || v.name} 
-                          className="py-2.5 px-3 sm:px-4 text-center min-w-[72px] whitespace-nowrap"
+                          className={`py-2.5 px-3 sm:px-4 text-center min-w-[72px] whitespace-nowrap ${isMe ? 'bg-fuchsia-950/20 border-x border-fuchsia-500/20' : ''}`}
                         >
                           {canAttend ? (
-                            <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-emerald-500/15 text-emerald-400 font-bold text-xs animate-spring-check">
+                            <span className={`inline-flex items-center justify-center w-5 h-5 rounded-md font-bold text-xs animate-spring-check ${isMe ? 'bg-fuchsia-500/25 text-fuchsia-300' : 'bg-emerald-500/15 text-emerald-400'}`}>
                               ✓
                             </span>
                           ) : (
