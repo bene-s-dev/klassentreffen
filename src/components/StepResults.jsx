@@ -103,8 +103,8 @@ export default function StepResults({
 
       {/* WINNER BANNER */}
       {dayStats.topDay && dayStats.topDay.votes > 0 && (
-        <div className="rounded-2xl bg-slate-900 border border-amber-500/30 p-4 sm:p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
-          <div className="text-center sm:text-left">
+        <div className="rounded-2xl bg-slate-900 border border-amber-500/30 p-4 sm:p-5 mb-6 shadow-sm">
+          <div>
             <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider block mb-0.5">
               Aktuell beliebtester Termin
             </span>
@@ -115,69 +115,33 @@ export default function StepResults({
               {dayStats.topDay.votes} von {dayStats.totalVoters} Stimmen ({Math.round((dayStats.topDay.votes / Math.max(1, dayStats.totalVoters)) * 100)}%)
             </p>
           </div>
-
-          {/* Action buttons (Edit or Delete answer - NO share button) */}
-          <div className="flex items-center gap-2">
-
-            <button
-              type="button"
-              onClick={() => {
-                sounds.playToggle(false);
-                if (window.confirm('Möchtest du deine Antwort wirklich löschen?')) {
-                  onDeleteVote();
-                }
-              }}
-              className="px-3 py-2 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
-              title="Löscht deine Stimme und bringt dich zur Startseite"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>Meine Antwort löschen</span>
-            </button>
-          </div>
         </div>
       )}
 
-      {/* PARTICIPANTS LIST */}
-      <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-3.5 mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-semibold text-slate-300">
-            {allVotes.length} abgegebene Stimmen
-          </span>
-          <button
-            type="button"
-            onClick={() => {
-              sounds.playPop();
-              onRefresh();
-            }}
-            className="text-[11px] text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
-          >
-            <RefreshCw className="w-3 h-3" />
-            <span>Aktualisieren</span>
-          </button>
-        </div>
-
-        <div className="flex flex-wrap gap-1.5">
-          {allVotes.map((v) => (
-            <span 
-              key={v.id || v.name}
-              className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 flex items-center gap-1.5"
-            >
-              <strong className="text-white font-medium">{v.name}</strong>
-              <span className="text-[10px] text-slate-500 font-mono">({v.selected_slots?.length || 0} Tage)</span>
-            </span>
-          ))}
-        </div>
-      </div>
-
       {/* DOODLE MATRIX */}
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4 sm:p-5 mb-6 overflow-hidden">
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-fuchsia-400" />
             <h3 className="font-display font-bold text-sm sm:text-base text-white">
               Tage-Übersicht (jeweils {FIXED_TIME})
             </h3>
           </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              sounds.playToggle(false);
+              if (window.confirm('Möchtest du deine Antwort wirklich löschen?')) {
+                onDeleteVote();
+              }
+            }}
+            className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm self-start sm:self-auto"
+            title="Löscht deine Stimme und bringt dich zur Startseite"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Meine Antwort löschen</span>
+          </button>
         </div>
 
         <div className="overflow-x-auto">
@@ -356,7 +320,38 @@ export default function StepResults({
             </div>
           </div>
         </div>
+      </div>
 
+      {/* PARTICIPANTS LIST (Ganz unten) */}
+      <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-3.5 mb-6">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-semibold text-slate-300">
+            {allVotes.length} abgegebene Stimmen
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              sounds.playPop();
+              onRefresh();
+            }}
+            className="text-[11px] text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
+          >
+            <RefreshCw className="w-3 h-3" />
+            <span>Aktualisieren</span>
+          </button>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5">
+          {allVotes.map((v) => (
+            <span 
+              key={v.id || v.name}
+              className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 flex items-center gap-1.5"
+            >
+              <strong className="text-white font-medium">{v.name}</strong>
+              <span className="text-[10px] text-slate-500 font-mono">({v.selected_slots?.length || 0} Tage)</span>
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Clean Footer */}
