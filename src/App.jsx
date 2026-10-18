@@ -139,28 +139,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Exactly ONE fitting sentence per step
-  const getNarratorSentence = () => {
-    switch (currentStep) {
-      case 1:
-        return name.trim()
-          ? `"${name}" ist eingetragen – klick auf Weiter!`
-          : 'Trag deinen Namen ein – das Klassenbuch von damals lügt nicht.';
-      case 2:
-        return selectedSlots.length > 0
-          ? `${selectedSlots.length} ${selectedSlots.length === 1 ? 'Tag' : 'Tage'} markiert – je mehr, desto besser!`
-          : 'Wann kannst du ab 19:00 Uhr? Kreuz alle Tage an, die bei dir gehen.';
-      case 3:
-        return 'Wo soll es hingehen? Wähl deine Favoriten oder schlag einen eigenen Spot vor.';
-      case 4:
-        return 'Lass noch einen Gruß oder eine alte Schul-Anekdote da (oder einfach überspringen).';
-      case 5:
-        return 'Alle Stimmen sind ausgewertet – das ist der aktuelle Stand der Klasse.';
-      default:
-        return '';
-    }
-  };
-
   return (
     <div className="relative min-h-screen flex flex-col justify-between selection:bg-fuchsia-500 selection:text-white bg-slate-950">
       <BackgroundEffects />
@@ -173,17 +151,16 @@ export default function App() {
           {/* Minimal Stepper */}
           <StepProgress currentStep={currentStep} />
 
-          {/* Step 1: Name (Mandatory, No Emojis, Narrator inside) */}
+          {/* Step 1: Name (Mandatory, No Emojis) */}
           {currentStep === 1 && (
             <StepName
               name={name}
               setName={setName}
               onNext={() => triggerTransition('1-to-2')}
-              narratorText={getNarratorSentence()}
             />
           )}
 
-          {/* Step 2: Schedule (Mandatory >=1 Day, Narrator inside) */}
+          {/* Step 2: Schedule (Mandatory >=1 Day) */}
           {currentStep === 2 && (
             <StepSchedule
               selectedSlots={selectedSlots}
@@ -191,11 +168,10 @@ export default function App() {
               allVotes={allVotes}
               onNext={() => triggerTransition('2-to-3')}
               onBack={() => setCurrentStep(1)}
-              narratorText={getNarratorSentence()}
             />
           )}
 
-          {/* Step 3: Locations (Mandatory >=1 Location, Narrator inside) */}
+          {/* Step 3: Locations (Mandatory >=1 Location) */}
           {currentStep === 3 && (
             <StepLocation
               selectedLocations={selectedLocations}
@@ -204,11 +180,10 @@ export default function App() {
               setCustomLocation={setCustomLocation}
               onNext={() => triggerTransition('3-to-4')}
               onBack={() => setCurrentStep(2)}
-              narratorText={getNarratorSentence()}
             />
           )}
 
-          {/* Step 4: Message (Can be skipped, Narrator inside) */}
+          {/* Step 4: Message (Can be skipped) */}
           {currentStep === 4 && (
             <StepMessage
               message={message}
@@ -220,11 +195,10 @@ export default function App() {
               onSubmit={handleFinalSubmit}
               onBack={() => setCurrentStep(3)}
               isSubmitting={isSubmitting}
-              narratorText={getNarratorSentence()}
             />
           )}
 
-          {/* Step 5: Live Results (Delete vote button, No share button, Narrator inside) */}
+          {/* Step 5: Live Results (Delete vote button, No share button) */}
           {currentStep === 5 && (
             <StepResults
               allVotes={allVotes}
@@ -232,17 +206,19 @@ export default function App() {
               onEditVote={() => setCurrentStep(1)}
               onDeleteVote={handleDeleteVote}
               onRefresh={loadVotes}
-              narratorText={getNarratorSentence()}
             />
           )}
 
         </main>
       </div>
 
-      {/* Pseudo Loader Modal with exactly one clear sentence */}
+      {/* Pseudo Loader Modal with longer duration + funny pseudo AI typewriter window */}
       {pseudoLoaderType && (
         <PseudoLoaderModal
           transitionType={pseudoLoaderType}
+          voterName={name}
+          selectedSlotsCount={selectedSlots.length}
+          locationsCount={selectedLocations.length + (customLocation.trim() ? 1 : 0)}
           onFinish={handleLoaderFinish}
         />
       )}

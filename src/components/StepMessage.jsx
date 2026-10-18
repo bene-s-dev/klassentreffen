@@ -13,8 +13,7 @@ export default function StepMessage({
   customLocation, 
   onSubmit, 
   onBack, 
-  isSubmitting,
-  narratorText 
+  isSubmitting
 }) {
   const addQuote = (quote) => {
     sounds.playPop();
@@ -55,14 +54,6 @@ export default function StepMessage({
           Optional: Lass eine Nachricht da oder überspringe diesen Schritt.
         </p>
       </div>
-
-      {/* Inline Narrator sentence */}
-      {narratorText && (
-        <div className="mb-5 py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 text-center flex items-center justify-center gap-1.5 min-h-[2.25rem]">
-          <span>🤖</span>
-          <span>{narratorText}</span>
-        </div>
-      )}
 
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6 shadow-xl mb-6">
         

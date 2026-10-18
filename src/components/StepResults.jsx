@@ -9,8 +9,7 @@ export default function StepResults({
   myVote, 
   onEditVote, 
   onDeleteVote,
-  onRefresh,
-  narratorText 
+  onRefresh
 }) {
   const [reactions, setReactions] = useState({});
 
@@ -101,13 +100,6 @@ export default function StepResults({
         </p>
       </div>
 
-      {/* Inline Narrator sentence */}
-      {narratorText && (
-        <div className="mb-5 py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 text-center flex items-center justify-center gap-1.5 min-h-[2.25rem]">
-          <span>🤖</span>
-          <span>{narratorText}</span>
-        </div>
-      )}
 
       {/* WINNER BANNER */}
       {dayStats.topDay && dayStats.topDay.votes > 0 && (

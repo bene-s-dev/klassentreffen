@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, ShieldAlert } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 
-export default function StepName({ name, setName, onNext, narratorText }) {
+export default function StepName({ name, setName, onNext }) {
   const [error, setError] = useState('');
 
   const handleNext = (e) => {
@@ -31,13 +31,6 @@ export default function StepName({ name, setName, onNext, narratorText }) {
           </p>
         </div>
 
-        {/* Inline Narrator sentence right between title and input */}
-        {narratorText && (
-          <div className="mb-5 py-2 px-3 rounded-lg bg-slate-950 border border-slate-800/80 text-xs text-slate-300 text-center flex items-center justify-center gap-1.5 min-h-[2.25rem]">
-            <span>🤖</span>
-            <span>{narratorText}</span>
-          </div>
-        )}
 
         <form onSubmit={handleNext} className="space-y-4">
           <div>

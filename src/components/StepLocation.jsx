@@ -9,8 +9,7 @@ export default function StepLocation({
   customLocation, 
   setCustomLocation, 
   onNext, 
-  onBack,
-  narratorText 
+  onBack
 }) {
   const [error, setError] = useState('');
 
@@ -47,14 +46,6 @@ export default function StepLocation({
           Wähl deine Favoriten oder schlag einen eigenen Spot vor.
         </p>
       </div>
-
-      {/* Inline Narrator sentence */}
-      {narratorText && (
-        <div className="mb-5 py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 text-center flex items-center justify-center gap-1.5 min-h-[2.25rem]">
-          <span>🤖</span>
-          <span>{narratorText}</span>
-        </div>
-      )}
 
       {/* 3 Full-Width, Non-Truncated, Clean Cards */}
       <div className="space-y-3 mb-5">

@@ -8,8 +8,7 @@ export default function StepSchedule({
   setSelectedSlots, 
   allVotes, 
   onNext, 
-  onBack,
-  narratorText 
+  onBack
 }) {
   const [error, setError] = useState('');
 
@@ -83,13 +82,6 @@ export default function StepSchedule({
         </p>
       </div>
 
-      {/* Inline Narrator sentence right between title and options */}
-      {narratorText && (
-        <div className="mb-5 py-2 px-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 text-center flex items-center justify-center gap-1.5 min-h-[2.25rem]">
-          <span>🤖</span>
-          <span>{narratorText}</span>
-        </div>
-      )}
 
       {/* Quick shortcuts */}
       <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800 text-xs">
