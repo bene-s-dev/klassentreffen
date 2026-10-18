@@ -164,14 +164,6 @@ export default function App() {
           {/* Step 1 Hero Header */}
           {currentStep === 1 && (
             <div className="text-center mb-6 animate-slide-in relative">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-[11px] text-slate-300 font-medium mb-2.5 shadow-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span>Live-Abstimmung</span>
-              </div>
-
               <h1 className="font-display text-2xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-fuchsia-100 to-white bg-clip-text text-transparent">
                 Klassentreffen 2.0
               </h1>
