@@ -123,7 +123,7 @@ export default function StepSchedule({
       <div className="text-center mb-4">
         <AiTitle 
           text="An welchen Tagen kannst Du?" 
-          className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
+          className="font-display text-lg min-[360px]:text-xl min-[410px]:text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1 whitespace-nowrap" 
         />
         <p className="text-slate-400 text-xs sm:text-sm flex items-center justify-center gap-1.5 font-medium">
           <Clock className="w-3.5 h-3.5 text-fuchsia-400" />

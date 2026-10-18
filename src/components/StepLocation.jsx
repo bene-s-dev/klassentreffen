@@ -43,7 +43,7 @@ export default function StepLocation({
       <div className="text-center mb-4">
         <AiTitle 
           text="Wo soll es hingehen?" 
-          className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
+          className="font-display text-xl min-[400px]:text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1 whitespace-nowrap" 
         />
         <p className="text-slate-400 text-xs sm:text-sm">
           Wähl Deine Favoriten oder schlag einen eigenen Spot vor.
