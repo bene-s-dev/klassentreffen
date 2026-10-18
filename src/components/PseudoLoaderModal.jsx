@@ -89,27 +89,54 @@ export default function PseudoLoaderModal({
     return () => clearInterval(timer);
   }, []);
 
-  // Phase 2: Typing effect (cannot be skipped, only shows Weiter button when finished)
+  // Phase 2: Word-by-word AI streaming simulation with dynamic natural pauses
   useEffect(() => {
     if (phase !== 'typing') return;
 
+    const words = aiMessage.split(' ').filter(Boolean);
     let index = 0;
     setDisplayedText('');
     setIsTypingDone(false);
 
-    const typingSpeed = 19; // ms per character
-    const typingInterval = setInterval(() => {
-      index++;
-      setDisplayedText(aiMessage.slice(0, index));
+    let timeoutId;
 
-      if (index >= aiMessage.length) {
-        clearInterval(typingInterval);
+    const streamNextWord = () => {
+      if (index >= words.length) {
         setIsTypingDone(true);
         sounds.playPop();
+        return;
       }
-    }, typingSpeed);
 
-    return () => clearInterval(typingInterval);
+      const currentWord = words[index];
+      index++;
+      setDisplayedText(words.slice(0, index).join(' '));
+
+      if (index >= words.length) {
+        setIsTypingDone(true);
+        sounds.playPop();
+        return;
+      }
+
+      // Calculate realistic AI pause for next word:
+      let delay = 65 + Math.floor(Math.random() * 70); // Base word delay: 65ms - 135ms
+
+      // Punctuation pauses (sentence end or comma)
+      if (/[.!?]$/.test(currentWord)) {
+        delay = 240 + Math.floor(Math.random() * 100); // 240ms - 340ms
+      } else if (/[,;:]$/.test(currentWord)) {
+        delay = 160 + Math.floor(Math.random() * 80); // 160ms - 240ms
+      } else if (Math.random() < 0.18) {
+        // Occasional natural "thinking" hesitation
+        delay = 190 + Math.floor(Math.random() * 90);
+      }
+
+      timeoutId = setTimeout(streamNextWord, delay);
+    };
+
+    // Initial slight pause before streaming begins (AI generation start)
+    timeoutId = setTimeout(streamNextWord, 160);
+
+    return () => clearTimeout(timeoutId);
   }, [phase, aiMessage]);
 
   const handleContinue = () => {
