@@ -96,38 +96,38 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
         </form>
       </div>
 
-      {/* Social Proof Marquee Ticker */}
+      {/* Social Proof Marquee Ticker - Full Screen Width */}
       {allVotes && allVotes.length > 0 && (
-        <div className="mt-4 relative overflow-hidden rounded-xl bg-slate-900/60 border border-slate-800/80 py-2 px-1 shadow-[0_0_25px_-5px_rgba(217,70,239,0.15)] [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
-          <div className="animate-marquee items-center gap-6 text-xs text-slate-300">
+        <div className="w-screen relative left-1/2 -translate-x-1/2 mt-7 overflow-hidden py-2.5 bg-slate-900/60 border-y border-slate-800/70 backdrop-blur-md [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="animate-marquee items-center gap-8 text-xs text-slate-300">
             {/* Set 1 */}
-            <div className="flex items-center gap-4 shrink-0">
-              <span className="font-semibold text-fuchsia-400 flex items-center gap-1">
+            <div className="flex items-center gap-6 shrink-0">
+              <span className="font-semibold text-fuchsia-400 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-fuchsia-500/10 border border-fuchsia-500/20">
                 <span>🔥</span>
                 <span>{allVotes.length} {allVotes.length === 1 ? 'Stimme' : 'Stimmen'} schon da:</span>
               </span>
               {allVotes.map((v) => (
-                <span key={v.id || v.name} className="flex items-center gap-1">
+                <span key={v.id || v.name} className="flex items-center gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                   <span className="text-white font-medium">{v.name}</span>
-                  <span className="text-emerald-400 font-bold text-[10px]">✓</span>
                 </span>
               ))}
-              <span className="text-slate-500 font-mono text-[11px]">• Wer fehlt noch? 👀 •</span>
+              <span className="text-slate-500 font-mono text-[11px] px-2">• Wer fehlt noch? 👀 •</span>
             </div>
 
             {/* Set 2 (for seamless loop) */}
-            <div className="flex items-center gap-4 shrink-0" aria-hidden="true">
-              <span className="font-semibold text-fuchsia-400 flex items-center gap-1">
+            <div className="flex items-center gap-6 shrink-0" aria-hidden="true">
+              <span className="font-semibold text-fuchsia-400 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-fuchsia-500/10 border border-fuchsia-500/20">
                 <span>🔥</span>
                 <span>{allVotes.length} {allVotes.length === 1 ? 'Stimme' : 'Stimmen'} schon da:</span>
               </span>
               {allVotes.map((v) => (
-                <span key={`clone-${v.id || v.name}`} className="flex items-center gap-1">
+                <span key={`clone-${v.id || v.name}`} className="flex items-center gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                   <span className="text-white font-medium">{v.name}</span>
-                  <span className="text-emerald-400 font-bold text-[10px]">✓</span>
                 </span>
               ))}
-              <span className="text-slate-500 font-mono text-[11px]">• Wer fehlt noch? 👀 •</span>
+              <span className="text-slate-500 font-mono text-[11px] px-2">• Wer fehlt noch? 👀 •</span>
             </div>
           </div>
         </div>
