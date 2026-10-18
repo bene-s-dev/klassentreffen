@@ -61,42 +61,25 @@ export const ALL_DAYS = WEEKENDS.flatMap(we =>
 
 export const PRESET_LOCATIONS = [
   {
-    id: 'kneipe',
-    title: 'Alte Stammkneipe / Eckkneipe',
-    desc: 'Bier vom Fass, Schnitzel, Dart & alte Geschichten wie vor 10 Jahren',
+    id: 'bar_restaurant',
+    title: 'Bar / Restaurant in Freiburg',
+    desc: 'Gemütlich zusammensitzen, lecker essen und Drinks in der City',
     icon: '🍻'
   },
   {
-    id: 'restaurant',
-    title: 'Gemütlicher Italiener / Tapas Bar',
-    desc: 'Lange Tafel, Pizza, guter Wein, alle quatschen stundenlang',
-    icon: '🍕'
-  },
-  {
-    id: 'park',
-    title: 'Park & Grillen / Open Air',
-    desc: 'Wiese, Kasten Bier, Grill, Musikbox & Frühlingsluft',
-    icon: '🥩'
-  },
-  {
-    id: 'club',
-    title: 'Club & Party / Bar-Hopping',
-    desc: 'Erst Drinks in der Bar, danach Club bis morgens',
-    icon: '🕺'
-  },
-  {
-    id: 'schulhof',
-    title: 'Schulhof-Tour & Späti-Bier',
-    desc: 'Treffpunkt vor dem alten Schultor, Cringe-Stories erzählen & Bier',
-    icon: '🎒'
-  },
-  {
-    id: 'bowling',
-    title: 'Bowling / Billard & Drinks',
-    desc: 'Kugeln schieben, wer ne Rinne wirft zahlt den ersten Schnaps',
+    id: 'action',
+    title: 'Action: Lasertag, Bowling oder Ähnliches',
+    desc: 'Gemeinsam aktiv werden, Spaß haben und gegeneinander zocken',
     icon: '🎳'
+  },
+  {
+    id: 'outdoor',
+    title: 'Draußen: Dreisam, Park oder kleine Wanderung',
+    desc: 'Entspannt an der Dreisam chillen, Park-Vibes oder kleiner Ausflug ins Grüne',
+    icon: '🌲'
   }
 ];
+
 
 export const SLANG_QUOTES = [
   'Lowkey vermisst ihr mich alle 💅',
