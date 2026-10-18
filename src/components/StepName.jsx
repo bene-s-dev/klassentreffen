@@ -118,9 +118,8 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
               {allVotes.map((v) => (
                 <span 
                   key={v.id || v.name} 
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-medium text-slate-200 shadow-sm"
+                  className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-medium text-slate-200 shadow-sm"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
                   <span>{v.name}</span>
                 </span>
               ))}
@@ -129,23 +128,21 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
             /* Marquee ticker when 5+ people - each name appears once per set */
             <div className="w-full max-w-full overflow-hidden">
               <div className="overflow-hidden py-2.5 bg-slate-900/40 backdrop-blur-md [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-                <div className="animate-marquee items-center gap-6 text-xs text-slate-200">
+                <div className="animate-marquee items-center gap-8 text-xs text-slate-200">
                   {/* Set 1 */}
-                  <div className="flex items-center gap-6 shrink-0">
+                  <div className="flex items-center gap-8 shrink-0">
                     {allVotes.map((v) => (
-                      <span key={v.id || v.name} className="flex items-center gap-2 font-medium text-slate-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
-                        <span>{v.name}</span>
+                      <span key={v.id || v.name} className="font-medium text-slate-200">
+                        {v.name}
                       </span>
                     ))}
                   </div>
 
                   {/* Set 2 (for seamless endless loop) */}
-                  <div className="flex items-center gap-6 shrink-0" aria-hidden="true">
+                  <div className="flex items-center gap-8 shrink-0" aria-hidden="true">
                     {allVotes.map((v) => (
-                      <span key={`clone-${v.id || v.name}`} className="flex items-center gap-2 font-medium text-slate-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
-                        <span>{v.name}</span>
+                      <span key={`clone-${v.id || v.name}`} className="font-medium text-slate-200">
+                        {v.name}
                       </span>
                     ))}
                   </div>
