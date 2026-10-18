@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowRight, ShieldAlert } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 import AiTitle from './AiTitle';
@@ -31,6 +31,13 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
     sounds.playSuccess();
     onNext();
   };
+
+  // Always produce a seamless, filled ticker track (minimum 20 items per track)
+  const tickerItems = useMemo(() => {
+    if (!allVotes || allVotes.length === 0) return [];
+    const repeatCount = Math.max(2, Math.ceil(20 / allVotes.length));
+    return Array(repeatCount).fill(allVotes).flat();
+  }, [allVotes]);
 
   return (
     <div className="w-full max-w-sm mx-auto px-4 animate-slide-in relative">
@@ -101,62 +108,37 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
         </form>
       </div>
 
-      {/* Social Proof - Adaptive: Centered Badges for few names, Smooth Marquee for 5+ */}
-      {allVotes && allVotes.length > 0 && (
-        <div className="mt-7">
-          <p className="text-center text-xs font-medium text-slate-400 mb-2.5">
+      {/* Social Proof Continuous Fluid Marquee - Full Screen Width */}
+      {tickerItems.length > 0 && (
+        <div className="w-screen relative left-1/2 -translate-x-1/2 mt-7">
+          <p className="text-center text-xs font-medium text-slate-400 mb-2">
             {allVotes.length === 1 
               ? 'Schon 1 Person ist dabei:' 
               : `${allVotes.length} Personen sind schon dabei:`}
           </p>
+          <div className="overflow-hidden py-2.5 bg-slate-900/40 backdrop-blur-md [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+            <div className="animate-marquee items-center gap-6 text-xs text-slate-200">
+              {/* Set 1 */}
+              <div className="flex items-center gap-6 shrink-0">
+                {tickerItems.map((v, idx) => (
+                  <span key={`s1-${v.id || v.name}-${idx}`} className="flex items-center gap-2 font-medium text-slate-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
+                    <span>{v.name}</span>
+                  </span>
+                ))}
+              </div>
 
-          {allVotes.length < 5 ? (
-            /* Centered badges when few names - no weird empty scrolling */
-            <div className="flex flex-wrap items-center justify-center gap-2 max-w-md mx-auto px-2">
-              {allVotes.map((v) => (
-                <span 
-                  key={v.id || v.name} 
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-medium text-slate-200 shadow-xs"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
-                  <span>{v.name}</span>
-                </span>
-              ))}
-            </div>
-          ) : (
-            /* Full Marquee Ticker with auto-repeat for seamless scrolling without gaps */
-            <div className="w-screen relative left-1/2 -translate-x-1/2">
-              <div className="overflow-hidden py-2.5 bg-slate-900/40 backdrop-blur-md [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-                <div className="animate-marquee items-center gap-8 text-xs text-slate-200">
-                  {/* Set 1 */}
-                  <div className="flex items-center gap-6 shrink-0">
-                    {Array(Math.ceil(8 / allVotes.length))
-                      .fill(allVotes)
-                      .flat()
-                      .map((v, idx) => (
-                        <span key={`${v.id || v.name}-${idx}`} className="flex items-center gap-2 font-medium text-slate-200">
-                          <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
-                          <span>{v.name}</span>
-                        </span>
-                      ))}
-                  </div>
-
-                  {/* Set 2 (for seamless loop) */}
-                  <div className="flex items-center gap-6 shrink-0" aria-hidden="true">
-                    {Array(Math.ceil(8 / allVotes.length))
-                      .fill(allVotes)
-                      .flat()
-                      .map((v, idx) => (
-                        <span key={`clone-${v.id || v.name}-${idx}`} className="flex items-center gap-2 font-medium text-slate-200">
-                          <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
-                          <span>{v.name}</span>
-                        </span>
-                      ))}
-                  </div>
-                </div>
+              {/* Set 2 (for seamless endless loop) */}
+              <div className="flex items-center gap-6 shrink-0" aria-hidden="true">
+                {tickerItems.map((v, idx) => (
+                  <span key={`s2-${v.id || v.name}-${idx}`} className="flex items-center gap-2 font-medium text-slate-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
+                    <span>{v.name}</span>
+                  </span>
+                ))}
               </div>
             </div>
-          )}
+          </div>
         </div>
       )}
 
