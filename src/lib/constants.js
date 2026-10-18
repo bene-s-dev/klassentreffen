@@ -51,10 +51,20 @@ export const WEEKENDS = [
       { id: 'we-5-sat', dayName: 'Samstag', date: '18. Apr', fullDate: 'Sa, 18. April' },
       { id: 'we-5-sun', dayName: 'Sonntag', date: '19. Apr', fullDate: 'So, 19. April' }
     ]
+  },
+  {
+    id: 'we-6',
+    label: 'Wochenende 6',
+    range: '24. – 26. April',
+    days: [
+      { id: 'we-6-fri', dayName: 'Freitag', date: '24. Apr', fullDate: 'Fr, 24. April' },
+      { id: 'we-6-sat', dayName: 'Samstag', date: '25. Apr', fullDate: 'Sa, 25. April' },
+      { id: 'we-6-sun', dayName: 'Sonntag', date: '26. Apr', fullDate: 'So, 26. April' }
+    ]
   }
 ];
 
-// Flat list of all 15 selectable days
+// Flat list of all 18 selectable days
 export const ALL_DAYS = WEEKENDS.flatMap(we => 
   we.days.map(d => ({ ...d, weekendLabel: we.range, weekendId: we.id }))
 );

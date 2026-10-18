@@ -7,7 +7,7 @@ export const INITIAL_MOCK_VOTES = [
     name: 'Kevin (Klassenclown)',
     avatar: '🤡',
     created_at: new Date(Date.now() - 3600000 * 5).toISOString(),
-    selected_slots: ['we-1-sat', 'we-2-fri', 'we-2-sat', 'we-3-sat', 'we-4-sat'],
+    selected_slots: ['we-1-sat', 'we-2-fri', 'we-2-sat', 'we-3-sat', 'we-4-sat', 'we-6-sat'],
     selected_locations: ['bar_restaurant', 'action'],
     custom_location: 'Späti-Tour durchs alte Viertel mit Sterni',
     message: 'Lowkey habe ich mich 0 verändert, bin immer noch 10 min zu spät! Wer nicht kommt ist eh lost.'
@@ -17,7 +17,7 @@ export const INITIAL_MOCK_VOTES = [
     name: 'Lisa (1,0 Schnitt)',
     avatar: '📚',
     created_at: new Date(Date.now() - 3600000 * 3).toISOString(),
-    selected_slots: ['we-1-fri', 'we-1-sat', 'we-2-sat', 'we-3-sat'],
+    selected_slots: ['we-1-fri', 'we-1-sat', 'we-2-sat', 'we-3-sat', 'we-6-fri', 'we-6-sat'],
     selected_locations: ['bar_restaurant', 'outdoor'],
     custom_location: '',
     message: 'Ich hab schon die alte WhatsApp-Gruppe reaktiviert! Freu mich so auf euch, no cap! 🥰'
@@ -27,7 +27,7 @@ export const INITIAL_MOCK_VOTES = [
     name: 'Tobi (Krypto-Grind)',
     avatar: '🚀',
     created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
-    selected_slots: ['we-2-fri', 'we-2-sat', 'we-3-fri', 'we-3-sat'],
+    selected_slots: ['we-2-fri', 'we-2-sat', 'we-3-fri', 'we-3-sat', 'we-6-sat'],
     selected_locations: ['action', 'bar_restaurant'],
     custom_location: 'Kastanienhang Aussichtspunkt',
     message: 'Erste Runde geht auf meinen Nacken! Scheppert anders diesmal 🔥'
@@ -37,7 +37,7 @@ export const INITIAL_MOCK_VOTES = [
     name: 'Sarah (Sportskanone)',
     avatar: '⚡',
     created_at: new Date(Date.now() - 3600000 * 1).toISOString(),
-    selected_slots: ['we-1-sat', 'we-2-sat', 'we-3-sat', 'we-4-sat'],
+    selected_slots: ['we-1-sat', 'we-2-sat', 'we-3-sat', 'we-4-sat', 'we-6-sun'],
     selected_locations: ['outdoor', 'bar_restaurant'],
     custom_location: '',
     message: 'Dreisam oder Park wäre peak Nostalgie! Bitte bringt alte Jahrbuch-Fotos mit haha 📸'
