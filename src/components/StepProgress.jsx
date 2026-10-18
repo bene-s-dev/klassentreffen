@@ -11,28 +11,22 @@ export default function StepProgress({ currentStep }) {
 
   return (
     <div className="w-full max-w-xs mx-auto px-4 mb-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
         {STEPS.map((step) => {
           const isCurrent = step.id === currentStep;
           const isCompleted = step.id < currentStep;
 
           return (
-            <div key={step.id} className="flex flex-col items-center gap-1.5 flex-1">
-              <div 
-                className={`w-full h-1 rounded-full transition-all duration-300 ${
-                  isCurrent
-                    ? 'bg-fuchsia-500'
-                    : isCompleted
-                    ? 'bg-slate-700'
-                    : 'bg-slate-850'
-                }`}
-              />
-              <span className={`text-[10px] font-medium transition-colors ${
-                isCurrent ? 'text-white font-semibold' : 'text-slate-600'
-              }`}>
-                {step.label}
-              </span>
-            </div>
+            <div 
+              key={step.id}
+              className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                isCurrent
+                  ? 'bg-fuchsia-500'
+                  : isCompleted
+                  ? 'bg-slate-700'
+                  : 'bg-slate-850'
+              }`}
+            />
           );
         })}
       </div>

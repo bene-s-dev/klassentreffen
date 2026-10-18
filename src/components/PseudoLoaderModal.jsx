@@ -136,16 +136,11 @@ export default function PseudoLoaderModal({
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full bg-slate-800 rounded-full h-1.5 mb-2 overflow-hidden">
+            <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
               <div 
                 className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 via-pink-500 to-indigo-500 transition-all duration-75"
                 style={{ width: `${progress}%` }}
               />
-            </div>
-
-            <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
-              <span>{config.badge}</span>
-              <span className="font-semibold text-slate-300">{progress}%</span>
             </div>
           </div>
         ) : (
