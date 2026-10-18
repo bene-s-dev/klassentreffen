@@ -195,11 +195,6 @@ export default function StepSchedule({
                       }`}
                     />
 
-                    {/* Subtle sweeping white sheen reflection on selection */}
-                    {isSelected && (
-                      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/12 to-transparent animate-glass-shimmer" />
-                    )}
-
                     <div className="relative z-10">
                       <div className={`font-semibold text-xs transition-colors duration-200 ${isSelected ? 'text-white font-bold' : 'text-slate-300'}`}>
                         {day.fullDate}
