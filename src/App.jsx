@@ -32,7 +32,41 @@ const getStoredVote = () => {
   }
 };
 
+const checkMagicAccess = () => {
+  if (typeof window === 'undefined') return true;
+  
+  // Always allow during local development
+  if (import.meta.env.DEV || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return true;
+  }
+
+  // 1. Check if device has previously been unlocked or has a submitted vote
+  const isPreviouslyAuthorized = localStorage.getItem('klassentreffen_magic_access') === 'beneorga';
+  const hasExistingVote = Boolean(localStorage.getItem('klassentreffen_my_vote'));
+
+  if (isPreviouslyAuthorized || hasExistingVote) {
+    return true;
+  }
+
+  // 2. Check current URL for 'beneorga' (query parameter, hash, or pathname)
+  const fullUrl = (
+    window.location.search + 
+    window.location.hash + 
+    window.location.pathname
+  ).toLowerCase();
+
+  if (fullUrl.includes('beneorga')) {
+    try {
+      localStorage.setItem('klassentreffen_magic_access', 'beneorga');
+    } catch {}
+    return true;
+  }
+
+  return false;
+};
+
 export default function App() {
+  const [isAuthorized] = useState(() => checkMagicAccess());
   const initialVote = getStoredVote();
   const [currentStep, setCurrentStep] = useState(initialVote ? 5 : 1);
   const [name, setName] = useState(initialVote?.name || '');
@@ -56,6 +90,7 @@ export default function App() {
 
   // Load initial data and existing vote
   const loadVotes = useCallback(async () => {
+    if (!isAuthorized) return;
     const votes = await fetchAllVotes();
     setAllVotes(votes);
 
@@ -175,6 +210,20 @@ export default function App() {
     await loadVotes();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-400 flex flex-col items-center justify-center p-6 font-mono text-xs select-none">
+        <div className="max-w-md w-full border border-slate-800 rounded-xl p-6 bg-slate-900/60 shadow-xl text-center">
+          <p className="text-sm font-semibold text-white mb-2">404 Not Found</p>
+          <p className="text-slate-500 mb-4">The requested resource could not be found on this server.</p>
+          <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-600">
+            nginx/1.24.0
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen flex flex-col justify-between selection:bg-fuchsia-500 selection:text-white bg-slate-950">
