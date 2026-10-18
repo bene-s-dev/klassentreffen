@@ -7,19 +7,49 @@ const NAME_EXAMPLES = ['Patrick W.', 'Benjamin B.'];
 
 export default function StepName({ name, setName, onNext, allVotes = [] }) {
   const [error, setError] = useState('');
-  const [exampleIndex, setExampleIndex] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
+  const [displayedExample, setDisplayedExample] = useState('');
+  const [exampleIndex, setExampleIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  // Cycle through examples only if no name is entered and input is not focused
+  // Typewriter animation: types letter by letter, pauses, deletes, and switches to next example
+  // Starts empty, "z. B. " stays static, and pauses while user is typing or focused
   useEffect(() => {
     if (name.trim() || isFocused) return;
 
-    const timer = setInterval(() => {
-      setExampleIndex((prev) => (prev + 1) % NAME_EXAMPLES.length);
-    }, 2500);
+    const currentWord = NAME_EXAMPLES[exampleIndex];
+    let timeoutId;
 
-    return () => clearInterval(timer);
-  }, [name, isFocused]);
+    if (!isDeleting) {
+      if (displayedExample.length < currentWord.length) {
+        // Initial delay on empty start (650ms), then natural typing speed (100ms)
+        const delay = displayedExample.length === 0 ? 650 : 100;
+        timeoutId = setTimeout(() => {
+          setDisplayedExample(currentWord.slice(0, displayedExample.length + 1));
+        }, delay);
+      } else {
+        // Pause once full word is typed before starting deletion
+        timeoutId = setTimeout(() => {
+          setIsDeleting(true);
+        }, 2200);
+      }
+    } else {
+      if (displayedExample.length > 0) {
+        // Backspacing speed (50ms per character)
+        timeoutId = setTimeout(() => {
+          setDisplayedExample(currentWord.slice(0, displayedExample.length - 1));
+        }, 50);
+      } else {
+        // Pause briefly on empty before typing next name
+        timeoutId = setTimeout(() => {
+          setIsDeleting(false);
+          setExampleIndex((prev) => (prev + 1) % NAME_EXAMPLES.length);
+        }, 450);
+      }
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [name, isFocused, displayedExample, isDeleting, exampleIndex]);
 
   const handleNext = (e) => {
     e?.preventDefault();
@@ -64,7 +94,7 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
               }}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              placeholder={`z.B. ${NAME_EXAMPLES[exampleIndex]}`}
+              placeholder={`z. B. ${displayedExample}`}
               maxLength={45}
               style={{ fontSize: '16px' }}
               className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-white placeholder-slate-600 text-base font-medium transition-colors focus:outline-none ${

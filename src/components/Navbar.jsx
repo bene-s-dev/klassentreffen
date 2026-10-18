@@ -40,7 +40,7 @@ export default function Navbar({
                 Klassentreffen
               </span>
               <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-fuchsia-500/30 to-pink-500/30 text-fuchsia-300 border border-fuchsia-500/40">
-                2.0
+                2<span className="animate-dot-blink inline-block">.</span>0
               </span>
             </div>
             <p className="text-[11px] text-slate-400 font-medium hidden sm:flex items-center gap-1">

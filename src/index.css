@@ -323,6 +323,23 @@ input, textarea, select {
   }
 }
 
+@keyframes dotBlink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0 6px rgba(217, 70, 239, 0.7));
+  }
+  50% {
+    opacity: 0.12;
+    transform: scale(0.85);
+    filter: drop-shadow(0 0 0px transparent);
+  }
+}
+
+.animate-dot-blink {
+  animation: dotBlink 1.1s ease-in-out infinite;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
