@@ -249,17 +249,22 @@ export default function StepResults({
           <div>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-display font-bold text-sm text-white">
-                Grüße &amp; Anekdoten
+                Nachrichten
               </h3>
               <span className="text-xs text-slate-400">
-                {allVotes.filter(v => v.message).length} Einträge
+                {allVotes.filter(v => v.message && v.message.trim()).length} Einträge
               </span>
             </div>
 
             <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
-              {allVotes
-                .filter(v => v.message && v.message.trim())
-                .map((vote) => {
+              {allVotes.filter(v => v.message && v.message.trim()).length === 0 ? (
+                <p className="text-xs text-slate-500 italic py-3 text-center">
+                  Noch keine Nachrichten hinterlassen.
+                </p>
+              ) : (
+                allVotes
+                  .filter(v => v.message && v.message.trim())
+                  .map((vote) => {
                   const msgId = vote.id || vote.name;
                   return (
                     <div 
@@ -280,7 +285,8 @@ export default function StepResults({
                       </p>
                     </div>
                   );
-                })}
+                })
+              )}
             </div>
           </div>
         </div>
