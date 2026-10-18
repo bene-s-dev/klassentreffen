@@ -2,10 +2,15 @@ import React from 'react';
 
 export default function HeroTitle() {
   return (
-    <h1 className="font-display text-2xl min-[380px]:text-3xl sm:text-5xl font-extrabold tracking-tight py-1 flex items-center justify-center flex-wrap gap-x-2 max-w-full">
-      <span className="animate-title-glow">
-        Klassentreffen
+    <div className="flex flex-col items-center justify-center max-w-full">
+      <span className="font-display text-base min-[380px]:text-lg sm:text-2xl font-extrabold tracking-widest uppercase text-fuchsia-400 drop-shadow-[0_0_18px_rgba(217,70,239,0.6)] mb-0.5 select-none">
+        Merian-
       </span>
+
+      <h1 className="font-display text-2xl min-[380px]:text-3xl sm:text-5xl font-extrabold tracking-tight py-0.5 flex items-center justify-center flex-wrap gap-x-2 max-w-full">
+        <span className="animate-title-glow">
+          Klassentreffen
+        </span>
 
       <span className="inline-flex items-center tracking-tight">
         {/* Character '2' */}
@@ -39,5 +44,6 @@ export default function HeroTitle() {
         </span>
       </span>
     </h1>
-  );
+  </div>
+);
 }
