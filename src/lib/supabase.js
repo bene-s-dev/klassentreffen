@@ -58,6 +58,7 @@ export function getSupabaseCredentials() {
 }
 
 let supabaseInstance = null;
+const TABLE_NAME = 'klassentreffen_votes';
 
 export function getSupabaseClient() {
   const { url, key, isConfigured } = getSupabaseCredentials();
@@ -80,17 +81,27 @@ export async function fetchAllVotes() {
   
   if (client) {
     try {
-      const { data, error } = await client
-        .from('votes')
+      // Try klassentreffen_votes first, fallback to votes
+      let res = await client
+        .from(TABLE_NAME)
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!error && data && data.length > 0) {
-        return data;
+      if (res.error && res.error.code === '42P01') {
+        // Table not found, try legacy votes table
+        res = await client
+          .from('votes')
+          .select('*')
+          .order('created_at', { ascending: false });
+      }
+
+      if (!res.error && res.data && res.data.length > 0) {
+        return res.data;
       }
     } catch {}
   }
 
+  // Local storage fallback
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('klassentreffen_local_votes');
     if (saved) {
@@ -118,14 +129,21 @@ export async function submitVote(voteData) {
 
   if (client) {
     try {
-      const { data, error } = await client
-        .from('votes')
+      let res = await client
+        .from(TABLE_NAME)
         .insert([newVote])
         .select();
 
-      if (!error && data && data.length > 0) {
+      if (res.error && res.error.code === '42P01') {
+        res = await client
+          .from('votes')
+          .insert([newVote])
+          .select();
+      }
+
+      if (!res.error && res.data && res.data.length > 0) {
         savedRemote = true;
-        newVote.id = data[0].id;
+        newVote.id = res.data[0].id;
       }
     } catch {}
   }
@@ -141,4 +159,17 @@ export async function submitVote(voteData) {
   }
 
   return { success: true, savedRemote, vote: newVote };
+}
+
+export function saveCustomSupabaseConfig(url, key) {
+  if (typeof window !== 'undefined') {
+    if (url && key) {
+      localStorage.setItem('supabase_custom_url', url.trim());
+      localStorage.setItem('supabase_custom_key', key.trim());
+    } else {
+      localStorage.removeItem('supabase_custom_url');
+      localStorage.removeItem('supabase_custom_key');
+    }
+  }
+  return true;
 }

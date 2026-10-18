@@ -1,4 +1,5 @@
 export const FIXED_TIME = 'ab 19:00 Uhr';
+export const TIME_SLOTS = []; // fallback for cached HMR
 
 export const WEEKENDS = [
   {

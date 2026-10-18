@@ -1,10 +1,11 @@
 -- ==============================================================================
--- KLASSENTREFFEN SUPABASE SETUP SCRIPT
--- Kopiere diesen Code einfach in den Supabase SQL Editor und klicke auf "Run"!
+-- KLASSENTREFFEN 2.0 - SUPABASE SETUP SCRIPT
+-- Füge dieses Skript einfach im Supabase Dashboard unter "SQL Editor" ein
+-- und klicke auf "Run"! Es erstellt eine eigene, konfliktfreie Tabelle.
 -- ==============================================================================
 
--- 1. Tabelle für Abstimmungen erstellen
-create table if not exists public.votes (
+-- 1. Eigene Tabelle für das Klassentreffen erstellen
+create table if not exists public.klassentreffen_votes (
   id uuid primary key default gen_random_uuid(),
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   name text not null,
@@ -15,28 +16,28 @@ create table if not exists public.votes (
   message text default ''
 );
 
--- 2. Row Level Security aktivieren (damit jeder ohne Login abstimmen kann)
-alter table public.votes enable row level security;
+-- 2. Row Level Security (RLS) aktivieren
+alter table public.klassentreffen_votes enable row level security;
 
--- Bestehende Policies löschen (falls erneut ausgeführt)
-drop policy if exists "Allow public read access" on public.votes;
-drop policy if exists "Allow public insert access" on public.votes;
-drop policy if exists "Allow public update access" on public.votes;
+-- Bestehende Policies sauber bereinigen
+drop policy if exists "Allow public read access" on public.klassentreffen_votes;
+drop policy if exists "Allow public insert access" on public.klassentreffen_votes;
+drop policy if exists "Allow public update access" on public.klassentreffen_votes;
 
--- Jeder darf alle Stimmen ansehen (Ergebnisseite)
+-- Jeder darf alle Stimmen live einsehen (Doodle-Ergebnisübersicht)
 create policy "Allow public read access"
-  on public.votes for select
+  on public.klassentreffen_votes for select
   using (true);
 
--- Jeder darf abstimmen (ohne Login)
+-- Jeder darf ohne Login abstimmen
 create policy "Allow public insert access"
-  on public.votes for insert
+  on public.klassentreffen_votes for insert
   with check (true);
 
--- Jeder darf seinen Eintrag updaten
+-- Aktualisierung erlauben
 create policy "Allow public update access"
-  on public.votes for update
+  on public.klassentreffen_votes for update
   using (true);
 
--- 3. Supabase Realtime für Live-Updates aktivieren
-alter publication supabase_realtime add table public.votes;
+-- 3. Supabase Realtime aktivieren (für Live-Updates im Browser)
+alter publication supabase_realtime add table public.klassentreffen_votes;
