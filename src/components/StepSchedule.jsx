@@ -164,12 +164,9 @@ export default function StepSchedule({
         {WEEKENDS.map((we) => (
           <div key={we.id} className="rounded-xl bg-slate-900/70 border border-slate-800 p-3 sm:p-4">
             
-            <div className="flex items-center justify-between mb-2.5 px-1">
+            <div className="mb-2.5 px-1">
               <span className="font-semibold text-xs text-white">
                 {we.range}
-              </span>
-              <span className="text-[11px] text-slate-500">
-                {FIXED_TIME}
               </span>
             </div>
 
