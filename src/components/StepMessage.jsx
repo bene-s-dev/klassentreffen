@@ -3,6 +3,7 @@ import { ArrowLeft, Send, FastForward, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { SLANG_QUOTES } from '../lib/constants';
 import { sounds } from '../lib/sounds';
+import AiTitle from './AiTitle';
 
 export default function StepMessage({ 
   message, 
@@ -48,9 +49,10 @@ export default function StepMessage({
       
       {/* Title */}
       <div className="text-center mb-4">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
-          Gruß an die Klasse 💬
-        </h2>
+        <AiTitle 
+          text="Gruß an die Klasse 💬" 
+          className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
+        />
         <p className="text-slate-400 text-xs sm:text-sm">
           Optional: Lass eine Nachricht da oder überspringe diesen Schritt.
         </p>
@@ -59,7 +61,7 @@ export default function StepMessage({
       <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6 shadow-xl mb-6">
         
         {/* Quick summary badge */}
-        <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80 text-xs">
+        <div className="flex items-center justify-between mb-4 text-xs">
           <span className="font-semibold text-white">{name}</span>
           <span className="text-slate-400">
             {selectedSlots.length} Tage • {selectedLocations.length + (customLocation ? 1 : 0)} Locations

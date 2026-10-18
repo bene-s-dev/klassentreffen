@@ -269,7 +269,7 @@ export default function App() {
               setSelectedLocations={setSelectedLocations}
               customLocation={customLocation}
               setCustomLocation={setCustomLocation}
-              onNext={handleFinalSubmit}
+              onNext={() => triggerTransition('3-to-4')}
               onBack={() => setCurrentStep(2)}
               isSubmitting={isSubmitting}
             />
