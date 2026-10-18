@@ -119,24 +119,26 @@ export default function PseudoLoaderModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xl bg-slate-950/85 animate-fadeIn">
-      <div className="w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-7 shadow-2xl relative text-center">
+      <div className="w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-7 shadow-2xl relative text-center min-h-[250px] flex flex-col justify-between">
         
         {phase === 'loading' ? (
-          <div className="animate-fadeIn">
-            {/* Animated Loading Icon tailored to step */}
-            <div className="w-12 h-12 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 mx-auto mb-4 flex items-center justify-center text-xl animate-pulse">
-              {config.icon}
-            </div>
+          <div className="animate-fadeIn flex flex-col justify-between flex-1 py-1">
+            <div>
+              {/* Animated Loading Icon tailored to step */}
+              <div className="w-12 h-12 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 mx-auto mb-4 flex items-center justify-center text-xl animate-pulse">
+                {config.icon}
+              </div>
 
-            {/* Exactly ONE clear status sentence */}
-            <div className="min-h-[2.5rem] flex items-center justify-center mb-5 px-2">
-              <p className="text-sm font-semibold text-white">
-                {config.sentence}
-              </p>
+              {/* Exactly ONE clear status sentence */}
+              <div className="min-h-[2.5rem] flex items-center justify-center px-2">
+                <p className="text-sm font-semibold text-white">
+                  {config.sentence}
+                </p>
+              </div>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+            <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden mt-6">
               <div 
                 className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 via-pink-500 to-indigo-500 transition-all duration-75"
                 style={{ width: `${progress}%` }}
@@ -144,35 +146,40 @@ export default function PseudoLoaderModal({
             </div>
           </div>
         ) : (
-          <div className="animate-fadeIn text-center">
-            {/* Clean Icon */}
-            <div className="w-12 h-12 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 mx-auto mb-4 flex items-center justify-center text-2xl">
-              {config.icon}
-            </div>
-
-            {/* Pure text without chat bubble */}
-            <div className="min-h-[4.5rem] flex items-center justify-center mb-6 px-1">
-              <p className="text-sm sm:text-base text-slate-100 font-medium leading-relaxed">
-                {displayedText}
-                {!isTypingDone && (
-                  <span className="inline-block w-1.5 h-4 ml-1 bg-fuchsia-400 animate-pulse align-middle" />
-                )}
-              </p>
-            </div>
-
-            {/* "Weiter" Button appears ONLY when typing is 100% complete (Not skippable while typing) */}
-            {isTypingDone && (
-              <div className="animate-fadeIn">
-                <button
-                  type="button"
-                  onClick={handleContinue}
-                  className="w-full py-2.5 px-4 rounded-xl gradient-btn-primary text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
-                >
-                  <span>Weiter</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+          <div className="animate-fadeIn flex flex-col justify-between flex-1">
+            <div>
+              {/* Clean Icon */}
+              <div className="w-12 h-12 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 mx-auto mb-3 flex items-center justify-center text-2xl shrink-0">
+                {config.icon}
               </div>
-            )}
+
+              {/* Pure text with fixed height - does NOT change size with typing progress */}
+              <div className="h-20 sm:h-24 flex items-center justify-center px-1 overflow-hidden">
+                <p className="text-sm sm:text-base text-slate-100 font-medium leading-relaxed">
+                  {displayedText}
+                  {!isTypingDone && (
+                    <span className="inline-block w-1.5 h-4 ml-1 bg-fuchsia-400 animate-pulse align-middle" />
+                  )}
+                </p>
+              </div>
+            </div>
+
+            {/* "Weiter" Button is visible immediately (grayed out until typing finishes) */}
+            <div className="pt-2">
+              <button
+                type="button"
+                disabled={!isTypingDone}
+                onClick={isTypingDone ? handleContinue : undefined}
+                className={`w-full py-2.5 px-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 ${
+                  isTypingDone
+                    ? 'gradient-btn-primary text-white cursor-pointer shadow-md'
+                    : 'bg-slate-800/80 border border-slate-700/60 text-slate-500 cursor-not-allowed opacity-50'
+                }`}
+              >
+                <span>Weiter</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         )}
 

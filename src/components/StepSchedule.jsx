@@ -198,12 +198,7 @@ export default function StepSchedule({
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      {votes > 0 && (
-                        <span className="text-[10px] text-slate-400 font-mono">
-                          {votes}✓
-                        </span>
-                      )}
+                    <div className="flex items-center shrink-0">
                       <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${
                         isSelected
                           ? 'bg-fuchsia-600 text-white font-bold'
