@@ -23,6 +23,7 @@ alter table public.klassentreffen_votes enable row level security;
 drop policy if exists "Allow public read access" on public.klassentreffen_votes;
 drop policy if exists "Allow public insert access" on public.klassentreffen_votes;
 drop policy if exists "Allow public update access" on public.klassentreffen_votes;
+drop policy if exists "Allow public delete access" on public.klassentreffen_votes;
 
 -- Jeder darf alle Stimmen live einsehen (Doodle-Ergebnisübersicht)
 create policy "Allow public read access"
@@ -37,6 +38,11 @@ create policy "Allow public insert access"
 -- Aktualisierung erlauben
 create policy "Allow public update access"
   on public.klassentreffen_votes for update
+  using (true);
+
+-- Eigene Antwort löschen erlauben
+create policy "Allow public delete access"
+  on public.klassentreffen_votes for delete
   using (true);
 
 -- 3. Supabase Realtime aktivieren (für Live-Updates im Browser)
