@@ -80,31 +80,24 @@ export default function StepResults({
         />
       </div>
 
-      {/* WINNER BANNER with Moving Gradient & Radiant Glowing Aura */}
+      {/* WINNER BANNER with Subtle Moving Gradient */}
       {dayStats.topDay && dayStats.topDay.votes > 0 && (
-        <div className="relative mb-6 winner-glow-wrap">
-          {/* Ambient Glowing Aura behind card */}
+        <div className="relative overflow-hidden rounded-2xl winner-card-animated border border-amber-500/35 p-4 sm:p-5 mb-6 shadow-sm text-center">
+          {/* Animated White Glass Sheen moving across */}
           <div 
-            className="pointer-events-none absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-500 via-fuchsia-500 to-amber-400 opacity-60 blur-lg" 
+            className="pointer-events-none absolute inset-0 -top-12 -bottom-12 w-1/2 bg-gradient-to-r from-transparent via-white/12 to-transparent animate-glass-shimmer"
           />
 
-          <div className="relative overflow-hidden rounded-2xl winner-card-animated border-2 border-amber-300/80 p-4 sm:p-5 text-center">
-            {/* Animated White Glass Sheen moving across */}
-            <div 
-              className="pointer-events-none absolute inset-0 -top-12 -bottom-12 w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-glass-shimmer"
-            />
-
-            <div className="relative z-10 text-center">
-              <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider block mb-0.5 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]">
-                Aktuell beliebtester Termin
-              </span>
-              <h3 className="font-display font-extrabold text-lg sm:text-xl text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.45)]">
-                {dayStats.topDay.resultDate || dayStats.topDay.fullDate} • {FIXED_TIME}
-              </h3>
-              <p className="text-xs text-amber-100/90 font-medium mt-0.5">
-                {dayStats.topDay.votes} von {dayStats.totalVoters} Stimmen ({Math.round((dayStats.topDay.votes / Math.max(1, dayStats.totalVoters)) * 100)}%)
-              </p>
-            </div>
+          <div className="relative z-10 text-center">
+            <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider block mb-0.5">
+              Aktuell beliebtester Termin
+            </span>
+            <h3 className="font-display font-bold text-lg sm:text-xl text-white">
+              {dayStats.topDay.resultDate || dayStats.topDay.fullDate} • {FIXED_TIME}
+            </h3>
+            <p className="text-xs text-slate-300 mt-0.5 font-medium">
+              {dayStats.topDay.votes} von {dayStats.totalVoters} Stimmen ({Math.round((dayStats.topDay.votes / Math.max(1, dayStats.totalVoters)) * 100)}%)
+            </p>
           </div>
         </div>
       )}
