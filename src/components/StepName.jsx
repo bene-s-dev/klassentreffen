@@ -34,18 +34,7 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto px-3 sm:px-4 animate-slide-in relative overflow-hidden">
-      
-      {/* Ambient background glow orbs - strictly constrained inside container */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-2xl">
-        <div 
-          className="w-48 h-48 rounded-full bg-fuchsia-600/15 blur-2xl absolute -top-4 left-0 animate-pulse-slow pointer-events-none" 
-        />
-        <div 
-          className="w-48 h-48 rounded-full bg-indigo-600/15 blur-2xl absolute -bottom-4 right-0 animate-pulse-slow pointer-events-none" 
-        />
-      </div>
-
+    <div className="w-full max-w-sm mx-auto px-3 sm:px-4 animate-slide-in relative">
       {/* Card with subtle glowing shadow */}
       <div className="rounded-2xl bg-slate-900/95 backdrop-blur-md border border-slate-800 p-6 sm:p-7 shadow-[0_0_45px_-10px_rgba(192,38,211,0.25)] hover:shadow-[0_0_60px_-5px_rgba(192,38,211,0.35)] transition-shadow duration-500 relative z-10">
         
