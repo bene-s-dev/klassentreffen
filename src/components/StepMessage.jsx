@@ -104,7 +104,8 @@ export default function StepMessage({
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Deine Nachricht an alle (kannst Du auch leer lassen)..."
             maxLength={300}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-xs sm:text-sm focus:outline-none focus:border-fuchsia-500 transition-colors resize-none"
+            style={{ fontSize: '16px' }}
+            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-base font-normal focus:outline-none focus:border-fuchsia-500 transition-colors resize-none"
           />
           <div className="flex justify-end text-[11px] text-slate-500 mt-1">
             <span>{message.length} / 300</span>

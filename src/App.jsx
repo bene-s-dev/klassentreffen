@@ -233,8 +233,8 @@ export default function App() {
       {/* Main Container - Centered Scaling Wrapper */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center py-4 sm:py-8 w-full max-w-full overflow-x-hidden">
         
-        <main className="w-full max-w-3xl mx-auto px-3 sm:px-4 flex flex-col items-center">
-          <div className="w-full max-w-full app-scaling-container">
+        <main className="w-full max-w-3xl mx-auto px-3 sm:px-4 flex flex-col items-center min-w-0">
+          <div className="w-full max-w-full app-scaling-container min-w-0">
             
             {/* Step 1 Hero Header */}
             {currentStep === 1 && (

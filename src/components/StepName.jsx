@@ -8,17 +8,18 @@ const NAME_EXAMPLES = ['Renate B.', 'Patrick W.', 'Benjamin B.'];
 export default function StepName({ name, setName, onNext, allVotes = [] }) {
   const [error, setError] = useState('');
   const [exampleIndex, setExampleIndex] = useState(0);
+  const [isFocused, setIsFocused] = useState(false);
 
-  // Cycle through examples if no name is entered
+  // Cycle through examples only if no name is entered and input is not focused
   useEffect(() => {
-    if (name.trim()) return;
+    if (name.trim() || isFocused) return;
 
     const timer = setInterval(() => {
       setExampleIndex((prev) => (prev + 1) % NAME_EXAMPLES.length);
-    }, 2200);
+    }, 2500);
 
     return () => clearInterval(timer);
-  }, [name]);
+  }, [name, isFocused]);
 
   const handleNext = (e) => {
     e?.preventDefault();
@@ -33,15 +34,15 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto px-4 animate-slide-in relative">
+    <div className="w-full max-w-sm mx-auto px-3 sm:px-4 animate-slide-in relative overflow-hidden">
       
-      {/* Ambient background glow orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+      {/* Ambient background glow orbs - strictly constrained inside container */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-2xl">
         <div 
-          className="w-64 h-64 rounded-full bg-fuchsia-600/15 blur-3xl absolute -top-8 -left-12 animate-pulse-slow pointer-events-none" 
+          className="w-48 h-48 rounded-full bg-fuchsia-600/15 blur-2xl absolute -top-4 left-0 animate-pulse-slow pointer-events-none" 
         />
         <div 
-          className="w-64 h-64 rounded-full bg-indigo-600/15 blur-3xl absolute -bottom-10 -right-12 animate-pulse-slow pointer-events-none" 
+          className="w-48 h-48 rounded-full bg-indigo-600/15 blur-2xl absolute -bottom-4 right-0 animate-pulse-slow pointer-events-none" 
         />
       </div>
 
@@ -72,10 +73,12 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
                 setName(e.target.value);
                 if (error) setError('');
               }}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               placeholder={`z.B. ${NAME_EXAMPLES[exampleIndex]}`}
               maxLength={45}
-              autoFocus
-              className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-white placeholder-slate-600 text-sm font-medium transition-all focus:outline-none ${
+              style={{ fontSize: '16px' }}
+              className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-white placeholder-slate-600 text-base font-medium transition-colors focus:outline-none ${
                 error
                   ? 'border-rose-500'
                   : 'border-slate-800 focus:border-fuchsia-500 focus:shadow-[0_0_20px_-3px_rgba(217,70,239,0.3)]'

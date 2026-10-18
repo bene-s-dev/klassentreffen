@@ -106,7 +106,8 @@ export default function StepLocation({
           }}
           placeholder="z.B. Rooftop-Terrasse, Schlossberg oder Biergarten..."
           maxLength={100}
-          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-xs sm:text-sm focus:outline-none focus:border-fuchsia-500 transition-colors"
+          style={{ fontSize: '16px' }}
+          className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-base font-medium focus:outline-none focus:border-fuchsia-500 transition-colors"
         />
       </div>
 

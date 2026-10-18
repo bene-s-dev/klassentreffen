@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function HeroTitle() {
   return (
-    <h1 className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight py-1 flex items-center justify-center flex-wrap gap-x-2">
+    <h1 className="font-display text-2xl min-[380px]:text-3xl sm:text-5xl font-extrabold tracking-tight py-1 flex items-center justify-center flex-wrap gap-x-2 max-w-full">
       <span className="animate-title-glow">
         Klassentreffen
       </span>
