@@ -18,8 +18,29 @@ export default function StepName({ name, setName, onNext }) {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto px-4 animate-slide-in">
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-7 shadow-xl">
+    <div className="w-full max-w-sm mx-auto px-4 animate-slide-in relative">
+      
+      {/* Ambient background glow orbs */}
+      <div 
+        className="w-64 h-64 rounded-full bg-fuchsia-600/15 blur-3xl absolute -top-8 -left-12 animate-pulse-slow pointer-events-none -z-10" 
+      />
+      <div 
+        className="w-64 h-64 rounded-full bg-indigo-600/15 blur-3xl absolute -bottom-10 -right-12 animate-pulse-slow pointer-events-none -z-10" 
+      />
+
+      {/* Floating decorative mini-badges */}
+      <div className="hidden sm:flex items-center gap-1.5 absolute -top-4 -right-4 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-fuchsia-500/30 text-[11px] text-fuchsia-300 font-medium shadow-lg animate-float pointer-events-none z-20">
+        <span>🎒</span>
+        <span>Klassenbuch</span>
+      </div>
+
+      <div className="hidden sm:flex items-center gap-1.5 absolute -bottom-3 -left-4 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-indigo-500/30 text-[11px] text-indigo-300 font-medium shadow-lg animate-float-delayed pointer-events-none z-20">
+        <span>🗓️</span>
+        <span>Termine</span>
+      </div>
+
+      {/* Card with subtle glowing shadow */}
+      <div className="rounded-2xl bg-slate-900/95 backdrop-blur-md border border-slate-800 p-6 sm:p-7 shadow-[0_0_45px_-10px_rgba(192,38,211,0.25)] hover:shadow-[0_0_60px_-5px_rgba(192,38,211,0.35)] transition-shadow duration-500 relative z-10">
         
         {/* Title */}
         <div className="text-center mb-4">
@@ -30,7 +51,6 @@ export default function StepName({ name, setName, onNext }) {
             Trag deinen Namen ein, um abzustimmen.
           </p>
         </div>
-
 
         <form onSubmit={handleNext} className="space-y-4">
           <div>
@@ -48,15 +68,15 @@ export default function StepName({ name, setName, onNext }) {
               placeholder="z.B. Renate B."
               maxLength={45}
               autoFocus
-              className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-white placeholder-slate-600 text-sm font-medium transition-colors focus:outline-none ${
+              className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-white placeholder-slate-600 text-sm font-medium transition-all focus:outline-none ${
                 error
                   ? 'border-rose-500'
-                  : 'border-slate-800 focus:border-fuchsia-500'
+                  : 'border-slate-800 focus:border-fuchsia-500 focus:shadow-[0_0_20px_-3px_rgba(217,70,239,0.3)]'
               }`}
             />
 
             {error && (
-              <p className="mt-1.5 text-xs text-rose-400 flex items-center gap-1">
+              <p className="mt-1.5 text-xs text-rose-400 flex items-center gap-1 animate-fadeIn">
                 <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
                 {error}
               </p>
@@ -66,10 +86,10 @@ export default function StepName({ name, setName, onNext }) {
           <div className="pt-1">
             <button
               type="submit"
-              className="w-full py-2.5 px-4 rounded-xl gradient-btn-primary text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              className="group w-full py-2.5 px-4 rounded-xl gradient-btn-primary text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               <span>Weiter</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 

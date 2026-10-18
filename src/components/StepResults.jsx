@@ -80,20 +80,21 @@ export default function StepResults({
     <div className="w-full max-w-3xl mx-auto px-4 pb-20 animate-slide-in">
       
       {/* Title */}
-      <div className="text-center mb-4">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
-          Ergebnisse 🏆
+      <div className="text-center mb-5">
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">
+          Ergebnisse 🗓️
         </h2>
-        <p className="text-slate-400 text-xs sm:text-sm">
-          Feste Startzeit: <strong>{FIXED_TIME}</strong>.
-        </p>
       </div>
 
-
-      {/* WINNER BANNER */}
+      {/* WINNER BANNER with White Glass Shimmer Reflection */}
       {dayStats.topDay && dayStats.topDay.votes > 0 && (
-        <div className="rounded-2xl bg-slate-900 border border-amber-500/30 p-4 sm:p-5 mb-6 shadow-sm">
-          <div>
+        <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-amber-500/30 p-4 sm:p-5 mb-6 shadow-sm">
+          {/* Animated White Glass Sheen moving across */}
+          <div 
+            className="pointer-events-none absolute inset-0 -top-12 -bottom-12 w-1/2 bg-gradient-to-r from-transparent via-white/12 to-transparent animate-glass-shimmer"
+          />
+
+          <div className="relative z-10">
             <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider block mb-0.5">
               Aktuell beliebtester Termin
             </span>
