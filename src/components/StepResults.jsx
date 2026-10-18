@@ -154,7 +154,7 @@ export default function StepResults({
         <div className="flex items-center gap-2 mb-3">
           <Calendar className="w-4 h-4 text-fuchsia-400" />
           <h3 className="font-display font-bold text-sm sm:text-base text-white">
-            Tage-Übersicht (jeweils {FIXED_TIME})
+            Tage-Übersicht
           </h3>
         </div>
 
