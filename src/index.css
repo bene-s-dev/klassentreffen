@@ -254,13 +254,11 @@ input, textarea, select {
   background: linear-gradient(
     115deg,
     #0f172a 0%,
-    #1e293b 25%,
-    #2a1b12 50%,
-    #1e293b 75%,
+    #1e1b4b 50%,
     #0f172a 100%
   );
   background-size: 200% 200%;
-  animation: winnerGradientShift 8s ease-in-out infinite;
+  animation: winnerGradientShift 7s ease-in-out infinite;
 }
 
 @keyframes marquee {
