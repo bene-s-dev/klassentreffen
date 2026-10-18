@@ -103,7 +103,7 @@ export default function StepMessage({
       </div>
 
       {/* Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur-md bg-slate-950/80 border-t border-slate-800">
+      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur-md bg-slate-950/85">
         <div className="max-w-xl mx-auto flex items-center justify-between gap-3">
           
           <button
