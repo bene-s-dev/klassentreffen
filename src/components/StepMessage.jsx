@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Send, FastForward, Loader2 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { SLANG_QUOTES } from '../lib/constants';
 import { sounds } from '../lib/sounds';
 import AiTitle from './AiTitle';
@@ -31,15 +30,6 @@ export default function StepMessage({
     if (skipMessage) {
       setMessage('');
     }
-
-    try {
-      confetti({
-        particleCount: 85,
-        spread: 65,
-        origin: { y: 0.6 },
-        colors: ['#d946ef', '#c026d3', '#9333ea', '#a855f7', '#ec4899', '#7c3aed', '#3b82f6', '#ffffff']
-      });
-    } catch {}
 
     await onSubmit(skipMessage ? '' : message);
   };
