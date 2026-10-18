@@ -129,8 +129,8 @@ export default function StepLocation({
             <span>Zurück</span>
           </button>
 
-          <span className="text-xs text-slate-400 font-medium">
-            <strong className="text-white">
+          <span className="text-xs text-slate-300 font-medium whitespace-nowrap">
+            <strong className="text-white font-semibold">
               {selectedLocations.length + (customLocation.trim() ? 1 : 0)}
             </strong> gewählt
           </span>
@@ -138,9 +138,9 @@ export default function StepLocation({
           <button
             type="button"
             onClick={handleNext}
-            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md"
+            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md shrink-0"
           >
-            <span>Weiter zur Nachricht</span>
+            <span>Weiter</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
 

@@ -68,7 +68,7 @@ export default function StepName({ name, setName, onNext }) {
               type="submit"
               className="w-full py-2.5 px-4 rounded-xl gradient-btn-primary text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
-              <span>Weiter zu den Terminen</span>
+              <span>Weiter</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
