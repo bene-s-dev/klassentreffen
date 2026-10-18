@@ -187,6 +187,7 @@ export default function App() {
               name={name}
               setName={setName}
               onNext={() => triggerTransition('1-to-2')}
+              allVotes={allVotes}
             />
           )}
 

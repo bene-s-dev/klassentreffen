@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, ShieldAlert } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 
-export default function StepName({ name, setName, onNext }) {
+export default function StepName({ name, setName, onNext, allVotes = [] }) {
   const [error, setError] = useState('');
 
   const handleNext = (e) => {
@@ -95,6 +95,43 @@ export default function StepName({ name, setName, onNext }) {
 
         </form>
       </div>
+
+      {/* Social Proof Marquee Ticker */}
+      {allVotes && allVotes.length > 0 && (
+        <div className="mt-4 relative overflow-hidden rounded-xl bg-slate-900/60 border border-slate-800/80 py-2 px-1 shadow-[0_0_25px_-5px_rgba(217,70,239,0.15)] [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
+          <div className="animate-marquee items-center gap-6 text-xs text-slate-300">
+            {/* Set 1 */}
+            <div className="flex items-center gap-4 shrink-0">
+              <span className="font-semibold text-fuchsia-400 flex items-center gap-1">
+                <span>🔥</span>
+                <span>{allVotes.length} {allVotes.length === 1 ? 'Stimme' : 'Stimmen'} schon da:</span>
+              </span>
+              {allVotes.map((v) => (
+                <span key={v.id || v.name} className="flex items-center gap-1">
+                  <span className="text-white font-medium">{v.name}</span>
+                  <span className="text-emerald-400 font-bold text-[10px]">✓</span>
+                </span>
+              ))}
+              <span className="text-slate-500 font-mono text-[11px]">• Wer fehlt noch? 👀 •</span>
+            </div>
+
+            {/* Set 2 (for seamless loop) */}
+            <div className="flex items-center gap-4 shrink-0" aria-hidden="true">
+              <span className="font-semibold text-fuchsia-400 flex items-center gap-1">
+                <span>🔥</span>
+                <span>{allVotes.length} {allVotes.length === 1 ? 'Stimme' : 'Stimmen'} schon da:</span>
+              </span>
+              {allVotes.map((v) => (
+                <span key={`clone-${v.id || v.name}`} className="flex items-center gap-1">
+                  <span className="text-white font-medium">{v.name}</span>
+                  <span className="text-emerald-400 font-bold text-[10px]">✓</span>
+                </span>
+              ))}
+              <span className="text-slate-500 font-mono text-[11px]">• Wer fehlt noch? 👀 •</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
