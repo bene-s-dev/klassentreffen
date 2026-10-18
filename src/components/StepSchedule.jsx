@@ -131,9 +131,9 @@ export default function StepSchedule({
           text="An welchen Tagen kannst Du?" 
           className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
         />
-        <p className="text-slate-400 text-xs sm:text-sm flex items-center justify-center gap-1.5">
+        <p className="text-slate-400 text-xs sm:text-sm flex items-center justify-center gap-1.5 font-medium">
           <Clock className="w-3.5 h-3.5 text-fuchsia-400" />
-          <span>Feste Uhrzeit: <strong>{FIXED_TIME}</strong></span>
+          <span>{FIXED_TIME}</span>
         </p>
       </div>
 
