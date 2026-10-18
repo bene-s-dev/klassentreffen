@@ -14,6 +14,7 @@ import {
   getSupabaseClient 
 } from './lib/supabase';
 import { sounds } from './lib/sounds';
+import confetti from 'canvas-confetti';
 
 export default function App() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -97,8 +98,8 @@ export default function App() {
     setPseudoLoaderType(null);
   };
 
-  // Submit vote to Supabase/localStorage
-  const handleFinalSubmit = async (customMsg) => {
+  // Submit vote to Supabase/localStorage and go directly to results
+  const handleFinalSubmit = async () => {
     setIsSubmitting(true);
     const voteData = {
       name: name.trim(),
@@ -106,7 +107,7 @@ export default function App() {
       selected_slots: selectedSlots,
       selected_locations: selectedLocations,
       custom_location: customLocation.trim(),
-      message: (typeof customMsg === 'string' ? customMsg : message).trim()
+      message: message.trim()
     };
 
     const res = await submitVote(voteData);
@@ -114,7 +115,18 @@ export default function App() {
     await loadVotes();
     setIsSubmitting(false);
 
-    triggerTransition('final-submit');
+    try {
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.6 }
+      });
+    } catch {}
+
+    // Directly to results (no loader, no chat!)
+    setCurrentStep(5);
+    setHasVoted(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Delete answer and return to start page
@@ -195,8 +207,9 @@ export default function App() {
               setSelectedLocations={setSelectedLocations}
               customLocation={customLocation}
               setCustomLocation={setCustomLocation}
-              onNext={() => triggerTransition('3-to-4')}
+              onNext={handleFinalSubmit}
               onBack={() => setCurrentStep(2)}
+              isSubmitting={isSubmitting}
             />
           )}
 

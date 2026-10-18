@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Check, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { PRESET_LOCATIONS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
 
@@ -9,7 +9,8 @@ export default function StepLocation({
   customLocation, 
   setCustomLocation, 
   onNext, 
-  onBack
+  onBack,
+  isSubmitting
 }) {
   const [error, setError] = useState('');
 
@@ -137,11 +138,21 @@ export default function StepLocation({
 
           <button
             type="button"
+            disabled={isSubmitting}
             onClick={handleNext}
-            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md shrink-0"
+            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md shrink-0 disabled:opacity-50"
           >
-            <span>Weiter</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>Speichern...</span>
+              </>
+            ) : (
+              <>
+                <span>Weiter</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </>
+            )}
           </button>
 
         </div>

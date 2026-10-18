@@ -4,8 +4,6 @@ const STEPS = [
   { id: 1, label: 'Name' },
   { id: 2, label: 'Wann?' },
   { id: 3, label: 'Wo?' },
-  { id: 4, label: 'Nachricht' },
-  { id: 5, label: 'Ergebnis' },
 ];
 
 export default function StepProgress({ currentStep }) {
@@ -14,7 +12,7 @@ export default function StepProgress({ currentStep }) {
   return (
     <div className="w-full max-w-xs mx-auto px-4 mb-6">
       <div className="flex items-center justify-between">
-        {STEPS.slice(0, 4).map((step) => {
+        {STEPS.map((step) => {
           const isCurrent = step.id === currentStep;
           const isCompleted = step.id < currentStep;
 
