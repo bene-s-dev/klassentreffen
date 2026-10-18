@@ -164,7 +164,7 @@ export default function App() {
           {/* Step 1 Hero Header */}
           {currentStep === 1 && (
             <div className="text-center mb-6 animate-slide-in relative">
-              <h1 className="font-display text-2xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-white via-fuchsia-100 to-white bg-clip-text text-transparent">
+              <h1 className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight animate-title-glow py-1">
                 Klassentreffen 2.0
               </h1>
               <p className="text-xs text-slate-400 font-medium tracking-wide mt-1">

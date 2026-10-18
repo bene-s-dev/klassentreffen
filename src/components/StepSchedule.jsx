@@ -182,28 +182,40 @@ export default function StepSchedule({
                     key={day.id}
                     type="button"
                     onClick={() => toggleDay(day.id)}
-                    className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+                    className={`relative overflow-hidden p-2.5 rounded-xl border text-left transition-all duration-300 ease-out cursor-pointer flex items-center justify-between group ${
                       isSelected
-                        ? 'bg-fuchsia-600/15 border-fuchsia-500 text-white shadow-sm'
-                        : 'bg-slate-950/70 border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white'
+                        ? 'border-fuchsia-500 text-white shadow-[0_0_24px_-4px_rgba(217,70,239,0.35)] scale-[1.01]'
+                        : 'border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white bg-slate-950/80'
                     }`}
                   >
-                    <div>
-                      <div className="font-semibold text-xs">
+                    {/* Animated color fill layer that floods on select and recedes on deselect */}
+                    <div 
+                      className={`absolute inset-0 bg-gradient-to-r from-fuchsia-600/35 via-purple-600/25 to-pink-600/25 transition-all duration-300 ease-out pointer-events-none origin-left ${
+                        isSelected ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                      }`}
+                    />
+
+                    {/* Subtle sweeping white sheen reflection on selection */}
+                    {isSelected && (
+                      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/12 to-transparent animate-glass-shimmer" />
+                    )}
+
+                    <div className="relative z-10">
+                      <div className={`font-semibold text-xs transition-colors duration-200 ${isSelected ? 'text-white font-bold' : 'text-slate-300'}`}>
                         {day.fullDate}
                       </div>
-                      <div className="text-[10px] text-slate-500 font-mono">
+                      <div className={`text-[10px] font-mono transition-colors duration-200 ${isSelected ? 'text-fuchsia-200' : 'text-slate-500'}`}>
                         {FIXED_TIME}
                       </div>
                     </div>
 
-                    <div className="flex items-center shrink-0">
-                      <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${
+                    <div className="relative z-10 flex items-center shrink-0">
+                      <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] transition-all duration-300 ${
                         isSelected
-                          ? 'bg-fuchsia-600 text-white font-bold'
-                          : 'border border-slate-700 bg-slate-950'
+                          ? 'bg-fuchsia-500 text-white font-bold scale-110 shadow-[0_0_10px_rgba(217,70,239,0.6)]'
+                          : 'border border-slate-700 bg-slate-950 scale-100'
                       }`}>
-                        {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        {isSelected && <Check className="w-3 h-3 stroke-[3] animate-fadeIn" />}
                       </div>
                     </div>
                   </button>

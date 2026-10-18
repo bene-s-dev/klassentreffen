@@ -223,6 +223,30 @@
   animation-play-state: paused;
 }
 
+@keyframes titleGlowShift {
+  0% {
+    background-position: 0% 50%;
+    filter: drop-shadow(0 0 12px rgba(217, 70, 239, 0.45)) drop-shadow(0 0 28px rgba(168, 85, 247, 0.25));
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.7)) drop-shadow(0 0 40px rgba(217, 70, 239, 0.4));
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: drop-shadow(0 0 12px rgba(217, 70, 239, 0.45)) drop-shadow(0 0 28px rgba(168, 85, 247, 0.25));
+  }
+}
+
+.animate-title-glow {
+  background: linear-gradient(115deg, #ffffff 0%, #f472b6 25%, #d946ef 50%, #c084fc 75%, #ffffff 100%);
+  background-size: 250% 250%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: titleGlowShift 4.5s ease-in-out infinite;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
