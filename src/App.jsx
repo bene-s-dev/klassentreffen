@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import StepProgress from './components/StepProgress';
 import StepName from './components/StepName';
 import StepSchedule from './components/StepSchedule';
 import StepLocation from './components/StepLocation';
@@ -168,9 +167,6 @@ export default function App() {
               <HeroTitle />
             </div>
           )}
-
-          {/* Minimal Stepper */}
-          <StepProgress currentStep={currentStep} />
 
           {/* Step 1: Name (Mandatory, No Emojis) */}
           {currentStep === 1 && (
