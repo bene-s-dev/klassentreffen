@@ -6,7 +6,6 @@ import { sounds } from '../lib/sounds';
 export default function StepResults({ 
   allVotes, 
   myVote, 
-  onEditVote, 
   onDeleteVote,
   onRefresh
 }) {
@@ -124,17 +123,6 @@ export default function StepResults({
           </div>
 
           <div className="flex items-center gap-2 self-end sm:self-center">
-            <button
-              type="button"
-              onClick={() => {
-                sounds.playPop();
-                onEditVote();
-              }}
-              className="px-2.5 py-1.5 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium cursor-pointer shadow-sm transition-all"
-            >
-              Bearbeiten
-            </button>
-
             {!confirmDelete ? (
               <button
                 type="button"
@@ -237,7 +225,7 @@ export default function StepResults({
                 <th className="py-2.5 pl-3 pr-2 w-[114px] min-w-[114px] max-w-[114px] sm:w-36 sm:min-w-36 whitespace-nowrap bg-slate-900/95 backdrop-blur-md">Tag</th>
                 <th className="p-0 text-center w-[70px] min-w-[70px] max-w-[70px] sm:w-20 sm:min-w-20 whitespace-nowrap bg-slate-900/95 backdrop-blur-md">
                   <div className="py-2 px-1.5 bg-slate-950/70 rounded-t-xl">
-                    <span className="inline-block px-1.5 py-0.5 rounded bg-slate-800/80 text-[10px] text-slate-300 font-semibold uppercase tracking-wider">
+                    <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
                       Stimmen
                     </span>
                   </div>

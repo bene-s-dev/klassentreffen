@@ -310,7 +310,6 @@ export default function App() {
             <StepResults
               allVotes={allVotes}
               myVote={myVote}
-              onEditVote={() => setCurrentStep(1)}
               onDeleteVote={handleDeleteVote}
               onRefresh={loadVotes}
             />
