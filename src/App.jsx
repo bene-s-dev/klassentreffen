@@ -16,40 +16,58 @@ import {
 import { sounds } from './lib/sounds';
 import confetti from 'canvas-confetti';
 
+const getStoredVote = () => {
+  if (typeof window === 'undefined') return null;
+  try {
+    const saved = localStorage.getItem('klassentreffen_my_vote');
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+};
+
 export default function App() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [name, setName] = useState('');
-  const [selectedSlots, setSelectedSlots] = useState([]);
-  const [selectedLocations, setSelectedLocations] = useState([]);
-  const [customLocation, setCustomLocation] = useState('');
-  const [message, setMessage] = useState('');
+  const initialVote = getStoredVote();
+  const [currentStep, setCurrentStep] = useState(initialVote ? 5 : 1);
+  const [name, setName] = useState(initialVote?.name || '');
+  const [selectedSlots, setSelectedSlots] = useState(initialVote?.selected_slots || []);
+  const [selectedLocations, setSelectedLocations] = useState(initialVote?.selected_locations || []);
+  const [customLocation, setCustomLocation] = useState(initialVote?.custom_location || '');
+  const [message, setMessage] = useState(initialVote?.message || '');
 
   const [allVotes, setAllVotes] = useState([]);
-  const [myVote, setMyVote] = useState(null);
-  const [hasVoted, setHasVoted] = useState(false);
+  const [myVote, setMyVote] = useState(initialVote);
+  const [hasVoted, setHasVoted] = useState(Boolean(initialVote));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pseudoLoaderType, setPseudoLoaderType] = useState(null);
+
+  // Device lock guard: if an answer is already submitted on this device, lock to results page (step 5)
+  useEffect(() => {
+    if (hasVoted && currentStep !== 5) {
+      setCurrentStep(5);
+    }
+  }, [hasVoted, currentStep]);
 
   // Load initial data and existing vote
   const loadVotes = useCallback(async () => {
     const votes = await fetchAllVotes();
     setAllVotes(votes);
 
-    if (typeof window !== 'undefined') {
-      const savedMyVote = localStorage.getItem('klassentreffen_my_vote');
-      if (savedMyVote) {
-        try {
-          const parsed = JSON.parse(savedMyVote);
-          setMyVote(parsed);
-          setHasVoted(true);
-          setName(parsed.name || '');
-          setSelectedSlots(parsed.selected_slots || []);
-          setSelectedLocations(parsed.selected_locations || []);
-          setCustomLocation(parsed.custom_location || '');
-          setMessage(parsed.message || '');
-          setCurrentStep(5);
-        } catch {}
-      }
+    const savedMyVote = getStoredVote();
+    if (savedMyVote) {
+      const found = votes.find(
+        v => (v.id && savedMyVote.id && v.id === savedMyVote.id) || 
+             (v.name && savedMyVote.name && v.name.toLowerCase() === savedMyVote.name.toLowerCase())
+      );
+      const activeVote = found || savedMyVote;
+      setMyVote(activeVote);
+      setHasVoted(true);
+      setName(activeVote.name || '');
+      setSelectedSlots(activeVote.selected_slots || []);
+      setSelectedLocations(activeVote.selected_locations || []);
+      setCustomLocation(activeVote.custom_location || '');
+      setMessage(activeVote.message || '');
+      setCurrentStep(5);
     }
   }, []);
 
