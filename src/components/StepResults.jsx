@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Calendar, MapPin, Trash2, RefreshCw, Code2 } from 'lucide-react';
 import { ALL_DAYS, FIXED_TIME, PRESET_LOCATIONS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
+import AiTitle from './AiTitle';
 
 export default function StepResults({ 
   allVotes, 
@@ -81,9 +82,10 @@ export default function StepResults({
       
       {/* Title */}
       <div className="text-center mb-5">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">
-          Ergebnisse 🗓️
-        </h2>
+        <AiTitle 
+          text="Ergebnisse 🗓️" 
+          className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight" 
+        />
       </div>
 
       {/* WINNER BANNER with White Glass Shimmer Reflection */}

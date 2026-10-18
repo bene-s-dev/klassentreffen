@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Check, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { PRESET_LOCATIONS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
+import AiTitle from './AiTitle';
 
 export default function StepLocation({ 
   selectedLocations, 
@@ -40,9 +41,10 @@ export default function StepLocation({
       
       {/* Title */}
       <div className="text-center mb-4">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
-          Wo soll es hingehen?
-        </h2>
+        <AiTitle 
+          text="Wo soll es hingehen?" 
+          className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
+        />
         <p className="text-slate-400 text-xs sm:text-sm">
           Wähl deine Favoriten oder schlag einen eigenen Spot vor.
         </p>

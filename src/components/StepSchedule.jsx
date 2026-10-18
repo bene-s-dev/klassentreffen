@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Check, ArrowRight, ArrowLeft, RotateCcw, Clock } from 'lucide-react';
 import { WEEKENDS, FIXED_TIME } from '../lib/constants';
 import { sounds } from '../lib/sounds';
+import AiTitle from './AiTitle';
 
 export default function StepSchedule({ 
   selectedSlots, 
@@ -99,9 +100,10 @@ export default function StepSchedule({
       
       {/* Title */}
       <div className="text-center mb-4">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1">
-          An welchen Tagen kannst du?
-        </h2>
+        <AiTitle 
+          text="An welchen Tagen kannst du?" 
+          className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
+        />
         <p className="text-slate-400 text-xs sm:text-sm flex items-center justify-center gap-1.5">
           <Clock className="w-3.5 h-3.5 text-fuchsia-400" />
           <span>Feste Uhrzeit: <strong>{FIXED_TIME}</strong></span>

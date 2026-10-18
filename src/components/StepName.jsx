@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, ShieldAlert } from 'lucide-react';
 import { sounds } from '../lib/sounds';
+import AiTitle from './AiTitle';
 
 export default function StepName({ name, setName, onNext, allVotes = [] }) {
   const [error, setError] = useState('');
@@ -44,9 +45,10 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
         
         {/* Title */}
         <div className="text-center mb-4">
-          <h2 className="font-display text-2xl font-bold text-white tracking-tight mb-1">
-            Wer bist du?
-          </h2>
+          <AiTitle 
+            text="Wer bist du?" 
+            className="font-display text-2xl font-bold text-white tracking-tight mb-1" 
+          />
           <p className="text-slate-400 text-xs">
             Trag deinen Namen ein, um abzustimmen.
           </p>
