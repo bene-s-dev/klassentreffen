@@ -48,7 +48,7 @@ export default function PseudoLoaderModal({
   const getAiMessage = () => {
     switch (transitionType) {
       case '1-to-2':
-        return `"${cleanName}" steht tatsächlich im Klassenbuch! Ich habe gehört deine versiffte Schürze aus dem Kochunterricht hängt noch im Spint.`;
+        return `"${cleanName}" steht tatsächlich im Klassenbuch! Ich habe gehört deine versiffte Schürze aus dem Kochunterricht hängt noch im Spind.`;
       
       case '2-to-3': {
         const tagWord = selectedSlotsCount === 1 ? 'Tag' : 'Tage';
