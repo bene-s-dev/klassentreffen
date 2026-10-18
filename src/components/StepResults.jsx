@@ -11,7 +11,6 @@ export default function StepResults({
   onDeleteVote,
   onRefresh
 }) {
-  const [reactions, setReactions] = useState({});
 
   // Calculate day stats
   const dayStats = useMemo(() => {
@@ -68,14 +67,6 @@ export default function StepResults({
     const sortedLocs = Object.values(locCounts).sort((a, b) => b.count - a.count);
     return { sortedLocs, customLocs };
   }, [allVotes]);
-
-  const handleAddReaction = (messageId, emoji) => {
-    sounds.playPop();
-    setReactions(prev => {
-      const key = `${messageId}-${emoji}`;
-      return { ...prev, [key]: (prev[key] || 0) + 1 };
-    });
-  };
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4 pb-20 animate-slide-in">
@@ -284,25 +275,9 @@ export default function StepResults({
                         </span>
                       </div>
 
-                      <p className="text-slate-300 italic mb-2">
+                      <p className="text-slate-300 italic">
                         &ldquo;{vote.message}&rdquo;
                       </p>
-
-                      <div className="flex items-center gap-1.5">
-                        {['🔥', '👏', '🍻'].map((emoji) => {
-                          const count = reactions[`${msgId}-${emoji}`] || 0;
-                          return (
-                            <button
-                              key={emoji}
-                              type="button"
-                              onClick={() => handleAddReaction(msgId, emoji)}
-                              className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[11px] text-slate-400 hover:text-white cursor-pointer"
-                            >
-                              {emoji} {count > 0 && <span className="font-bold">{count}</span>}
-                            </button>
-                          );
-                        })}
-                      </div>
                     </div>
                   );
                 })}
