@@ -1,48 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Default mock data with simple day IDs
-export const INITIAL_MOCK_VOTES = [
-  {
-    id: 'mock-1',
-    name: 'Kevin (Klassenclown)',
-    avatar: '🤡',
-    created_at: new Date(Date.now() - 3600000 * 5).toISOString(),
-    selected_slots: ['we-1-sat', 'we-2-fri', 'we-2-sat', 'we-3-sat', 'we-4-sat', 'we-6-sat'],
-    selected_locations: ['bar_restaurant', 'action'],
-    custom_location: 'Späti-Tour durchs alte Viertel mit Sterni',
-    message: 'Lowkey habe ich mich 0 verändert, bin immer noch 10 min zu spät! Wer nicht kommt ist eh lost.'
-  },
-  {
-    id: 'mock-2',
-    name: 'Lisa (1,0 Schnitt)',
-    avatar: '📚',
-    created_at: new Date(Date.now() - 3600000 * 3).toISOString(),
-    selected_slots: ['we-1-fri', 'we-1-sat', 'we-2-sat', 'we-3-sat', 'we-6-fri', 'we-6-sat'],
-    selected_locations: ['bar_restaurant', 'outdoor'],
-    custom_location: '',
-    message: 'Ich hab schon die alte WhatsApp-Gruppe reaktiviert! Freu mich so auf euch, no cap! 🥰'
-  },
-  {
-    id: 'mock-3',
-    name: 'Tobi (Krypto-Grind)',
-    avatar: '🚀',
-    created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
-    selected_slots: ['we-2-fri', 'we-2-sat', 'we-3-fri', 'we-3-sat', 'we-6-sat'],
-    selected_locations: ['action', 'bar_restaurant'],
-    custom_location: 'Kastanienhang Aussichtspunkt',
-    message: 'Erste Runde geht auf meinen Nacken! Scheppert anders diesmal 🔥'
-  },
-  {
-    id: 'mock-4',
-    name: 'Sarah (Sportskanone)',
-    avatar: '⚡',
-    created_at: new Date(Date.now() - 3600000 * 1).toISOString(),
-    selected_slots: ['we-1-sat', 'we-2-sat', 'we-3-sat', 'we-4-sat', 'we-6-sun'],
-    selected_locations: ['outdoor', 'bar_restaurant'],
-    custom_location: '',
-    message: 'Dreisam oder Park wäre peak Nostalgie! Bitte bringt alte Jahrbuch-Fotos mit haha 📸'
-  }
-];
+// No mock data - only real participant votes
+export const INITIAL_MOCK_VOTES = [];
 
 
 export function getSupabaseCredentials() {
@@ -96,27 +55,31 @@ export async function fetchAllVotes() {
           .order('created_at', { ascending: false });
       }
 
-      if (!res.error && res.data && res.data.length > 0) {
+      if (!res.error && Array.isArray(res.data)) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('klassentreffen_local_votes', JSON.stringify(res.data));
+        }
         return res.data;
       }
     } catch {}
   }
 
-  // Local storage fallback
+  // Local storage fallback (real votes only)
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('klassentreffen_local_votes');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+        if (Array.isArray(parsed)) {
+          const realVotes = parsed.filter(v => !String(v.id).startsWith('mock-'));
+          localStorage.setItem('klassentreffen_local_votes', JSON.stringify(realVotes));
+          return realVotes;
         }
       } catch {}
     }
-    localStorage.setItem('klassentreffen_local_votes', JSON.stringify(INITIAL_MOCK_VOTES));
-    return INITIAL_MOCK_VOTES;
+    return [];
   }
-  return INITIAL_MOCK_VOTES;
+  return [];
 }
 
 export async function submitVote(voteData) {
@@ -153,7 +116,7 @@ export async function submitVote(voteData) {
     const current = await fetchAllVotes();
     const updated = [
       { ...newVote, id: newVote.id || 'local-' + Date.now() },
-      ...current.filter(v => v.name.toLowerCase() !== newVote.name.toLowerCase())
+      ...current.filter(v => v.name.toLowerCase() !== newVote.name.toLowerCase() && !String(v.id).startsWith('mock-'))
     ];
     localStorage.setItem('klassentreffen_local_votes', JSON.stringify(updated));
     localStorage.setItem('klassentreffen_my_vote', JSON.stringify(newVote));
@@ -189,7 +152,7 @@ export async function deleteVote(voteId, voterName) {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('klassentreffen_my_vote');
     const current = await fetchAllVotes();
-    const updated = current.filter(v => v.name.toLowerCase() !== (voterName || '').toLowerCase());
+    const updated = current.filter(v => v.name.toLowerCase() !== (voterName || '').toLowerCase() && !String(v.id).startsWith('mock-'));
     localStorage.setItem('klassentreffen_local_votes', JSON.stringify(updated));
   }
 

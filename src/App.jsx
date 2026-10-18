@@ -20,7 +20,13 @@ const getStoredVote = () => {
   if (typeof window === 'undefined') return null;
   try {
     const saved = localStorage.getItem('klassentreffen_my_vote');
-    return saved ? JSON.parse(saved) : null;
+    if (!saved) return null;
+    const parsed = JSON.parse(saved);
+    if (parsed && String(parsed.id).startsWith('mock-')) {
+      localStorage.removeItem('klassentreffen_my_vote');
+      return null;
+    }
+    return parsed;
   } catch {
     return null;
   }

@@ -71,14 +71,28 @@ export default function StepSchedule({
 
   const toggleWeekend = (we) => {
     setError('');
-    const weekendDayIds = we.days.map(d => d.id);
-    const isAllSelected = weekendDayIds.every(id => selectedSlots.includes(id));
+    const weekendDayIds = we.days.map((d) => d.id);
+    const isAllSelected = weekendDayIds.every((id) => selectedSlots.includes(id));
+
     if (isAllSelected) {
       sounds.playToggle(false);
-      setSelectedSlots(selectedSlots.filter(id => !weekendDayIds.includes(id)));
+      setSelectedSlots((prev) => prev.filter((id) => !weekendDayIds.includes(id)));
     } else {
+      const daysToSelect = we.days.map((d) => d.id);
+
+      // Stagger activation: Day 1 immediately, Day 2 at 100ms, Day 3 at 200ms
       sounds.playPop();
-      setSelectedSlots(Array.from(new Set([...selectedSlots, ...weekendDayIds])));
+      setSelectedSlots((prev) => Array.from(new Set([...prev, daysToSelect[0]])));
+
+      setTimeout(() => {
+        sounds.playPop();
+        setSelectedSlots((prev) => Array.from(new Set([...prev, daysToSelect[1]])));
+      }, 100);
+
+      setTimeout(() => {
+        sounds.playPop();
+        setSelectedSlots((prev) => Array.from(new Set([...prev, daysToSelect[2]])));
+      }, 200);
     }
   };
 
