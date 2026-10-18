@@ -52,7 +52,7 @@ export default function PseudoLoaderModal({
       
       case '2-to-3': {
         const tagWord = selectedSlotsCount === 1 ? 'Tag' : 'Tage';
-        return `Per pq-Formel berechnet: x₁,₂ = ${selectedSlotsCount} ${tagWord} im Rennen! Wer hätte gedacht, dass man den Mist nach der 10. Klasse doch noch mal braucht.`;
+        return `x₁,₂ = ${selectedSlotsCount} ${tagWord} ausgewählt. Besser als nichts.`;
       }
       
       case '3-to-4':
