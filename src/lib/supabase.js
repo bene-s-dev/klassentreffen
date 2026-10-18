@@ -1,17 +1,20 @@
 import { createClient } from '@supabase/supabase-js';
 
+// Default production Supabase credentials (public anon client)
+export const PROD_SUPABASE_URL = 'https://odsghowxbgqnfsyjstcb.supabase.co';
+export const PROD_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kc2dob3d4YmdxbmZzeWpzdGNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4Njk1MTMsImV4cCI6MjA5NDQ0NTUxM30.-3ns3ckkDcBClXix43lek-TKehfv_THqYsqkvGUf1HU';
+
 // No mock data - only real participant votes
 export const INITIAL_MOCK_VOTES = [];
 
-
 export function getSupabaseCredentials() {
-  const envUrl = import.meta.env.VITE_SUPABASE_URL;
-  const envKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const envUrl = typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL;
+  const envKey = typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY;
   const localUrl = typeof window !== 'undefined' ? localStorage.getItem('supabase_custom_url') : null;
   const localKey = typeof window !== 'undefined' ? localStorage.getItem('supabase_custom_key') : null;
 
-  const url = localUrl || envUrl || '';
-  const key = localKey || envKey || '';
+  const url = localUrl || envUrl || PROD_SUPABASE_URL;
+  const key = localKey || envKey || PROD_SUPABASE_ANON_KEY;
 
   const isValid = Boolean(url && url.startsWith('http') && key && key.length > 10);
   return { url, key, isConfigured: isValid };
@@ -93,6 +96,14 @@ export async function submitVote(voteData) {
 
   if (client) {
     try {
+      // Lösche vorherige Stimme mit gleichem Namen um Dubletten zu vermeiden
+      if (newVote.name) {
+        await client
+          .from(TABLE_NAME)
+          .delete()
+          .ilike('name', newVote.name);
+      }
+
       let res = await client
         .from(TABLE_NAME)
         .insert([newVote])
@@ -105,11 +116,18 @@ export async function submitVote(voteData) {
           .select();
       }
 
-      if (!res.error && res.data && res.data.length > 0) {
+      if (res.error) {
+        console.error('❌ Supabase Fehler beim Speichern der Stimme:', res.error);
+      } else if (res.data && res.data.length > 0) {
         savedRemote = true;
         newVote.id = res.data[0].id;
+        console.log('✅ Stimme erfolgreich in Supabase gespeichert! ID:', newVote.id);
       }
-    } catch {}
+    } catch (err) {
+      console.error('❌ Netzwerkfehler beim Supabase-Speichern:', err);
+    }
+  } else {
+    console.warn('⚠️ Kein Supabase Client konfiguriert.');
   }
 
   if (typeof window !== 'undefined') {
@@ -140,13 +158,18 @@ export function saveCustomSupabaseConfig(url, key) {
 
 export async function deleteVote(voteId, voterName) {
   const client = getSupabaseClient();
-  if (client && voterName) {
+  if (client) {
     try {
-      await client
-        .from(TABLE_NAME)
-        .delete()
-        .eq('name', voterName);
-    } catch {}
+      if (voteId && !String(voteId).startsWith('local-')) {
+        await client.from(TABLE_NAME).delete().eq('id', voteId);
+      }
+      if (voterName) {
+        await client.from(TABLE_NAME).delete().ilike('name', voterName);
+      }
+      console.log('✅ Stimme erfolgreich in Supabase gelöscht:', voterName || voteId);
+    } catch (err) {
+      console.error('❌ Fehler beim Löschen in Supabase:', err);
+    }
   }
 
   if (typeof window !== 'undefined') {
