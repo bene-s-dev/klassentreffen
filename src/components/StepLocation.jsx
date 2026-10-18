@@ -46,7 +46,7 @@ export default function StepLocation({
           className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
         />
         <p className="text-slate-400 text-xs sm:text-sm">
-          Wähl deine Favoriten oder schlag einen eigenen Spot vor.
+          Wähl Deine Favoriten oder schlag einen eigenen Spot vor.
         </p>
       </div>
 

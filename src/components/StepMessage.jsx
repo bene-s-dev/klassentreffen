@@ -91,7 +91,7 @@ export default function StepMessage({
             rows={3}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Deine Nachricht an alle (kannst du auch leer lassen)..."
+            placeholder="Deine Nachricht an alle (kannst Du auch leer lassen)..."
             maxLength={300}
             className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-xs sm:text-sm focus:outline-none focus:border-fuchsia-500 transition-colors resize-none"
           />

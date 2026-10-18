@@ -14,15 +14,15 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
     switch (currentStep) {
       case 1:
         if (!name.trim()) {
-          return 'Moin! Trag kurz deinen Namen ein. Kein Fake-Name – das Klassenbuch von damals lügt nicht! 🕶️';
+          return 'Moin! Trag kurz Deinen Namen ein. Kein Fake-Name – das Klassenbuch von damals lügt nicht! 🕶️';
         } else {
           return `Ok. "${name}" ist eingeloggt... lowkey Legende! Klick unten auf Weiter 🔥`;
         }
       case 2:
         if (selectedSlotsCount === 0) {
-          return 'Uhrzeit ist immer ab 19:00 Uhr! Kreuz alle Tage an, an denen du kannst. Wer schwänzt, kriegt Klassenbucheintrag! 💀';
+          return 'Uhrzeit ist immer ab 19:00 Uhr! Kreuz alle Tage an, an denen Du kannst. Wer schwänzt, kriegt Klassenbucheintrag! 💀';
         } else if (selectedSlotsCount >= 6) {
-          return `Stark, schon ${selectedSlotsCount} Tage markiert! So motiviert warst du damals nicht mal im Hauswirtschaftsunterricht beim Wäsche mangeln! 🧺`;
+          return `Stark, schon ${selectedSlotsCount} Tage markiert! So motiviert warst Du damals nicht mal im Hauswirtschaftsunterricht beim Wäsche mangeln! 🧺`;
         } else if (selectedSlotsCount >= 3) {
           return `Nice, ${selectedSlotsCount} Tage am Start! Das steigert die Chancen auf einen Volltreffer.`;
         } else {
@@ -35,7 +35,7 @@ export default function NarratorBubble({ currentStep, name, selectedSlotsCount, 
           return 'Gute Wahl! Hauptsache wir müssen hinterher nicht den Tafeldienst machen... 🍻';
         }
       case 4:
-        return 'Fast geschafft! Lass einen Gruß oder eine alte Schul-Anekdote da. (Kannst du auch überspringen) 💬';
+        return 'Fast geschafft! Lass einen Gruß oder eine alte Schul-Anekdote da. (Kannst Du auch überspringen) 💬';
       case 5:
         return 'Eingetragen! Die Stimmen sind ausgewertet. Schick den Link direkt in die WhatsApp-Gruppe! 👑';
       default:

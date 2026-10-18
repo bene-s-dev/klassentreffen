@@ -101,7 +101,7 @@ export default function StepSchedule({
       {/* Title */}
       <div className="text-center mb-4">
         <AiTitle 
-          text="An welchen Tagen kannst du?" 
+          text="An welchen Tagen kannst Du?" 
           className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
         />
         <p className="text-slate-400 text-xs sm:text-sm flex items-center justify-center gap-1.5">

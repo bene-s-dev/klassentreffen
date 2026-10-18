@@ -10,7 +10,7 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
     e?.preventDefault();
     if (!name.trim()) {
       sounds.playToggle(false);
-      setError('Bitte trag deinen Namen ein.');
+      setError('Bitte trag Deinen Namen ein.');
       return;
     }
     setError('');
@@ -35,11 +35,11 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
         {/* Title */}
         <div className="text-center mb-4">
           <AiTitle 
-            text="Wer bist du?" 
+            text="Wer bist Du?" 
             className="font-display text-2xl font-bold text-white tracking-tight mb-1" 
           />
           <p className="text-slate-400 text-xs">
-            Trag deinen Namen ein, um abzustimmen.
+            Trag Deinen Namen ein, um abzustimmen.
           </p>
         </div>
 

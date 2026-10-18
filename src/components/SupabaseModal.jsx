@@ -103,7 +103,7 @@ alter publication supabase_realtime add table public.votes;
         {/* Info Note */}
         <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-white/10 mb-6 text-xs text-slate-300 leading-relaxed">
           <p>
-            💡 <strong className="text-white">Kein Stress:</strong> Die App funktioniert auch ohne Supabase komplett mit interaktiven Mock-Stimmen &amp; Browser-Speicher! Wenn du Live-Sync willst, trage hier einfach deine Supabase Credentials ein.
+            💡 <strong className="text-white">Kein Stress:</strong> Die App funktioniert auch ohne Supabase komplett mit interaktiven Mock-Stimmen &amp; Browser-Speicher! Wenn Du Live-Sync willst, trage hier einfach Deine Supabase Credentials ein.
           </p>
         </div>
 
@@ -168,7 +168,7 @@ alter publication supabase_realtime add table public.votes;
             </button>
           </div>
           <p className="text-slate-400 text-[11px] leading-relaxed">
-            Einfach in deinem Supabase Dashboard auf <strong>SQL Editor</strong> klicken, einfügen und auf <strong>Run</strong> drücken! Schon ist die Tabelle fertig.
+            Einfach in Deinem Supabase Dashboard auf <strong>SQL Editor</strong> klicken, einfügen und auf <strong>Run</strong> drücken! Schon ist die Tabelle fertig.
           </p>
         </div>
 

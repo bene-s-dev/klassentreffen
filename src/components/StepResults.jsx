@@ -115,12 +115,12 @@ export default function StepResults({
             type="button"
             onClick={() => {
               sounds.playToggle(false);
-              if (window.confirm('Möchtest du deine Antwort wirklich löschen?')) {
+              if (window.confirm('Möchtest Du Deine Antwort wirklich löschen?')) {
                 onDeleteVote();
               }
             }}
             className="px-2.5 py-1.5 rounded-xl gradient-btn-danger text-rose-300 hover:text-rose-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm self-start sm:self-auto"
-            title="Löscht deine Stimme und bringt dich zur Startseite"
+            title="Löscht Deine Stimme und bringt Dich zur Startseite"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Meine Antwort löschen</span>
