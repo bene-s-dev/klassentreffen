@@ -29,17 +29,6 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
         className="w-64 h-64 rounded-full bg-indigo-600/15 blur-3xl absolute -bottom-10 -right-12 animate-pulse-slow pointer-events-none -z-10" 
       />
 
-      {/* Floating decorative mini-badges */}
-      <div className="hidden sm:flex items-center gap-1.5 absolute -top-4 -right-4 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-fuchsia-500/30 text-[11px] text-fuchsia-300 font-medium shadow-lg animate-float pointer-events-none z-20">
-        <span>🎒</span>
-        <span>Klassenbuch</span>
-      </div>
-
-      <div className="hidden sm:flex items-center gap-1.5 absolute -bottom-3 -left-4 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-indigo-500/30 text-[11px] text-indigo-300 font-medium shadow-lg animate-float-delayed pointer-events-none z-20">
-        <span>🗓️</span>
-        <span>Termine</span>
-      </div>
-
       {/* Card with subtle glowing shadow */}
       <div className="rounded-2xl bg-slate-900/95 backdrop-blur-md border border-slate-800 p-6 sm:p-7 shadow-[0_0_45px_-10px_rgba(192,38,211,0.25)] hover:shadow-[0_0_60px_-5px_rgba(192,38,211,0.35)] transition-shadow duration-500 relative z-10">
         
