@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Calendar, MapPin, Edit3, Trash2, RefreshCw, Code2 } from 'lucide-react';
+import { Calendar, MapPin, Trash2, RefreshCw, Code2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { ALL_DAYS, FIXED_TIME, PRESET_LOCATIONS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
@@ -118,17 +118,6 @@ export default function StepResults({
 
           {/* Action buttons (Edit or Delete answer - NO share button) */}
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                sounds.playPop();
-                onEditVote();
-              }}
-              className="px-3 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
-            >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span>Bearbeiten</span>
-            </button>
 
             <button
               type="button"
