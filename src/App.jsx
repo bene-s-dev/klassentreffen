@@ -148,6 +148,23 @@ export default function App() {
         
         <main className="max-w-4xl w-full mx-auto px-4">
           
+          {/* Step 1 Hero Header */}
+          {currentStep === 1 && (
+            <div className="text-center mb-6 animate-slide-in">
+              <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Klassentreffen 2.0
+              </h1>
+              <p className="text-xs text-slate-400 font-medium tracking-wide mt-0.5">
+                Orga-Tool
+              </p>
+              <div className="mt-1">
+                <span className="text-[10px] text-fuchsia-400 font-mono tracking-wider uppercase font-semibold">
+                  powered by Bene
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Minimal Stepper */}
           <StepProgress currentStep={currentStep} />
 
