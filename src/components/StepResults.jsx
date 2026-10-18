@@ -156,10 +156,14 @@ export default function StepResults({
             <thead>
               <tr className="border-b border-slate-800 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                 <th className="py-2 pl-3 pr-2 w-[114px] min-w-[114px] max-w-[114px] sm:w-36 sm:min-w-36 whitespace-nowrap">Tag</th>
-                <th className="py-2 px-2 text-center w-[70px] min-w-[70px] max-w-[70px] sm:w-20 sm:min-w-20 whitespace-nowrap">Stimmen</th>
+                <th className="py-2 px-2 text-center w-[70px] min-w-[70px] max-w-[70px] sm:w-20 sm:min-w-20 whitespace-nowrap bg-slate-950/60 border-r border-slate-700/70">
+                  <span className="inline-block px-1.5 py-0.5 rounded bg-slate-800/80 text-[10px] text-slate-300 font-semibold uppercase tracking-wider">
+                    Stimmen
+                  </span>
+                </th>
                 {allVotes.map((v) => (
                   <th key={v.id || v.name} className="py-2 px-1.5 text-center w-[58px] min-w-[58px] max-w-[58px] sm:w-16 sm:min-w-16" title={v.name}>
-                    <span className="text-[11px] text-slate-300 truncate max-w-[54px] block font-medium mx-auto">
+                    <span className="text-[11px] text-fuchsia-300 truncate max-w-[54px] block font-semibold mx-auto">
                       {v.name.split(' ')[0]}
                     </span>
                   </th>
@@ -179,14 +183,14 @@ export default function StepResults({
                       isTop ? 'bg-amber-500/5' : 'hover:bg-slate-850'
                     }`}
                   >
-                    <td className="py-2 pl-3 pr-2 w-[114px] min-w-[114px] max-w-[114px] sm:w-36 sm:min-w-36 whitespace-nowrap">
+                    <td className="py-2.5 pl-3 pr-2 w-[114px] min-w-[114px] max-w-[114px] sm:w-36 sm:min-w-36 whitespace-nowrap">
                       <span className="font-semibold text-white text-xs">
                         {day.resultDate || day.fullDate}
                       </span>
                     </td>
 
-                    <td className="py-2 px-2 text-center w-[70px] min-w-[70px] max-w-[70px] sm:w-20 sm:min-w-20">
-                      <span className={`font-bold text-xs ${isTop ? 'text-amber-400' : 'text-slate-300'}`}>
+                    <td className="py-2.5 px-2 text-center w-[70px] min-w-[70px] max-w-[70px] sm:w-20 sm:min-w-20 bg-slate-950/50 border-r border-slate-700/70">
+                      <span className={`font-mono font-bold text-xs ${isTop ? 'text-amber-400' : 'text-slate-200'}`}>
                         {day.votes}
                       </span>
                       <div className="w-10 bg-slate-800 rounded-full h-1 mx-auto mt-1 overflow-hidden">
@@ -200,11 +204,13 @@ export default function StepResults({
                     {allVotes.map((v) => {
                       const canAttend = (v.selected_slots || []).includes(day.id);
                       return (
-                        <td key={v.id || v.name} className="py-2 px-1.5 text-center w-[58px] min-w-[58px] max-w-[58px] sm:w-16 sm:min-w-16">
+                        <td key={v.id || v.name} className="py-2.5 px-1.5 text-center w-[58px] min-w-[58px] max-w-[58px] sm:w-16 sm:min-w-16">
                           {canAttend ? (
-                            <span className="text-emerald-400 font-bold text-xs">✓</span>
+                            <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-emerald-500/15 text-emerald-400 font-bold text-xs">
+                              ✓
+                            </span>
                           ) : (
-                            <span className="text-slate-700 text-xs">–</span>
+                            <span className="text-slate-700 text-xs font-mono">–</span>
                           )}
                         </td>
                       );
