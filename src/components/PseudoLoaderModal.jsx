@@ -48,7 +48,7 @@ export default function PseudoLoaderModal({
   const getAiMessage = () => {
     switch (transitionType) {
       case '1-to-2':
-        return `"${cleanName}" steht tatsächlich im Klassenbuch! Ich habe gehört Deine versiffte Schürze aus dem Kochunterricht hängt noch im Spind.`;
+        return `"${cleanName}" steht tatsächlich im Klassenbuch!\n Ich habe gehört Deine versiffte Schürze aus dem Kochunterricht hängt noch im Spind.`;
       
       case '2-to-3': {
         const tagWord = selectedSlotsCount === 1 ? 'Tag' : 'Tage';
@@ -68,11 +68,11 @@ export default function PseudoLoaderModal({
 
   const aiMessage = getAiMessage();
 
-  // Phase 1: Loader runs ~2.4 seconds
+  // Phase 1: Loader runs ~2.4s (first loader 2/3 time = 1.6s)
   useEffect(() => {
     sounds.playPop();
     const startTime = Date.now();
-    const duration = 2400; // 2.4 seconds
+    const duration = transitionType === '1-to-2' ? 1600 : 2400;
 
     const timer = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -180,9 +180,9 @@ export default function PseudoLoaderModal({
                 {config.icon}
               </div>
 
-              {/* Pure text with fixed height - does NOT change size with typing progress */}
-              <div className="h-20 sm:h-24 flex items-center justify-center px-1 overflow-hidden">
-                <p className="text-sm sm:text-base text-slate-100 font-medium leading-relaxed">
+              {/* Pure text with multiline support */}
+              <div className="min-h-[5.5rem] flex items-center justify-center px-1">
+                <p className="text-sm sm:text-base text-slate-100 font-medium leading-relaxed whitespace-pre-line">
                   {displayedText}
                   {!isTypingDone && (
                     <span className="inline-block w-1.5 h-4 ml-1 bg-fuchsia-400 animate-pulse align-middle" />
