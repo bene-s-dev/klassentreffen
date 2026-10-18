@@ -119,7 +119,7 @@ export default function StepLocation({
       )}
 
       {/* Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur-md bg-slate-950/85">
+      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 pointer-events-none">
         <div className="max-w-xl mx-auto flex items-center justify-between gap-3">
           
           <button
@@ -128,13 +128,13 @@ export default function StepLocation({
               sounds.playPop();
               onBack();
             }}
-            className="px-3 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
+            className="pointer-events-auto px-3.5 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-md"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Zurück</span>
           </button>
 
-          <span className="text-xs text-slate-300 font-medium whitespace-nowrap">
+          <span className="pointer-events-auto text-xs text-slate-300 font-medium whitespace-nowrap">
             <strong className="text-white font-semibold">
               {selectedLocations.length + (customLocation.trim() ? 1 : 0)}
             </strong> gewählt
@@ -144,7 +144,7 @@ export default function StepLocation({
             type="button"
             disabled={isSubmitting}
             onClick={handleNext}
-            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md shrink-0 disabled:opacity-50"
+            className="pointer-events-auto px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md shrink-0 disabled:opacity-50"
           >
             {isSubmitting ? (
               <>
