@@ -92,7 +92,7 @@ export default function StepResults({
               Aktuell beliebtester Termin
             </span>
             <h3 className="font-display font-bold text-lg sm:text-xl text-white">
-              {dayStats.topDay.fullDate} • {FIXED_TIME}
+              {dayStats.topDay.resultDate || dayStats.topDay.fullDate} • {FIXED_TIME}
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
               {dayStats.topDay.votes} von {dayStats.totalVoters} Stimmen ({Math.round((dayStats.topDay.votes / Math.max(1, dayStats.totalVoters)) * 100)}%)
@@ -128,18 +128,19 @@ export default function StepResults({
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[450px]">
+          <table className="text-left border-collapse w-full">
             <thead>
               <tr className="border-b border-slate-800 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                <th className="py-2 px-3">Tag</th>
-                <th className="py-2 px-2 text-center w-20">Stimmen</th>
+                <th className="py-2 pl-3 pr-2 w-28 sm:w-36 whitespace-nowrap">Tag</th>
+                <th className="py-2 px-2 text-center w-16 whitespace-nowrap">Stimmen</th>
                 {allVotes.map((v) => (
-                  <th key={v.id || v.name} className="py-2 px-2 text-center" title={v.name}>
-                    <span className="text-[11px] text-slate-300 truncate max-w-[60px] block font-medium">
+                  <th key={v.id || v.name} className="py-2 px-2 text-center w-14 max-w-[64px]" title={v.name}>
+                    <span className="text-[11px] text-slate-300 truncate max-w-[64px] block font-medium">
                       {v.name.split(' ')[0]}
                     </span>
                   </th>
                 ))}
+                <th className="p-0"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 text-xs">
@@ -154,24 +155,17 @@ export default function StepResults({
                       isTop ? 'bg-amber-500/5' : 'hover:bg-slate-850'
                     }`}
                   >
-                    <td className="py-2 px-3">
-                      <div className="flex items-center gap-1.5 whitespace-nowrap">
-                        <span className="font-semibold text-white text-xs">
-                          {day.fullDate}
-                        </span>
-                        {day.badge && (
-                          <span className="text-[9px] text-amber-300 font-medium px-1 rounded bg-amber-500/10 border border-amber-500/20">
-                            {day.badge}
-                          </span>
-                        )}
-                      </div>
+                    <td className="py-2 pl-3 pr-2 w-28 sm:w-36 whitespace-nowrap">
+                      <span className="font-semibold text-white text-xs">
+                        {day.resultDate || day.fullDate}
+                      </span>
                     </td>
 
-                    <td className="py-2 px-2 text-center">
+                    <td className="py-2 px-2 text-center w-16">
                       <span className={`font-bold text-xs ${isTop ? 'text-amber-400' : 'text-slate-300'}`}>
                         {day.votes}
                       </span>
-                      <div className="w-12 bg-slate-800 rounded-full h-1 mx-auto mt-1 overflow-hidden">
+                      <div className="w-10 bg-slate-800 rounded-full h-1 mx-auto mt-1 overflow-hidden">
                         <div 
                           className={`h-full rounded-full ${isTop ? 'bg-amber-400' : 'bg-fuchsia-500'}`}
                           style={{ width: `${percentage}%` }}
@@ -182,7 +176,7 @@ export default function StepResults({
                     {allVotes.map((v) => {
                       const canAttend = (v.selected_slots || []).includes(day.id);
                       return (
-                        <td key={v.id || v.name} className="py-2 px-2 text-center">
+                        <td key={v.id || v.name} className="py-2 px-2 text-center w-14">
                           {canAttend ? (
                             <span className="text-emerald-400 font-bold text-xs">✓</span>
                           ) : (
@@ -191,6 +185,7 @@ export default function StepResults({
                         </td>
                       );
                     })}
+                    <td className="p-0"></td>
                   </tr>
                 );
               })}

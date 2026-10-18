@@ -243,14 +243,16 @@ export default function StepSchedule({
                     />
 
                     <div className="relative z-10 min-w-0 pr-1">
-                      <div className={`font-semibold text-xs transition-colors duration-200 truncate ${isSelected ? 'text-white font-bold' : 'text-slate-300'}`}>
-                        {day.fullDate}
-                      </div>
-                      {day.badge && (
-                        <span className={`inline-block text-[10px] font-semibold tracking-tight ${isSelected ? 'text-amber-200' : 'text-amber-400'}`}>
-                          {day.badge}
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className={`font-semibold text-xs transition-colors duration-200 ${isSelected ? 'text-white font-bold' : 'text-slate-300'}`}>
+                          {day.fullDate}
                         </span>
-                      )}
+                        {day.badge && (
+                          <span className={`text-[10px] font-semibold tracking-tight ${isSelected ? 'text-amber-200' : 'text-amber-400'}`}>
+                            ({day.badge})
+                          </span>
+                        )}
+                      </div>
                       <div className={`text-[10px] font-mono transition-colors duration-200 ${isSelected ? 'text-fuchsia-200' : 'text-slate-500'}`}>
                         {FIXED_TIME}
                       </div>

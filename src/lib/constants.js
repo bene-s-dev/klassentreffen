@@ -14,12 +14,12 @@ export const WEEKENDS = [
   },
   {
     id: 'we-2',
-    label: 'Wochenende 2 (Ostern 🐣)',
-    range: '26. – 28. März (Ostern 🐣)',
+    label: 'Wochenende 2 (Ostern)',
+    range: '26. – 28. März (Ostern)',
     days: [
-      { id: 'we-2-fri', dayName: 'Karfreitag', date: '26. Mär', fullDate: 'Karfreitag, 26. März', badge: 'Feiertag 🐣' },
-      { id: 'we-2-sat', dayName: 'Karsamstag', date: '27. Mär', fullDate: 'Karsamstag, 27. März', badge: 'Ostern' },
-      { id: 'we-2-sun', dayName: 'Ostersonntag', date: '28. Mär', fullDate: 'Ostersonntag, 28. März', badge: 'Ostern' }
+      { id: 'we-2-fri', dayName: 'Karfreitag', date: '26. Mär', fullDate: 'Karfreitag, 26. März', resultDate: 'Fr, 26. März', badge: 'Feiertag' },
+      { id: 'we-2-sat', dayName: 'Karsamstag', date: '27. Mär', fullDate: 'Karsamstag, 27. März', resultDate: 'Sa, 27. März', badge: 'Ostern' },
+      { id: 'we-2-sun', dayName: 'Ostersonntag', date: '28. Mär', fullDate: 'Ostersonntag, 28. März', resultDate: 'So, 28. März', badge: 'Ostern' }
     ]
   },
   {
