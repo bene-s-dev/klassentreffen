@@ -18,10 +18,11 @@ export default function StepLocation({
   const toggleLocation = (locId) => {
     setError('');
     const exists = selectedLocations.includes(locId);
-    sounds.playToggle(!exists);
     if (exists) {
+      sounds.playToggle(false);
       setSelectedLocations(selectedLocations.filter(id => id !== locId));
     } else {
+      sounds.playPop();
       setSelectedLocations([...selectedLocations, locId]);
     }
   };

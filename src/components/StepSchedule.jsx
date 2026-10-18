@@ -27,10 +27,11 @@ export default function StepSchedule({
   const toggleDay = (dayId) => {
     setError('');
     const exists = selectedSlots.includes(dayId);
-    sounds.playToggle(!exists);
     if (exists) {
+      sounds.playToggle(false);
       setSelectedSlots(selectedSlots.filter(id => id !== dayId));
     } else {
+      sounds.playPop();
       setSelectedSlots([...selectedSlots, dayId]);
     }
   };
