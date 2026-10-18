@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 
 const LOADING_CONFIG = {
@@ -36,7 +36,6 @@ export default function PseudoLoaderModal({
   const [progress, setProgress] = useState(5);
   const [displayedText, setDisplayedText] = useState('');
   const [isTypingDone, setIsTypingDone] = useState(false);
-  const autoFinishTimerRef = useRef(null);
 
   const cleanName = voterName.trim() || 'Schüler/in';
   const config = LOADING_CONFIG[transitionType] || {
@@ -93,7 +92,7 @@ export default function PseudoLoaderModal({
     return () => clearInterval(timer);
   }, []);
 
-  // Phase 2: Typing effect
+  // Phase 2: Typing effect (cannot be skipped, only shows Weiter button when finished)
   useEffect(() => {
     if (phase !== 'typing') return;
 
@@ -101,7 +100,7 @@ export default function PseudoLoaderModal({
     setDisplayedText('');
     setIsTypingDone(false);
 
-    const typingSpeed = 20; // ms per character
+    const typingSpeed = 19; // ms per character
     const typingInterval = setInterval(() => {
       index++;
       setDisplayedText(aiMessage.slice(0, index));
@@ -110,33 +109,20 @@ export default function PseudoLoaderModal({
         clearInterval(typingInterval);
         setIsTypingDone(true);
         sounds.playPop();
-
-        // Auto-continue after 2.3 seconds if user doesn't click "Weiter"
-        autoFinishTimerRef.current = setTimeout(() => {
-          onFinish();
-        }, 2300);
       }
     }, typingSpeed);
 
-    return () => {
-      clearInterval(typingInterval);
-      if (autoFinishTimerRef.current) {
-        clearTimeout(autoFinishTimerRef.current);
-      }
-    };
-  }, [phase, aiMessage, onFinish]);
+    return () => clearInterval(typingInterval);
+  }, [phase, aiMessage]);
 
-  const handleManualContinue = () => {
-    if (autoFinishTimerRef.current) {
-      clearTimeout(autoFinishTimerRef.current);
-    }
+  const handleContinue = () => {
     sounds.playPop();
     onFinish();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xl bg-slate-950/80 animate-fadeIn">
-      <div className="w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xl bg-slate-950/85 animate-fadeIn">
+      <div className="w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-7 shadow-2xl relative text-center">
         
         {phase === 'loading' ? (
           <div className="animate-fadeIn">
@@ -166,51 +152,35 @@ export default function PseudoLoaderModal({
             </div>
           </div>
         ) : (
-          <div className="animate-scaleIn text-left">
-            {/* AI Header */}
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center text-sm">
-                  {config.icon}
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <span>Klassenbuch-KI</span>
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  </h4>
-                  <p className="text-[10px] text-slate-400">{config.badge}</p>
-                </div>
-              </div>
-
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1">
-                <CheckCircle2 className="w-2.5 h-2.5" />
-                <span>Geprüft</span>
-              </span>
+          <div className="animate-fadeIn text-center">
+            {/* Clean Icon */}
+            <div className="w-12 h-12 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 mx-auto mb-4 flex items-center justify-center text-2xl">
+              {config.icon}
             </div>
 
-            {/* Pseudo AI Typing Bubble */}
-            <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800/80 min-h-[4.5rem] mb-4">
-              <p className="text-xs text-slate-200 leading-relaxed font-sans">
+            {/* Pure text without chat bubble */}
+            <div className="min-h-[4.5rem] flex items-center justify-center mb-6 px-1">
+              <p className="text-sm sm:text-base text-slate-100 font-medium leading-relaxed">
                 {displayedText}
                 {!isTypingDone && (
-                  <span className="inline-block w-1.5 h-3.5 ml-1 bg-fuchsia-400 animate-pulse align-middle" />
+                  <span className="inline-block w-1.5 h-4 ml-1 bg-fuchsia-400 animate-pulse align-middle" />
                 )}
               </p>
             </div>
 
-            {/* Action Button - Released immediately or auto after 2.3s */}
-            <button
-              type="button"
-              onClick={handleManualContinue}
-              className={`w-full py-2.5 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all ${
-                isTypingDone
-                  ? 'bg-fuchsia-600 hover:bg-fuchsia-500 text-white shadow-md animate-fadeIn'
-                  : 'bg-slate-800 text-slate-400 hover:text-white'
-              }`}
-            >
-              <span>{isTypingDone ? 'Weiter geht\'s' : 'Überspringen'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            {/* "Weiter" Button appears ONLY when typing is 100% complete (Not skippable while typing) */}
+            {isTypingDone && (
+              <div className="animate-fadeIn">
+                <button
+                  type="button"
+                  onClick={handleContinue}
+                  className="w-full py-2.5 px-4 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md"
+                >
+                  <span>Weiter</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
           </div>
         )}
 
