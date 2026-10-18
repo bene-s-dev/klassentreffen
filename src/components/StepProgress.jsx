@@ -4,7 +4,7 @@ const STEPS = [
   { id: 1, label: 'Name' },
   { id: 2, label: 'Wann?' },
   { id: 3, label: 'Wo?' },
-  { id: 4, label: 'Gruß' },
+  { id: 4, label: 'Nachricht' },
   { id: 5, label: 'Ergebnis' },
 ];
 
