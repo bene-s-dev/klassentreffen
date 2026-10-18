@@ -9,9 +9,9 @@ const LOADING_CONFIG = {
     icon: '📖'
   },
   '2-to-3': {
-    sentence: 'Termine werden mit dem alten Stundenplan und Fehltagen abgeglichen...',
-    badge: 'Stundenplan & Termine',
-    icon: '🗓️'
+    sentence: 'Termine werden per pq-Formel berechnet...',
+    badge: 'pq-Formel & Mathe',
+    icon: '📐'
   },
   '3-to-4': {
     sentence: 'Locations werden in Freiburg geprüft...',
@@ -52,10 +52,7 @@ export default function PseudoLoaderModal({
       
       case '2-to-3': {
         const tagWord = selectedSlotsCount === 1 ? 'Tag' : 'Tage';
-        if (selectedSlotsCount === 1) {
-          return `Nur 1 Tag ausgewählt? So oft hast du damals mindestens pro Woche das Wäsche-Mangeln geschwänzt!`;
-        }
-        return `${selectedSlotsCount} ${tagWord} ausgewählt – so oft hast du damals nicht mal das Wäsche-Mangeln geschwänzt!`;
+        return `Per pq-Formel berechnet: x₁,₂ = ${selectedSlotsCount} ${tagWord} im Rennen! Wer hätte gedacht, dass man den Mist nach der 10. Klasse doch noch mal braucht.`;
       }
       
       case '3-to-4':
