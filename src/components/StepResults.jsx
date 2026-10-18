@@ -114,7 +114,7 @@ export default function StepResults({
             <span className="text-xl select-none">👋</span>
             <div>
               <p className="text-xs sm:text-sm font-semibold text-white">
-                Hey {myVote.name}, Deine Stimme ist erfasst!
+                Danke {myVote.name}, Deine Stimme ist erfasst!
               </p>
               <p className="text-[11px] text-slate-400">
                 Hier siehst Du alle Stimmen & Locations im Live-Vergleich.
