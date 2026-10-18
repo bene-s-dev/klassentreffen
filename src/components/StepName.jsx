@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, ShieldAlert } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 import AiTitle from './AiTitle';
 
+const NAME_EXAMPLES = ['Renate B.', 'Patrick W.', 'Benjamin B.'];
+
 export default function StepName({ name, setName, onNext, allVotes = [] }) {
   const [error, setError] = useState('');
+  const [exampleIndex, setExampleIndex] = useState(0);
+
+  // Cycle through examples if no name is entered
+  useEffect(() => {
+    if (name.trim()) return;
+
+    const timer = setInterval(() => {
+      setExampleIndex((prev) => (prev + 1) % NAME_EXAMPLES.length);
+    }, 2200);
+
+    return () => clearInterval(timer);
+  }, [name]);
 
   const handleNext = (e) => {
     e?.preventDefault();
@@ -56,7 +70,7 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
                 setName(e.target.value);
                 if (error) setError('');
               }}
-              placeholder="z.B. Renate B."
+              placeholder={`z.B. ${NAME_EXAMPLES[exampleIndex]}`}
               maxLength={45}
               autoFocus
               className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-white placeholder-slate-600 text-sm font-medium transition-all focus:outline-none ${
