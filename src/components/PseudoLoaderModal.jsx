@@ -9,9 +9,9 @@ const LOADING_CONFIG = {
     icon: '📖'
   },
   '2-to-3': {
-    sentence: 'Termine werden mit Fehlzeiten an der Heißmangel abgeglichen...',
-    badge: 'Heißmangel & Termine',
-    icon: '🧺'
+    sentence: 'Termine werden mit dem alten Stundenplan und Fehltagen abgeglichen...',
+    badge: 'Stundenplan & Termine',
+    icon: '🗓️'
   },
   '3-to-4': {
     sentence: 'Location wird auf Ambiente und Floristik geprüft...',
