@@ -34,9 +34,6 @@ export default function AiTitle({ text, className = '', as = 'h2', speed = 200 }
           {word}
         </span>
       ))}
-      {visibleCount < words.length && (
-        <span className="inline-block w-1.5 h-5 bg-fuchsia-400 animate-pulse align-middle ml-0.5 rounded-xs" />
-      )}
     </Tag>
   );
 }
