@@ -53,14 +53,15 @@ export default function StepLocation({
 
       {/* 3 Full-Width, Non-Truncated, Clean Cards */}
       <div className="space-y-3 mb-5">
-        {PRESET_LOCATIONS.map((loc) => {
+        {PRESET_LOCATIONS.map((loc, idx) => {
           const isSelected = selectedLocations.includes(loc.id);
 
           return (
             <div
               key={loc.id}
+              style={{ animationDelay: `${idx * 70}ms` }}
               onClick={() => toggleLocation(loc.id)}
-              className={`rounded-2xl p-4 border transition-all cursor-pointer flex items-center justify-between gap-4 ${
+              className={`rounded-2xl p-4 border transition-all cursor-pointer flex items-center justify-between gap-4 animate-cascade active:scale-[0.985] ${
                 isSelected
                   ? 'bg-fuchsia-600/15 border-fuchsia-500 shadow-sm'
                   : 'bg-slate-900 border-slate-800 hover:border-slate-700 hover:bg-slate-850'
@@ -81,11 +82,11 @@ export default function StepLocation({
               <div 
                 className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                   isSelected
-                    ? 'bg-fuchsia-600 text-white'
+                    ? 'bg-fuchsia-600 text-white shadow-[0_0_10px_rgba(217,70,239,0.5)]'
                     : 'border border-slate-700 bg-slate-950'
                 }`}
               >
-                {isSelected && <Check className="w-4 h-4 stroke-[3]" />}
+                {isSelected && <Check className="w-4 h-4 stroke-[3] animate-spring-check" />}
               </div>
             </div>
           );
@@ -93,7 +94,10 @@ export default function StepLocation({
       </div>
 
       {/* Custom Location Box */}
-      <div className="rounded-2xl bg-slate-900/70 border border-slate-800 p-4 mb-4">
+      <div 
+        style={{ animationDelay: '240ms' }}
+        className="rounded-2xl bg-slate-900/70 border border-slate-800 p-4 mb-4 animate-cascade"
+      >
         <label htmlFor="custom-spot" className="block text-xs font-semibold text-slate-300 mb-1.5">
           Eigener Vorschlag? (Optional)
         </label>
@@ -119,7 +123,7 @@ export default function StepLocation({
       )}
 
       {/* Sticky Bottom Bar */}
-      <div className="fixed bottom-8 sm:bottom-7 left-0 right-0 z-40 p-3 pointer-events-none">
+      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 pointer-events-none">
         <div className="max-w-xl mx-auto flex items-center justify-between gap-3">
           
           <button
@@ -128,23 +132,31 @@ export default function StepLocation({
               sounds.playPop();
               onBack();
             }}
-            className="pointer-events-auto px-3.5 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-md"
+            className="pointer-events-auto px-3.5 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95 transition-transform"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Zurück</span>
           </button>
 
-          <span className="pointer-events-auto text-xs text-slate-300 font-medium whitespace-nowrap">
-            <strong className="text-white font-semibold">
-              {selectedLocations.length + (customLocation.trim() ? 1 : 0)}
-            </strong> gewählt
-          </span>
+          {/* Floating Luxury Counter Pill */}
+          <div className="pointer-events-auto px-3.5 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-slate-800 shadow-lg flex items-center gap-2 text-xs text-slate-300 font-medium">
+            <span className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+              (selectedLocations.length + (customLocation.trim() ? 1 : 0)) > 0 
+                ? 'bg-fuchsia-400 shadow-[0_0_8px_rgba(217,70,239,0.8)]' 
+                : 'bg-slate-600'
+            }`} />
+            <span>
+              <strong className="text-white font-semibold">
+                {selectedLocations.length + (customLocation.trim() ? 1 : 0)}
+              </strong> gewählt
+            </span>
+          </div>
 
           <button
             type="button"
             disabled={isSubmitting}
             onClick={handleNext}
-            className="pointer-events-auto px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md shrink-0 disabled:opacity-50"
+            className="pointer-events-auto px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md shrink-0 disabled:opacity-50 active:scale-95 transition-transform"
           >
             {isSubmitting ? (
               <>

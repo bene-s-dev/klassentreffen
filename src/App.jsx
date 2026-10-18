@@ -299,8 +299,8 @@ export default function App() {
         </main>
       </div>
 
-      {/* Global Fixed Bottom Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 z-30 py-2 px-3 bg-slate-950/85 backdrop-blur-md border-t border-white/5 text-center">
+      {/* Global Footer (shows only when scrolling down, not floating) */}
+      <footer className="w-full py-4 px-3 border-t border-white/5 text-center relative z-20">
         <p className="text-[11px] sm:text-xs text-slate-400 font-medium tracking-wide">
           Merian-Klassentreffen 2.0 Orga-Tool <span className="text-fuchsia-400 font-semibold">by Bene</span>
         </p>

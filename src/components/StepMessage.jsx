@@ -88,7 +88,7 @@ export default function StepMessage({
                 key={quote}
                 type="button"
                 onClick={() => addQuote(quote)}
-                className="text-xs px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-xs"
+                className="text-xs px-2.5 py-1 rounded-lg gradient-btn-subtle text-slate-300 hover:text-white transition-all cursor-pointer shadow-xs active:scale-95 hover:-translate-y-0.5"
               >
                 {quote}
               </button>
@@ -118,7 +118,7 @@ export default function StepMessage({
             type="button"
             disabled={isSubmitting}
             onClick={() => handleFinish(true)}
-            className="px-3.5 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
+            className="px-3.5 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 transition-transform"
           >
             <FastForward className="w-3.5 h-3.5" />
             <span>Überspringen</span>
@@ -128,7 +128,7 @@ export default function StepMessage({
             type="button"
             disabled={isSubmitting}
             onClick={() => handleFinish(false)}
-            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
+            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-50 active:scale-95 transition-transform"
           >
             {isSubmitting ? (
               <>
