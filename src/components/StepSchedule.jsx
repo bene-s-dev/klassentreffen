@@ -112,7 +112,7 @@ export default function StepSchedule({
 
 
       {/* Quick shortcuts */}
-      <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800 text-xs">
+      <div className="flex items-center justify-between gap-2 mb-4 text-xs">
         <div className="flex items-center gap-1.5">
           <button
             type="button"

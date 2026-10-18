@@ -93,7 +93,7 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
           <p className="text-center text-xs font-medium text-slate-400 mb-2">
             Diese Personen sind schon dabei:
           </p>
-          <div className="overflow-hidden py-2.5 bg-slate-900/60 border-y border-slate-800/70 backdrop-blur-md [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="overflow-hidden py-2.5 bg-slate-900/40 backdrop-blur-md [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
             <div className="animate-marquee items-center gap-8 text-xs text-slate-200">
               {/* Set 1 */}
               <div className="flex items-center gap-6 shrink-0">
