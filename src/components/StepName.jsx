@@ -36,12 +36,14 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
     <div className="w-full max-w-sm mx-auto px-4 animate-slide-in relative">
       
       {/* Ambient background glow orbs */}
-      <div 
-        className="w-64 h-64 rounded-full bg-fuchsia-600/15 blur-3xl absolute -top-8 -left-12 animate-pulse-slow pointer-events-none -z-10" 
-      />
-      <div 
-        className="w-64 h-64 rounded-full bg-indigo-600/15 blur-3xl absolute -bottom-10 -right-12 animate-pulse-slow pointer-events-none -z-10" 
-      />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div 
+          className="w-64 h-64 rounded-full bg-fuchsia-600/15 blur-3xl absolute -top-8 -left-12 animate-pulse-slow pointer-events-none" 
+        />
+        <div 
+          className="w-64 h-64 rounded-full bg-indigo-600/15 blur-3xl absolute -bottom-10 -right-12 animate-pulse-slow pointer-events-none" 
+        />
+      </div>
 
       {/* Card with subtle glowing shadow */}
       <div className="rounded-2xl bg-slate-900/95 backdrop-blur-md border border-slate-800 p-6 sm:p-7 shadow-[0_0_45px_-10px_rgba(192,38,211,0.25)] hover:shadow-[0_0_60px_-5px_rgba(192,38,211,0.35)] transition-shadow duration-500 relative z-10">
@@ -125,7 +127,7 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
             </div>
           ) : (
             /* Marquee ticker when 5+ people - each name appears once per set */
-            <div className="w-screen relative left-1/2 -translate-x-1/2">
+            <div className="w-full max-w-full overflow-hidden">
               <div className="overflow-hidden py-2.5 bg-slate-900/40 backdrop-blur-md [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
                 <div className="animate-marquee items-center gap-6 text-xs text-slate-200">
                   {/* Set 1 */}

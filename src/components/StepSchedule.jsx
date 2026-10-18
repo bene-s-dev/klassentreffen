@@ -139,8 +139,8 @@ export default function StepSchedule({
 
 
       {/* Quick shortcuts */}
-      <div className="flex items-center justify-between gap-2 mb-4 text-xs">
-        <div className="flex items-center gap-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-4 text-xs">
+        <div className="flex flex-wrap items-center gap-1.5">
           <button
             type="button"
             onClick={toggleAllSaturdays}

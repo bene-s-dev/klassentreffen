@@ -227,20 +227,21 @@ export default function App() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between selection:bg-fuchsia-500 selection:text-white bg-slate-950">
+    <div className="relative min-h-screen w-full max-w-full overflow-x-hidden flex flex-col justify-between selection:bg-fuchsia-500 selection:text-white bg-slate-950">
       <BackgroundEffects />
 
-      {/* Main Container - No Navbar, No Header */}
-      <div className="relative z-10 flex-1 flex flex-col justify-center py-6 sm:py-10">
+      {/* Main Container - Centered Scaling Wrapper */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center py-4 sm:py-8 w-full max-w-full overflow-x-hidden">
         
-        <main className="max-w-4xl w-full mx-auto px-4">
-          
-          {/* Step 1 Hero Header */}
-          {currentStep === 1 && (
-            <div className="text-center mb-6 animate-slide-in relative">
-              <HeroTitle />
-            </div>
-          )}
+        <main className="w-full max-w-3xl mx-auto px-3 sm:px-4 flex flex-col items-center">
+          <div className="w-full max-w-full app-scaling-container">
+            
+            {/* Step 1 Hero Header */}
+            {currentStep === 1 && (
+              <div className="text-center mb-6 animate-slide-in relative w-full">
+                <HeroTitle />
+              </div>
+            )}
 
           {/* Step 1: Name (Mandatory, No Emojis) */}
           {currentStep === 1 && (
@@ -287,6 +288,7 @@ export default function App() {
             />
           )}
 
+          </div>
         </main>
       </div>
 
