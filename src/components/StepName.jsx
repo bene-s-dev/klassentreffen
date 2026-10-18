@@ -3,7 +3,7 @@ import { ArrowRight, ShieldAlert } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 import AiTitle from './AiTitle';
 
-const NAME_EXAMPLES = ['Renate B.', 'Patrick W.', 'Benjamin B.'];
+const NAME_EXAMPLES = ['Patrick W.', 'Benjamin B.'];
 
 export default function StepName({ name, setName, onNext, allVotes = [] }) {
   const [error, setError] = useState('');
