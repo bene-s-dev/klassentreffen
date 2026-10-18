@@ -14,9 +14,9 @@ const LOADING_CONFIG = {
     icon: '🗓️'
   },
   '3-to-4': {
-    sentence: 'Location wird auf Ambiente und Floristik geprüft...',
-    badge: 'Floristik & Solarium',
-    icon: '💐'
+    sentence: 'Locations werden in Freiburg geprüft...',
+    badge: 'Location & Freiburg',
+    icon: '📍'
   },
   'final-submit': {
     sentence: 'Tippgeschwindigkeit wird mit dem 10-Finger-Schreibkurs bei Frau Blessing abgeglichen...',
@@ -59,7 +59,7 @@ export default function PseudoLoaderModal({
       }
       
       case '3-to-4':
-        return `Starke Location! Hoffentlich sind die Blumen vor Ort besser gebunden als damals im Unterricht – und geh vorher nicht zu lang ins Solarium!`;
+        return `Gute Wahl, ich wäre ja lieber ins Solarium gegangen 😎`;
       
       case 'final-submit':
         return `Frau Blessing wäre stolz: Sauber im 10-Finger-System ohne auf die Tastatur zu schauen abgetippt! Deine Stimme ist verewigt. Ab zu den Ergebnissen!`;
