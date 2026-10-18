@@ -80,6 +80,7 @@ export default function App() {
   const [hasVoted, setHasVoted] = useState(Boolean(initialVote));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pseudoLoaderType, setPseudoLoaderType] = useState(null);
+  const [showMessageModal, setShowMessageModal] = useState(false);
 
   // Device lock guard: if an answer is already submitted on this device, lock to results page (step 5)
   useEffect(() => {
@@ -146,9 +147,6 @@ export default function App() {
     } else if (pseudoLoaderType === '2-to-3') {
       setCurrentStep(3);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (pseudoLoaderType === '3-to-4') {
-      setCurrentStep(4);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (pseudoLoaderType === 'final-submit') {
       setCurrentStep(5);
       setHasVoted(true);
@@ -158,21 +156,23 @@ export default function App() {
   };
 
   // Submit vote to Supabase/localStorage and go directly to results
-  const handleFinalSubmit = async () => {
+  const handleFinalSubmit = async (customMessage) => {
     setIsSubmitting(true);
+    const finalMsg = typeof customMessage === 'string' ? customMessage : message;
     const voteData = {
       name: name.trim(),
       avatar: '😎',
       selected_slots: selectedSlots,
       selected_locations: selectedLocations,
       custom_location: customLocation.trim(),
-      message: message.trim()
+      message: finalMsg.trim()
     };
 
     const res = await submitVote(voteData);
     setMyVote(res.vote);
     await loadVotes();
     setIsSubmitting(false);
+    setShowMessageModal(false);
 
     try {
       confetti({
@@ -205,6 +205,7 @@ export default function App() {
     setMessage('');
     setMyVote(null);
     setHasVoted(false);
+    setShowMessageModal(false);
     setCurrentStep(1);
 
     await loadVotes();
@@ -269,23 +270,8 @@ export default function App() {
               setSelectedLocations={setSelectedLocations}
               customLocation={customLocation}
               setCustomLocation={setCustomLocation}
-              onNext={() => triggerTransition('3-to-4')}
+              onNext={() => setShowMessageModal(true)}
               onBack={() => setCurrentStep(2)}
-              isSubmitting={isSubmitting}
-            />
-          )}
-
-          {/* Step 4: Message (Can be skipped) */}
-          {currentStep === 4 && (
-            <StepMessage
-              message={message}
-              setMessage={setMessage}
-              name={name}
-              selectedSlots={selectedSlots}
-              selectedLocations={selectedLocations}
-              customLocation={customLocation}
-              onSubmit={handleFinalSubmit}
-              onBack={() => setCurrentStep(3)}
               isSubmitting={isSubmitting}
             />
           )}
@@ -312,6 +298,21 @@ export default function App() {
           selectedSlotsCount={selectedSlots.length}
           locationsCount={selectedLocations.length + (customLocation.trim() ? 1 : 0)}
           onFinish={handleLoaderFinish}
+        />
+      )}
+
+      {/* Nachrichten Modal directly after location selection */}
+      {showMessageModal && (
+        <StepMessage
+          message={message}
+          setMessage={setMessage}
+          name={name}
+          selectedSlots={selectedSlots}
+          selectedLocations={selectedLocations}
+          customLocation={customLocation}
+          onSubmit={handleFinalSubmit}
+          onClose={() => setShowMessageModal(false)}
+          isSubmitting={isSubmitting}
         />
       )}
     </div>

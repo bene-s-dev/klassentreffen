@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Send, FastForward, Loader2 } from 'lucide-react';
+import React from 'react';
+import { X, Send, FastForward, Loader2 } from 'lucide-react';
 import { SLANG_QUOTES } from '../lib/constants';
 import { sounds } from '../lib/sounds';
 import AiTitle from './AiTitle';
@@ -12,7 +12,7 @@ export default function StepMessage({
   selectedLocations, 
   customLocation, 
   onSubmit, 
-  onBack, 
+  onClose, 
   isSubmitting
 }) {
   const addQuote = (quote) => {
@@ -20,47 +20,66 @@ export default function StepMessage({
     if (!message) {
       setMessage(quote);
     } else {
-      setMessage(`${message} ${quote}`);
+      setMessage(`${message} ${quote}`.trim());
     }
   };
 
   const handleFinish = async (skipMessage = false) => {
     sounds.playSuccess();
-    
     if (skipMessage) {
       setMessage('');
     }
-
     await onSubmit(skipMessage ? '' : message);
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto px-4 pb-24 animate-slide-in">
-      
-      {/* Title */}
-      <div className="text-center mb-4">
-        <AiTitle 
-          text="Gruß an die Klasse 💬" 
-          className="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
-        />
-        <p className="text-slate-400 text-xs sm:text-sm">
-          Optional: Lass eine Nachricht da oder überspringe diesen Schritt.
-        </p>
-      </div>
-
-      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6 shadow-xl mb-6">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !isSubmitting) {
+          sounds.playPop();
+          onClose();
+        }
+      }}
+    >
+      <div className="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6 shadow-2xl relative animate-scaleUp">
         
+        {/* Close Button */}
+        <button
+          type="button"
+          disabled={isSubmitting}
+          onClick={() => {
+            sounds.playPop();
+            onClose();
+          }}
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer disabled:opacity-50"
+          aria-label="Schließen"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        {/* Title */}
+        <div className="text-center mb-4 pr-6">
+          <AiTitle 
+            text="Gruß an die Klasse 💬" 
+            className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight mb-1" 
+          />
+          <p className="text-slate-400 text-xs">
+            Optional: Lass eine Nachricht da oder überspringe diesen Schritt.
+          </p>
+        </div>
+
         {/* Quick summary badge */}
-        <div className="flex items-center justify-between mb-4 text-xs">
+        <div className="flex items-center justify-between mb-3 text-xs px-1 text-slate-400">
           <span className="font-semibold text-white">{name}</span>
-          <span className="text-slate-400">
+          <span>
             {selectedSlots.length} Tage • {selectedLocations.length + (customLocation ? 1 : 0)} Locations
           </span>
         </div>
 
         {/* Quick Quote Pills */}
         <div className="mb-4">
-          <label className="block text-xs font-semibold text-slate-400 mb-2">
+          <label className="block text-[11px] font-semibold text-slate-400 mb-1.5">
             Schnelle Vorlagen
           </label>
           <div className="flex flex-wrap gap-1.5">
@@ -78,7 +97,7 @@ export default function StepMessage({
         </div>
 
         {/* Textarea */}
-        <div className="mb-2">
+        <div className="mb-3">
           <textarea
             rows={3}
             value={message}
@@ -92,59 +111,39 @@ export default function StepMessage({
           </div>
         </div>
 
-      </div>
-
-      {/* Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur-md bg-slate-950/85">
-        <div className="max-w-xl mx-auto flex items-center justify-between gap-3">
-          
+        {/* Modal Action Buttons */}
+        <div className="flex items-center justify-between gap-2.5 pt-2">
           <button
             type="button"
             disabled={isSubmitting}
-            onClick={() => {
-              sounds.playPop();
-              onBack();
-            }}
-            className="px-3 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
+            onClick={() => handleFinish(true)}
+            className="px-3.5 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Zurück</span>
+            <FastForward className="w-3.5 h-3.5" />
+            <span>Überspringen</span>
           </button>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              disabled={isSubmitting}
-              onClick={() => handleFinish(true)}
-              className="px-3.5 py-2 rounded-xl gradient-btn-subtle text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
-            >
-              <FastForward className="w-3.5 h-3.5" />
-              <span>Überspringen</span>
-            </button>
-
-            <button
-              type="button"
-              disabled={isSubmitting}
-              onClick={() => handleFinish(false)}
-              className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Speichern...</span>
-                </>
-              ) : (
-                <>
-                  <span>Fertigstellen</span>
-                  <Send className="w-3.5 h-3.5" />
-                </>
-              )}
-            </button>
-          </div>
-
+          <button
+            type="button"
+            disabled={isSubmitting}
+            onClick={() => handleFinish(false)}
+            className="px-4 py-2 rounded-xl gradient-btn-primary text-white font-display font-semibold text-xs sm:text-sm flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Speichern...</span>
+              </>
+            ) : (
+              <>
+                <span>Abschicken</span>
+                <Send className="w-3.5 h-3.5" />
+              </>
+            )}
+          </button>
         </div>
-      </div>
 
+      </div>
     </div>
   );
 }
