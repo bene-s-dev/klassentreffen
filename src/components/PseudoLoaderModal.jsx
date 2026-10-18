@@ -3,10 +3,11 @@ import { sounds } from '../lib/sounds';
 
 const SINGLE_STEP_LOGS = {
   '1-to-2': 'Name wird mit Klassenbuch verglichen...',
-  '2-to-3': 'Termine werden per pq-Formel verglichen...',
+  '2-to-3': 'Termine werden per pq-Formel berechnet...',
   '3-to-4': 'Locations werden auf Lärmpegel und Zapfhahn-Durchfluss geprüft...',
   'final-submit': 'Nachricht wird auf Stilmittel analysiert...'
 };
+
 
 export default function PseudoLoaderModal({ transitionType, onFinish }) {
   const sentence = SINGLE_STEP_LOGS[transitionType] || 'Daten werden verarbeitet...';
