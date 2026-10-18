@@ -117,9 +117,10 @@ export default function App() {
 
     try {
       confetti({
-        particleCount: 80,
-        spread: 60,
-        origin: { y: 0.6 }
+        particleCount: 85,
+        spread: 65,
+        origin: { y: 0.6 },
+        colors: ['#d946ef', '#c026d3', '#9333ea', '#a855f7', '#ec4899', '#7c3aed', '#3b82f6', '#ffffff']
       });
     } catch {}
 

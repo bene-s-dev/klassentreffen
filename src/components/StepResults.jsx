@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { Calendar, MapPin, Trash2, RefreshCw, Code2 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { ALL_DAYS, FIXED_TIME, PRESET_LOCATIONS } from '../lib/constants';
 import { sounds } from '../lib/sounds';
 
@@ -12,16 +11,6 @@ export default function StepResults({
   onRefresh
 }) {
   const [reactions, setReactions] = useState({});
-
-  React.useEffect(() => {
-    try {
-      confetti({
-        particleCount: 60,
-        spread: 60,
-        origin: { y: 0.3 }
-      });
-    } catch {}
-  }, []);
 
   // Calculate day stats
   const dayStats = useMemo(() => {
