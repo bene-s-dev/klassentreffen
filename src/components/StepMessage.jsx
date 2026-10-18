@@ -61,7 +61,7 @@ export default function StepMessage({
         {/* Title */}
         <div className="text-center mb-4 pr-6">
           <AiTitle 
-            text={name?.trim() ? `${name.trim()}, noch ein Gruß an alle? 💬` : 'Gruß an die Klasse 💬'} 
+            text="Gruß an die Klasse 💬" 
             className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight mb-1" 
           />
           <p className="text-slate-400 text-xs">
@@ -102,7 +102,7 @@ export default function StepMessage({
             rows={3}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder={name?.trim() ? `Deine Nachricht an alle, ${name.trim()} (kannst Du auch leer lassen)...` : 'Deine Nachricht an alle (kannst Du auch leer lassen)...'}
+            placeholder="Deine Nachricht an alle (kannst Du auch leer lassen)..."
             maxLength={300}
             style={{ fontSize: '16px' }}
             className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-base font-normal focus:outline-none focus:border-fuchsia-500 transition-colors resize-none"

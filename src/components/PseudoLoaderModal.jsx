@@ -52,40 +52,17 @@ export default function PseudoLoaderModal({
       
       case '2-to-3': {
         const tagWord = selectedSlotsCount === 1 ? 'Tag' : 'Tage';
-        return `x₁,₂ = ${selectedSlotsCount} ${tagWord} ausgewählt. Starke Auswahl, ${cleanName}! Besser als eine 5 in Mathe.`;
+        return `x₁,₂ = ${selectedSlotsCount} ${tagWord} ausgewählt. Besser als nichts.`;
       }
       
       case '3-to-4':
-        return `Gute Wahl, ${cleanName}! Ich wäre ja lieber ins Solarium gegangen 😎`;
+        return `Gute Wahl, ich wäre ja lieber ins Solarium gegangen 😎`;
       
       case 'final-submit':
-        return `Frau Blessing wäre stolz auf Dich, ${cleanName}: Sauber im 10-Finger-System ohne auf die Tastatur zu schauen abgetippt! Deine Stimme ist verewigt. Ab zu den Ergebnissen!`;
+        return `Frau Blessing wäre stolz: Sauber im 10-Finger-System ohne auf die Tastatur zu schauen abgetippt! Deine Stimme ist verewigt. Ab zu den Ergebnissen!`;
       
       default:
-        return `Eingabe geprüft! Klassenbuch-Eintrag für ${cleanName} erfolgreich aktualisiert.`;
-    }
-  };
-
-  const getLoadingSentence = () => {
-    switch (transitionType) {
-      case '1-to-2':
-        return voterName.trim() 
-          ? `Prüfe Klassenbuch nach "${cleanName}"...` 
-          : 'Name wird mit dem alten Klassenbuch verglichen...';
-      case '2-to-3':
-        return voterName.trim()
-          ? `Termine für ${cleanName} werden per pq-Formel berechnet...`
-          : 'Termine werden per pq-Formel berechnet...';
-      case '3-to-4':
-        return voterName.trim()
-          ? `Locations für ${cleanName} werden in Freiburg geprüft...`
-          : 'Locations werden in Freiburg geprüft...';
-      case 'final-submit':
-        return voterName.trim()
-          ? `Tippgeschwindigkeit von ${cleanName} wird bei Frau Blessing abgeglichen...`
-          : 'Tippgeschwindigkeit wird mit dem 10-Finger-Schreibkurs bei Frau Blessing abgeglichen...';
-      default:
-        return config.sentence;
+        return `Eingabe geprüft! Klassenbuch-Eintrag erfolgreich aktualisiert.`;
     }
   };
 
@@ -179,7 +156,7 @@ export default function PseudoLoaderModal({
               {/* Exactly ONE clear status sentence */}
               <div className="min-h-[2.5rem] flex items-center justify-center px-2">
                 <p className="text-sm font-semibold text-white">
-                  {getLoadingSentence()}
+                  {config.sentence}
                 </p>
               </div>
             </div>

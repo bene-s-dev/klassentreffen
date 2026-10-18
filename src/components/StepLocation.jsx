@@ -44,7 +44,7 @@ export default function StepLocation({
       {/* Title */}
       <div className="text-center mb-4">
         <AiTitle 
-          text={name?.trim() ? `${name.trim()}, wo soll es hingehen?` : 'Wo soll es hingehen?'} 
+          text="Wo soll es hingehen?" 
           className="font-display text-xl min-[400px]:text-2xl sm:text-3xl font-bold text-white tracking-tight mb-1" 
         />
         <p className="text-slate-400 text-xs sm:text-sm">
@@ -110,7 +110,7 @@ export default function StepLocation({
             setCustomLocation(e.target.value);
             if (error) setError('');
           }}
-          placeholder={name?.trim() ? `Dein Geheimtipp, ${name.trim()}? (z.B. Rooftop, Feierling...)` : 'z.B. Rooftop-Terrasse, Schlossberg oder Biergarten...'}
+          placeholder="z.B. Rooftop-Terrasse, Schlossberg oder Biergarten..."
           maxLength={100}
           style={{ fontSize: '16px' }}
           className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-base font-medium focus:outline-none focus:border-fuchsia-500 transition-colors"
