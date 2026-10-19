@@ -25,19 +25,12 @@ export default function HeroTitle() {
 
           {/* Character '.' */}
           <span 
-            className="inline-block"
+            className="inline-block animate-title-glow"
             style={{
-              animation: 'dropThud 0.55s cubic-bezier(0.17, 0.89, 0.32, 1.25) 0.75s both'
+              animation: 'dropThud 0.55s cubic-bezier(0.17, 0.89, 0.32, 1.25) 0.75s both, titleGlowShift 4.5s ease-in-out infinite 1.3s'
             }}
           >
-            <span 
-              className="inline-block animate-title-glow"
-              style={{
-                animation: 'titleGlowShift 4.5s ease-in-out infinite 1.3s, dotBlink 1.1s ease-in-out infinite 1.3s'
-              }}
-            >
-              .
-            </span>
+            .
           </span>
 
           {/* Character '0' */}

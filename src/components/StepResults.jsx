@@ -80,7 +80,7 @@ export default function StepResults({
       
       {/* Personalized user status bar if user has already voted */}
       {myVote?.name ? (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 mb-5 rounded-2xl bg-slate-900/90 border border-fuchsia-500/25 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1 py-1 mb-5">
           <div className="flex items-center gap-2.5">
             <span className="text-xl select-none">👋</span>
             <div>

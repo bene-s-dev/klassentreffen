@@ -286,7 +286,10 @@ export default function App() {
               selectedSlots={selectedSlots}
               setSelectedSlots={setSelectedSlots}
               allVotes={allVotes}
-              onNext={() => triggerTransition('2-to-3')}
+              onNext={() => {
+                setCurrentStep(3);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               onBack={() => setCurrentStep(1)}
             />
           )}
