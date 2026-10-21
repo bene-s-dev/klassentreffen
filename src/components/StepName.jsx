@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ShieldAlert } from 'lucide-react';
-import { sounds } from '../lib/sounds';
+import { sounds, audio } from '../lib/sounds';
+import { magicEffects } from '../lib/magicEffects';
 import AiTitle from './AiTitle';
 
 const NAME_EXAMPLES = ['Patrick W.', 'Benjamin B.'];
@@ -51,6 +52,19 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
     return () => clearTimeout(timeoutId);
   }, [name, isFocused, displayedExample, isDeleting, exampleIndex]);
 
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setName(val);
+    if (error) setError('');
+
+    // 1. Klangerzeugung beim Tippen: playTypeDroplet(charLength)
+    audio.playTypeDroplet(val.length);
+
+    // 2. Partikelsystem beim Tippen: emitTypingSparkle(x, y) mit räumlichem Caret-Tracking
+    const coords = magicEffects.getCaretCoordinates(e.target);
+    magicEffects.emitTypingSparkle(coords.x, coords.y);
+  };
+
   const handleNext = (e) => {
     e?.preventDefault();
     if (!name.trim()) {
@@ -88,11 +102,12 @@ export default function StepName({ name, setName, onNext, allVotes = [] }) {
               id="name-input"
               type="text"
               value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                if (error) setError('');
+              onChange={handleInputChange}
+              onFocus={() => {
+                setIsFocused(true);
+                audio.init();
+                magicEffects.initCanvas();
               }}
-              onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               placeholder={`z. B. ${displayedExample}`}
               maxLength={45}
