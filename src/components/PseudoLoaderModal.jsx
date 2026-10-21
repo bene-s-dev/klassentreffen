@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { sounds } from '../lib/sounds';
 
@@ -28,8 +28,6 @@ const LOADING_CONFIG = {
 export default function PseudoLoaderModal({ 
   transitionType, 
   voterName = '', 
-  selectedSlotsCount = 0,
-  locationsCount = 0,
   onFinish 
 }) {
   const [displayedText, setDisplayedText] = useState('');
@@ -42,17 +40,26 @@ export default function PseudoLoaderModal({
     icon: '📖'
   };
 
-  // Humor tailored directly to step 1 (Klassenbuch)
-  const getAiMessage = () => {
+  // 4 nostalgische Sprüche rund um Kochen, Wäschepflege und Floristik (Zufallsauswahl)
+  const [aiMessage] = useState(() => {
     switch (transitionType) {
-      case '1-to-2':
-        return `"${cleanName}" steht tatsächlich im Klassenbuch!\nIch habe gehört, Deine versiffte Schürze aus dem Kochunterricht hängt noch im Spind.`;
+      case '1-to-2': {
+        const jokes = [
+          // 1. Kochen & Schürze
+          `"${cleanName}" steht tatsächlich im Klassenbuch!\nIch habe gehört, deine versiffte Schürze aus dem Kochunterricht hängt noch immer ungewaschen im Spind.`,
+          // 2. Wäsche & Textilpflege
+          `"${cleanName}" steht tatsächlich im Klassenbuch!\nGerüchten zufolge liegt dein Geschirrtuch aus dem Wäscheunterricht bis heute feucht und muffig im Turnbeutel.`,
+          // 3. Floristik
+          `"${cleanName}" steht tatsächlich im Klassenbuch!\nDein schiefes Moos- und Nelkengesteck aus dem Floristik-Unterricht steht im Lehrerzimmer immer noch als Mahnmal.`,
+          // 4. Kochen & Wäschepflege
+          `"${cleanName}" steht tatsächlich im Klassenbuch!\nUnvergessen: Erst beim Kochen die Schürze flambiert, danach in der Wäschepflege versehentlich auf 90°C geschrumpft.`
+        ];
+        return jokes[Math.floor(Math.random() * jokes.length)];
+      }
       default:
         return `Eingabe geprüft! Klassenbuch-Eintrag erfolgreich aktualisiert.`;
     }
-  };
-
-  const aiMessage = getAiMessage();
+  });
 
   // Word-by-word AI streaming simulation with dynamic natural pauses
   useEffect(() => {
