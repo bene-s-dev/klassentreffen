@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, Download, CheckCircle2, ArrowLeft, Clock, MapPin, Smartphone } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
+const FILE_NAME = 'Klassentreffen - tipp auf mich 📲.ics';
+
 export default function CalendarDownloadPage({ onBack }) {
   const [downloadTriggered, setDownloadTriggered] = useState(false);
 
@@ -9,7 +11,7 @@ export default function CalendarDownloadPage({ onBack }) {
     try {
       const link = document.createElement('a');
       link.href = '/klassentreffen.ics';
-      link.download = 'klassentreffen.ics';
+      link.download = FILE_NAME;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -113,7 +115,7 @@ export default function CalendarDownloadPage({ onBack }) {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-fuchsia-500/25 transition-transform active:scale-95 cursor-pointer w-full sm:w-auto"
             >
               <Download className="w-4 h-4" />
-              <span>Termin-Datei erneut herunterladen (.ics)</span>
+              <span>Termin-Datei herunterladen (.ics)</span>
             </button>
           </div>
 
@@ -141,7 +143,7 @@ export default function CalendarDownloadPage({ onBack }) {
                   Tippe auf die heruntergeladene Datei (in Safari auf das <strong className="text-white">blaue Download-Symbol ⬇️</strong> in der Adressleiste oder auf <em>„Laden“</em>).
                 </li>
                 <li>
-                  Tippe auf <strong className="text-white">„klassentreffen.ics“</strong>.
+                  Tippe auf <strong className="text-fuchsia-300 font-semibold">„Klassentreffen - tipp auf mich 📲.ics“</strong>.
                 </li>
                 <li>
                   Tippe oben rechts auf <strong className="text-fuchsia-300 font-semibold">„Zu Kalender hinzufügen“</strong> (oder <em>„Hinzufügen“</em>) – fertig! 🎉
@@ -159,7 +161,7 @@ export default function CalendarDownloadPage({ onBack }) {
               </div>
               <ol className="text-xs text-slate-300 space-y-1.5 pl-5 list-decimal marker:text-sky-400 marker:font-bold">
                 <li>
-                  Öffne die heruntergeladene Datei über die <strong className="text-white">Benachrichtigungsleiste</strong> oder Deinen <em>Downloads-Ordner</em>.
+                  Öffne <strong className="text-sky-300 font-semibold">„Klassentreffen - tipp auf mich 📲.ics“</strong> über die <strong className="text-white">Benachrichtigungsleiste</strong> oder Deinen <em>Downloads-Ordner</em>.
                 </li>
                 <li>
                   Wähle bei der Abfrage <strong className="text-white">„Google Kalender“</strong> (oder Dein Kalender-App) aus.

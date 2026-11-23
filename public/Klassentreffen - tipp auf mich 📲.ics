@@ -1,0 +1,26 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Bene Dev//Merian Klassentreffen 2.0//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:merian-klassentreffen-20270403@benedrive.de
+DTSTAMP:20261123T213600Z
+DTSTART:20270403T170000Z
+DTEND:20270404T000000Z
+SUMMARY:Merian-Klassentreffen 2.0
+DESCRIPTION:Offizieller Termin für das Merian-Klassentreffen 2.0!\nSamstag\, 3. April ab 19:00 Uhr in Freiburg im Breisgau.\nLowkey Pflichttermin – Wer schwänzt ist eh komplett lost! 💀\nDetails zur genauen Location folgen in der WhatsApp-Gruppe.
+LOCATION:Freiburg im Breisgau
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Erinnerung: Morgen ist Merian-Klassentreffen 2.0!
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT2H
+ACTION:DISPLAY
+DESCRIPTION:Erinnerung: Heute ab 19:00 Uhr Merian-Klassentreffen 2.0!
+END:VALARM
+END:VEVENT
+END:VCALENDAR
